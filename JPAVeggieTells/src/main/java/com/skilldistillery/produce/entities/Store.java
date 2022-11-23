@@ -73,7 +73,7 @@ public class Store {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(city, id, state, street1, street2, zipCode);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -85,9 +85,7 @@ public class Store {
 		if (getClass() != obj.getClass())
 			return false;
 		Store other = (Store) obj;
-		return Objects.equals(city, other.city) && id == other.id && Objects.equals(state, other.state)
-				&& Objects.equals(street1, other.street1) && Objects.equals(street2, other.street2)
-				&& Objects.equals(zipCode, other.zipCode);
+		return id == other.id;
 	}
 
 	@Override
