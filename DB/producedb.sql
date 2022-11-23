@@ -64,7 +64,7 @@ DROP TABLE IF EXISTS `company` ;
 CREATE TABLE IF NOT EXISTS `company` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `api_host_url` VARCHAR(2000) NOT NULL,
+  `api_host_url` VARCHAR(2000) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `store` (
   `state` VARCHAR(2) NULL,
   `zipcode` VARCHAR(45) NULL,
   `company_id` INT NOT NULL,
+  `location_id` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_location_store1_idx` (`company_id` ASC),
   CONSTRAINT `fk_location_store1`
@@ -301,11 +302,41 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `company`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `producedb`;
+INSERT INTO `company` (`id`, `name`, `api_host_url`) VALUES (1, 'King Soopers', NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `store`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `producedb`;
+INSERT INTO `store` (`id`, `street1`, `street2`, `city`, `state`, `zipcode`, `company_id`, `location_id`) VALUES (1, '17171 S. Golden Rd.', NULL, 'Golden', 'CO', '80401', 1, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `recipe`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `producedb`;
 INSERT INTO `recipe` (`id`, `name`, `description`, `img_url`, `creation_date`, `instructions`, `prep_time`, `cook_time`, `published`) VALUES (1, 'Duck Raviolis', 'A Recipe for Raviolis that have farm raised duck', NULL, '2022-11-23T00:00:00', 'm Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard du', 30, 60, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `user_favorite_store`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `producedb`;
+INSERT INTO `user_favorite_store` (`user_id`, `store_id`) VALUES (2, 1);
 
 COMMIT;
 
