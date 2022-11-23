@@ -35,7 +35,7 @@ public class Reaction {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(emoji, id);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class Reaction {
 		if (getClass() != obj.getClass())
 			return false;
 		Reaction other = (Reaction) obj;
-		return emoji == other.emoji && id == other.id;
+		return id == other.id;
 	}
 
 	@Override
