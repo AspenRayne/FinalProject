@@ -17,6 +17,11 @@
     <class>com.skilldistillery.produce.entities.User</class>
     <!-- end entities  -->
     
+    <class>com.skilldistillery.produce.entities.RecipeIngredientId</class>
+    <class>com.skilldistillery.produce.entities.RecipeIngredient</class>
+		
+		
+		
 		<properties>
 			<property name="javax.persistence.jdbc.url"
 				value="jdbc:mysql://localhost:3306/producedb?useSSL=false&amp;useLegacyDatetimeCode=false&amp;serverTimezone=US/Mountain" />
