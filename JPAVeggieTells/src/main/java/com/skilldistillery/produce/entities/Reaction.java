@@ -12,8 +12,8 @@ public class Reaction {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
-	char emoji;
+	private int id;
+	private char emoji;
 	
 	public Reaction() { }
 
