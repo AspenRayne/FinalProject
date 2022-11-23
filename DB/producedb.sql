@@ -342,7 +342,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `producedb`;
-INSERT INTO `reaction` (`id`, `emoji`) VALUES (1, '👍');
+INSERT INTO `reaction` (`id`, `emoji`) VALUES (1, 'X');
 
 COMMIT;
 
