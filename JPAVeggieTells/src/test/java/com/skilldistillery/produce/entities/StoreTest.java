@@ -12,13 +12,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ReactionTest {
-
+class StoreTest {
 
 	private static EntityManagerFactory emf;
 	private EntityManager em;
-	private Reaction reaction;
-
+	private Store store;
+	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		emf = Persistence.createEntityManagerFactory("JPAVeggieTells");
@@ -32,20 +31,18 @@ class ReactionTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		reaction = em.find(Reaction.class, 1);
+		store = em.find(Store.class, 1);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
 		em.close();
-		reaction = null;
+		store = null;
 	}
 
 	@Test
-	void test_Reaction_entity_mapping() {
-		assertNotNull(reaction);
-		assertEquals('X', reaction.getEmoji());
+	void test_Store_entity_mapping() {
+		assertNotNull(store);
+		assertEquals("Golden", store.getCity());
 	}
-
-
 }
