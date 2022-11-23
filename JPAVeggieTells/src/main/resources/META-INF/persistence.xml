@@ -6,6 +6,8 @@
 	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     
     <!-- entities  -->
+    <class>com.skilldistillery.produce.entities.RecipeReaction</class>
+    <class>com.skilldistillery.produce.entities.RecipeReactionId</class>
     <class>com.skilldistillery.produce.entities.Company</class>
     <class>com.skilldistillery.produce.entities.Ingredient</class>
     <class>com.skilldistillery.produce.entities.Reaction</class>
