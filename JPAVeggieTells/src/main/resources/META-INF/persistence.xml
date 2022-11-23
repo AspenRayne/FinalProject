@@ -7,6 +7,7 @@
     
     <!-- entities  -->
     <class>com.skilldistillery.produce.entities.User</class>
+    <class>com.skilldistillery.produce.entities.Reaction</class>
     <!-- end entities  -->
     
 		<properties>
