@@ -190,6 +190,25 @@ public class User {
 		this.recipeReactions = recipeReactions;
 	}
 
+	public void addRecipeReaction(RecipeReaction reaction) {
+		if (recipeReactions == null) {
+			recipeReactions = new ArrayList<>();
+		}
+		if (!recipeReactions.contains(reaction)) {
+			recipeReactions.add(reaction);
+			if (reaction.getUser() != null) {
+				reaction.getUser().getRecipeReactions().remove(reaction);
+			}
+			reaction.setUser(this);
+		}
+	}
+
+	public void removeRecipeReaction(RecipeReaction reaction) {
+		if (recipeReactions != null) {
+			recipeReactions.remove(reaction);
+			reaction.setUser(null);
+		}
+	}
 	public List<Comment> getComments() {
 		return comments;
 	}
@@ -243,6 +262,7 @@ public class User {
 		}
 	}
 
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(enabled, id, password, role, username);

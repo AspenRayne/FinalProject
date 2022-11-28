@@ -1,6 +1,8 @@
 package com.skilldistillery.produce.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -47,5 +49,11 @@ class ReactionTest {
 		assertEquals('X', reaction.getEmoji());
 	}
 
+	@Test
+	void test_Reaction_OTM_RecipeReaction_mapping() {
+		assertNotNull(reaction);
+		assertNotNull(reaction.getRecipeReactions());
+		assertTrue(reaction.getRecipeReactions().size() > 0);
+	}
 
 }

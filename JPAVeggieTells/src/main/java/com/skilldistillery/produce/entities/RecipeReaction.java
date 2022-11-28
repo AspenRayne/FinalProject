@@ -31,6 +31,10 @@ public class RecipeReaction {
 	@Column(name = "reaction_date")
 	private LocalDateTime reactionDate;
 
+	@ManyToOne
+	@JoinColumn(name = "reaction_id")
+	private Reaction reaction;
+	
 	public RecipeReaction() {
 		super();
 	}
@@ -65,6 +69,15 @@ public class RecipeReaction {
 
 	public void setReactionDate(LocalDateTime reactionDate) {
 		this.reactionDate = reactionDate;
+	}
+	
+	
+	public Reaction getReaction() {
+		return reaction;
+	}
+
+	public void setReaction(Reaction reaction) {
+		this.reaction = reaction;
 	}
 
 	@Override

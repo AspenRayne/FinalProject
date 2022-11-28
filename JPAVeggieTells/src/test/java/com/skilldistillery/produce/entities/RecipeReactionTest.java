@@ -43,9 +43,15 @@ class RecipeReactionTest {
 	}
 
 	@Test
-	void test_Comment_entity_mapping() {
+	void test_RecipeReaction_entity_mapping() {
 		assertNotNull(reaction);
 		assertEquals(2022, reaction.getReactionDate().getYear());
+	}
+	
+	@Test
+	void test_RecipeReaction_MTO_reaction_mapping() {
+		assertNotNull(reaction);
+		assertEquals('X', reaction.getReaction().getEmoji());
 	}
 
 }
