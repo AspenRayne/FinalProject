@@ -14,7 +14,7 @@ export class RecipeReaction {
     recipe: Recipe = new Recipe(),
     user: User = new User(),
     reactionDate: string = '',
-    reaction: Reaction = new Reaction
+    reaction: Reaction = new Reaction()
   ) {
     this.id = id;
     this.recipe = recipe;

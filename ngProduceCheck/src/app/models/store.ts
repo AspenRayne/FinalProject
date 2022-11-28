@@ -19,7 +19,7 @@ export class Store {
     state: string = '',
     zipcode: string = '',
     users: User[] = [],
-    company: Company = new Company
+    company: Company = new Company()
   ) {
     this.id = id;
     this.street1 = street1;
