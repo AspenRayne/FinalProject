@@ -1,3 +1,4 @@
+import { Company } from './company';
 import { User } from './user';
 
 export class Store {
@@ -8,6 +9,7 @@ export class Store {
   state: string;
   zipcode: string;
   users: User[];
+  company: Company;
 
   constructor(
     id: number = 0,
@@ -16,7 +18,8 @@ export class Store {
     city: string = '',
     state: string = '',
     zipcode: string = '',
-    users: User[] = []
+    users: User[] = [],
+    company: Company = new Company
   ) {
     this.id = id;
     this.street1 = street1;
@@ -25,5 +28,6 @@ export class Store {
     this.state = state;
     this.zipcode = zipcode;
     this.users = users;
+    this.company = company;
   }
 }
