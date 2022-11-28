@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -53,6 +54,9 @@ public class User {
 	@ManyToMany
 	@JoinTable(name = "favorite_recipe", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
 	private List<Recipe> recipes;
+	
+	@OneToMany(mappedBy="user")
+	private List<RecipeReaction> recipeReactions;
 
 	public User() {
 		super();
@@ -169,6 +173,14 @@ public class User {
 			recipes.remove(recipe);
 			recipe.removeUser(this);
 		}
+	}
+
+	public List<RecipeReaction> getRecipeReactions() {
+		return recipeReactions;
+	}
+
+	public void setRecipeReactions(List<RecipeReaction> recipeReactions) {
+		this.recipeReactions = recipeReactions;
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
-	
+
 	private static EntityManagerFactory emf;
 	private EntityManager em;
 	private User user;
@@ -49,13 +49,19 @@ class UserTest {
 		assertEquals("USER", user.getRole());
 		assertEquals("I am the first user", user.getAboutMe());
 	}
-	
+
 	@Test
 	void test_User_MTM_Recipe_association() {
 		assertNotNull(user);
 		assertNotNull(user.getRecipes());
 		assertTrue(user.getRecipes().size() > 0);
-		
+
+	}
+
+	@Test
+	void test_User_MTM_RecipeReview_association() {
+		assertNotNull(user);
+		assertTrue(user.getRecipeReactions().size() > 0);
 	}
 
 }

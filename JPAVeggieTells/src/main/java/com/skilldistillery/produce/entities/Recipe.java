@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -44,6 +45,9 @@ public class Recipe {
 
 	@ManyToMany(mappedBy = "recipes")
 	private List<User> users;
+	
+	@OneToMany(mappedBy="recipe")
+	private List<RecipeReaction> recipeReactions;
 
 	public Recipe() {
 		super();
@@ -144,6 +148,14 @@ public class Recipe {
 			users.remove(user);
 			user.removeRecipe(this);
 		}
+	}
+
+	public List<RecipeReaction> getRecipeReactions() {
+		return recipeReactions;
+	}
+
+	public void setRecipeReactions(List<RecipeReaction> recipeReactions) {
+		this.recipeReactions = recipeReactions;
 	}
 
 	@Override
