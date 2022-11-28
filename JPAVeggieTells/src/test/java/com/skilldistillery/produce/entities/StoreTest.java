@@ -54,4 +54,9 @@ class StoreTest {
 		assertTrue(store.getUsers().size() > 0);
 
 	}
+	@Test
+	void test_Store_MTO_company_mapping() {
+		assertNotNull(store);
+		assertEquals("King Soopers", store.getCompany().getName());
+	}
 }

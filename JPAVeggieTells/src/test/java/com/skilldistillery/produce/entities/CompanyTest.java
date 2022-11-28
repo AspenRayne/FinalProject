@@ -2,6 +2,7 @@ package com.skilldistillery.produce.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -45,6 +46,11 @@ class CompanyTest {
 	void test_Company_entity_mapping() {
 		assertNotNull(company);
 		assertEquals("King Soopers", company.getName());
+	}
+	@Test
+	void test_company_OTM_store_mapping() {
+		assertNotNull(company);
+		assertTrue(company.getStores().size() > 0);
 	}
 
 }

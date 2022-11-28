@@ -9,7 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Store {
@@ -26,6 +28,10 @@ public class Store {
 	
 	@ManyToMany(mappedBy = "stores")
 	private List<User> users;
+	
+	@ManyToOne
+	@JoinColumn(name="company_id")
+	private Company company;
 	
 	public Store() { }
 
@@ -102,7 +108,14 @@ public class Store {
 		}
 	}
 
+	public Company getCompany() {
+		return company;
+	}
 
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
