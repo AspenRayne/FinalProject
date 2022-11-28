@@ -1,6 +1,8 @@
 package com.skilldistillery.produce.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -63,5 +65,10 @@ class RecipeTest {
 	void test_Recipe_OTM_Comment_association() {
 		assertNotNull(recipe);
 		assertTrue(recipe.getComments().size() > 0);
+	}
+	@Test
+	void test_Recipe_OTM_RecipeIngredient_mapping() {
+		assertNotNull(recipe);
+		assertTrue(recipe.getRecipeIngredients().size() > 0);
 	}
 }

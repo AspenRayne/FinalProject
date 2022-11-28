@@ -1,5 +1,7 @@
 package com.skilldistillery.produce.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -7,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Ingredient {
@@ -26,6 +29,9 @@ public class Ingredient {
 	
 	private String plu;
 
+	@OneToMany(mappedBy="ingredient")
+	List <RecipeIngredient> recipeIngredients;
+	
 	public Ingredient() {
 		super();
 	}
@@ -77,6 +83,37 @@ public class Ingredient {
 	public void setPlu(String plu) {
 		this.plu = plu;
 	}
+	
+
+	public List<RecipeIngredient> getRecipeIngredients() {
+		return recipeIngredients;
+	}
+
+	public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
+		this.recipeIngredients = recipeIngredients;
+	}
+	
+	public void addRecipeIngredient(RecipeIngredient ingredient) {
+		if (recipeIngredients == null) {
+			recipeIngredients = new ArrayList<>();
+		}
+		if (!recipeIngredients.contains(ingredient)) {
+			recipeIngredients.add(ingredient);
+			if (ingredient.getIngredient() != null) {
+				ingredient.getIngredient().getRecipeIngredients().remove(ingredient);
+			}
+			ingredient.setIngredient(this);
+		}
+	}
+
+	public void removeRecipeIngredient(RecipeIngredient ingredient) {
+		if (recipeIngredients != null) {
+			recipeIngredients.remove(ingredient);
+			ingredient.setIngredient(null);
+		}
+	}
+	
+	
 
 	@Override
 	public int hashCode() {

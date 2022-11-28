@@ -51,6 +51,9 @@ public class Recipe {
 
 	@OneToMany(mappedBy = "recipe")
 	private List<Comment> comments;
+	
+	@OneToMany(mappedBy="recipe")
+	private List<RecipeIngredient> recipeIngredients;
 
 	public Recipe() {
 		super();
@@ -188,6 +191,36 @@ public class Recipe {
 			comment.setRecipe(null);
 		}
 	}
+
+	
+	public List<RecipeIngredient> getRecipeIngredients() {
+		return recipeIngredients;
+	}
+
+	public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
+		this.recipeIngredients = recipeIngredients;
+	}
+	
+	public void addRecipeIngredient(RecipeIngredient ingredient) {
+		if (recipeIngredients == null) {
+			recipeIngredients = new ArrayList<>();
+		}
+		if (!recipeIngredients.contains(ingredient)) {
+			recipeIngredients.add(ingredient);
+			if (ingredient.getRecipe() != null) {
+				ingredient.getRecipe().getRecipeIngredients().remove(ingredient);
+			}
+			ingredient.setRecipe(this);
+		}
+	}
+
+	public void removeRecipeIngredient(RecipeIngredient ingredient) {
+		if (recipeIngredients != null) {
+			recipeIngredients.remove(ingredient);
+			ingredient.setRecipe(null);
+		}
+	}
+	
 
 	@Override
 	public int hashCode() {
