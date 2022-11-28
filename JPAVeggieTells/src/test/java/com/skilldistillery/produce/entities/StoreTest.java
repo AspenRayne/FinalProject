@@ -45,4 +45,13 @@ class StoreTest {
 		assertNotNull(store);
 		assertEquals("Golden", store.getCity());
 	}
+	
+
+	@Test
+	void test_Store_MTM_User_association() {
+		assertNotNull(store);
+		assertNotNull(store.getUsers());
+		assertTrue(store.getUsers().size() > 0);
+
+	}
 }

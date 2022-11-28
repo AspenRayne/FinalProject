@@ -60,6 +60,10 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private List<Comment> comments;
+	
+	@ManyToMany
+	@JoinTable(name="user_favorite_store", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
+	private List<Store> stores;
 
 	public User() {
 		super();
@@ -211,6 +215,31 @@ public class User {
 		if (comments != null) {
 			comments.remove(comment);
 			comment.setUser(null);
+		}
+	}
+
+	public List<Store> getStores() {
+		return stores;
+	}
+
+	public void setStores(List<Store> stores) {
+		this.stores = stores;
+	}
+	
+	public void addStore(Store store) {
+		if (stores != null) {
+			stores = new ArrayList<>();
+		}
+		if (!stores.contains(store)) {
+			stores.add(store);
+			store.addUser(this);
+		}
+	}
+
+	public void removeStore(Store store) {
+		if (stores != null && stores.contains(store)) {
+			stores.remove(store);
+			store.removeUser(this);
 		}
 	}
 

@@ -1,5 +1,7 @@
 package com.skilldistillery.produce.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -7,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Store {
@@ -20,6 +23,9 @@ public class Store {
 	private String state;
 	@Column(name="zipcode")
 	private String zipCode;
+	
+	@ManyToMany(mappedBy = "stores")
+	private List<User> users;
 	
 	public Store() { }
 
@@ -70,6 +76,32 @@ public class Store {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> user) {
+		this.users = user;
+	}
+	
+	public void addUser(User user) {
+		if (users != null) {
+			users = new ArrayList<>();
+		}
+		if (!users.contains(user)) {
+			users.add(user);
+			user.addStore(this);
+		}
+	}
+
+	public void removeUser(User user) {
+		if (users != null && users.contains(user)) {
+			users.remove(user);
+			user.removeStore(this);
+		}
+	}
+
 
 	@Override
 	public int hashCode() {

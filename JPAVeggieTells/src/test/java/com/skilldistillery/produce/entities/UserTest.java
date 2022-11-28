@@ -70,4 +70,12 @@ class UserTest {
 		assertTrue(user.getComments().size() > 0);
 	}
 
+	@Test
+	void test_User_MTM_Store_association() {
+		assertNotNull(user);
+		assertNotNull(user.getStores());
+		assertTrue(user.getStores().size() > 0);
+
+	}
+
 }
