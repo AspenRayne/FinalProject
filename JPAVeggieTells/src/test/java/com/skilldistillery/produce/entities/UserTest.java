@@ -63,5 +63,11 @@ class UserTest {
 		assertNotNull(user);
 		assertTrue(user.getRecipeReactions().size() > 0);
 	}
+	
+	@Test
+	void test_User_OTM_Comment_association() {
+		assertNotNull(user);
+		assertTrue(user.getComments().size() > 0);
+	}
 
 }
