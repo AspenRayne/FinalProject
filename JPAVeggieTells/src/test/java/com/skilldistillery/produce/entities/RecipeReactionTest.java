@@ -53,5 +53,19 @@ class RecipeReactionTest {
 		assertNotNull(reaction);
 		assertEquals('X', reaction.getReaction().getEmoji());
 	}
+	
+	@Test 
+	void test_RecipeReaction_MTO_user_mapping() {
+		assertNotNull(reaction);
+		assertEquals("jdoe", reaction.getUser().getUsername());
+		
+	}
+	
+	@Test
+	void test_RecipeReaction_MTO_recipe_mapping() {
+		assertNotNull(reaction);
+		assertEquals("Duck Raviolis", reaction.getRecipe().getName());
+
+	}
 
 }
