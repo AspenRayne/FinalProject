@@ -45,4 +45,11 @@ class CommentTest {
 		assertNotNull(comment);
 		assertEquals("I made this for Thanksgiving and it was off the wall!", comment.getComment());
 	}
+	
+	@Test
+	void test_Comment_MTO_User_association() {
+		assertNotNull(comment);
+		assertNotNull(comment.getUser());
+		assertEquals("jdoe", comment.getUser().getUsername());
+	}
 }

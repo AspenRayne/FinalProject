@@ -54,9 +54,12 @@ public class User {
 	@ManyToMany
 	@JoinTable(name = "favorite_recipe", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
 	private List<Recipe> recipes;
-	
-	@OneToMany(mappedBy="user")
+
+	@OneToMany(mappedBy = "user")
 	private List<RecipeReaction> recipeReactions;
+
+	@OneToMany(mappedBy = "user")
+	private List<Comment> comments;
 
 	public User() {
 		super();
@@ -167,9 +170,9 @@ public class User {
 			recipe.addUser(this);
 		}
 	}
-	
+
 	public void removeRecipe(Recipe recipe) {
-		if(recipes != null && recipes.contains(recipe)) {
+		if (recipes != null && recipes.contains(recipe)) {
 			recipes.remove(recipe);
 			recipe.removeUser(this);
 		}
@@ -181,6 +184,34 @@ public class User {
 
 	public void setRecipeReactions(List<RecipeReaction> recipeReactions) {
 		this.recipeReactions = recipeReactions;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public void addComment(Comment comment) {
+		if (comments == null) {
+			comments = new ArrayList<>();
+		}
+		if (!comments.contains(comment)) {
+			comments.add(comment);
+			if (comment.getUser() != null) {
+				comment.getUser().getComments().remove(comment);
+			}
+			comment.setUser(this);
+		}
+	}
+
+	public void removeComment(Comment comment) {
+		if (comments != null) {
+			comments.remove(comment);
+			comment.setUser(null);
+		}
 	}
 
 	@Override

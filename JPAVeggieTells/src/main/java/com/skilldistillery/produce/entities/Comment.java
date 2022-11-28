@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,13 +19,17 @@ public class Comment {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name="comment_date")
 	private LocalDateTime commentDate;
+	
 	private String comment;
 	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
 	
 	public Comment() { }
-
 
 	public int getId() {
 		return id;
@@ -53,12 +59,19 @@ public class Comment {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
