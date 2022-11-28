@@ -59,4 +59,16 @@ class CommentTest {
 		assertNotNull(comment.getRecipe());
 		assertEquals("Duck Raviolis", comment.getRecipe().getName());
 	}
+	
+	@Test
+	void test_comment_MTO_comment() {
+		assertNotNull(comment);
+		assertNull(comment.getReplyComment());
+	}
+	
+	@Test
+	void test_comment_OTM_comment() {
+		assertNotNull(comment);
+		assertTrue(comment.getComments().size() == 0);
+	}
 }

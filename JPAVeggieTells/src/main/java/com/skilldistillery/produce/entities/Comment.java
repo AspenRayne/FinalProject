@@ -1,6 +1,8 @@
 package com.skilldistillery.produce.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -32,6 +35,13 @@ public class Comment {
 	@ManyToOne
 	@JoinColumn(name="recipe_id")
 	private Recipe recipe;
+	
+	@ManyToOne
+	@JoinColumn(name="in_reply_to")
+	private Comment replyComment;
+	
+	@OneToMany(mappedBy="replyComment")
+	private List<Comment> comments;
 	
 	public Comment() { }
 
@@ -80,6 +90,40 @@ public class Comment {
 		this.recipe = recipe;
 	}
 
+	public Comment getReplyComment() {
+		return replyComment;
+	}
+
+	public void setReplyComment(Comment replyComment) {
+		this.replyComment = replyComment;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	public void addComment(Comment comment) {
+		if (comments == null) {
+			comments = new ArrayList<>();
+		}
+		if (!comments.contains(comment)) {
+			comments.add(comment);
+			if (comment.getReplyComment() != null) {
+				comment.getReplyComment().getComments().remove(comment);
+			}
+			comment.setReplyComment(this);
+		}
+	}
+
+	public void removeComment(Comment comment) {
+		if (comments != null) {
+			comments.remove(comment);
+			comment.setReplyComment(null);
+		}
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
