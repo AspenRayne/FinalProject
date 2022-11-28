@@ -41,8 +41,16 @@ class RecipeTest {
 	}
 
 	@Test
-	void test_User_entity_mapping() {
+	void test_Recipe_entity_mapping() {
 		assertNotNull(recipe);
 		assertEquals("Duck Raviolis", recipe.getName());
+	}
+
+	@Test
+	void test_Recipe_MTM_Recipe_association() {
+		assertNotNull(recipe);
+		assertNotNull(recipe.getUsers());
+		assertTrue(recipe.getUsers().size() > 0);
+
 	}
 }

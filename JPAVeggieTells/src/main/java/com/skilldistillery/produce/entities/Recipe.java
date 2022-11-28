@@ -1,6 +1,8 @@
 package com.skilldistillery.produce.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -38,6 +41,9 @@ public class Recipe {
 	private Integer cookTime;
 
 	private Boolean published;
+
+	@ManyToMany(mappedBy = "recipes")
+	private List<User> users;
 
 	public Recipe() {
 		super();
@@ -113,6 +119,31 @@ public class Recipe {
 
 	public void setPublished(Boolean published) {
 		this.published = published;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public void addUser(User user) {
+		if (users != null) {
+			users = new ArrayList<>();
+		}
+		if (!users.contains(user)) {
+			users.add(user);
+			user.addRecipe(this);
+		}
+	}
+	
+	public void removeUser(User user) {
+		if(users != null && users.contains(user)) {
+			users.remove(user);
+			user.removeRecipe(this);
+		}
 	}
 
 	@Override

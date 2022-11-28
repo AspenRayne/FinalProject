@@ -1,6 +1,8 @@
 package com.skilldistillery.produce.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -44,6 +49,10 @@ public class User {
 
 	@Column(name = "last_name")
 	private String lastName;
+
+	@ManyToMany
+	@JoinTable(name = "favorite_recipe", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
+	private List<Recipe> recipes;
 
 	public User() {
 		super();
@@ -135,6 +144,31 @@ public class User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public List<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+
+	public void addRecipe(Recipe recipe) {
+		if (recipes != null) {
+			recipes = new ArrayList<>();
+		}
+		if (!recipes.contains(recipe)) {
+			recipes.add(recipe);
+			recipe.addUser(this);
+		}
+	}
+	
+	public void removeRecipe(Recipe recipe) {
+		if(recipes != null && recipes.contains(recipe)) {
+			recipes.remove(recipe);
+			recipe.removeUser(this);
+		}
 	}
 
 	@Override

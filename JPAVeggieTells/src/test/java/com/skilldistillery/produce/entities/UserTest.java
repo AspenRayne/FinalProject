@@ -2,6 +2,7 @@ package com.skilldistillery.produce.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -47,6 +48,14 @@ class UserTest {
 		assertEquals("jdoe", user.getUsername());
 		assertEquals("USER", user.getRole());
 		assertEquals("I am the first user", user.getAboutMe());
+	}
+	
+	@Test
+	void test_User_MTM_Recipe_association() {
+		assertNotNull(user);
+		assertNotNull(user.getRecipes());
+		assertTrue(user.getRecipes().size() > 0);
+		
 	}
 
 }
