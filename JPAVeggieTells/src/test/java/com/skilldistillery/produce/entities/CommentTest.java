@@ -52,4 +52,11 @@ class CommentTest {
 		assertNotNull(comment.getUser());
 		assertEquals("jdoe", comment.getUser().getUsername());
 	}
+	
+	@Test
+	void test_Comment_MTO_Recipe_association() {
+		assertNotNull(comment);
+		assertNotNull(comment.getRecipe());
+		assertEquals("Duck Raviolis", comment.getRecipe().getName());
+	}
 }

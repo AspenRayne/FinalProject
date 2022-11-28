@@ -45,9 +45,12 @@ public class Recipe {
 
 	@ManyToMany(mappedBy = "recipes")
 	private List<User> users;
-	
-	@OneToMany(mappedBy="recipe")
+
+	@OneToMany(mappedBy = "recipe")
 	private List<RecipeReaction> recipeReactions;
+
+	@OneToMany(mappedBy = "recipe")
+	private List<Comment> comments;
 
 	public Recipe() {
 		super();
@@ -142,9 +145,9 @@ public class Recipe {
 			user.addRecipe(this);
 		}
 	}
-	
+
 	public void removeUser(User user) {
-		if(users != null && users.contains(user)) {
+		if (users != null && users.contains(user)) {
 			users.remove(user);
 			user.removeRecipe(this);
 		}
@@ -156,6 +159,34 @@ public class Recipe {
 
 	public void setRecipeReactions(List<RecipeReaction> recipeReactions) {
 		this.recipeReactions = recipeReactions;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public void addComment(Comment comment) {
+		if (comments == null) {
+			comments = new ArrayList<>();
+		}
+		if (!comments.contains(comment)) {
+			comments.add(comment);
+			if (comment.getRecipe() != null) {
+				comment.getRecipe().getComments().remove(comment);
+			}
+			comment.setRecipe(this);
+		}
+	}
+
+	public void removeComment(Comment comment) {
+		if (comments != null) {
+			comments.remove(comment);
+			comment.setRecipe(null);
+		}
 	}
 
 	@Override

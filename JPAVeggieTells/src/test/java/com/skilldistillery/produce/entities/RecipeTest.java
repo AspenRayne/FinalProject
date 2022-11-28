@@ -58,4 +58,10 @@ class RecipeTest {
 		assertNotNull(recipe);
 		assertTrue(recipe.getRecipeReactions().size() > 0);
 	}
+	
+	@Test
+	void test_Recipe_OTM_Comment_association() {
+		assertNotNull(recipe);
+		assertTrue(recipe.getComments().size() > 0);
+	}
 }

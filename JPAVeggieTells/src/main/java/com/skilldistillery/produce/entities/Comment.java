@@ -29,6 +29,10 @@ public class Comment {
 	@JoinColumn(name="user_id")
 	private User user;
 	
+	@ManyToOne
+	@JoinColumn(name="recipe_id")
+	private Recipe recipe;
+	
 	public Comment() { }
 
 	public int getId() {
@@ -66,6 +70,14 @@ public class Comment {
 	
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Recipe getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
 	}
 
 	@Override
