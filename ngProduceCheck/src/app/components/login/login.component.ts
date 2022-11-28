@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/home');
       },
       error: (problem) => {
-        console.error('RegisterComponent.login(): Error logging in user:');
+        console.error('LoginComponent.login(): Error logging in user:');
         console.error(problem);
       },
     });
