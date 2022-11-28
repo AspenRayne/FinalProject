@@ -1,1 +1,29 @@
-<p>login works!</p>
+<form>
+  <div class="container-fluid text-center">
+    <div class="card w-50">
+      <div class="card-body">
+        <h5 class="card-title">Login</h5>
+        <input
+          class="form-control"
+          type="username"
+          name="username"
+          placeholder="Username"
+          [(ngModel)]="loginUser.username"
+        />
+        <input
+          class="form-control"
+          type="password"
+          name="password"
+          placeholder="Password"
+          [(ngModel)]="loginUser.password"
+        />
+        <hr />
+        <div class="text-center">
+          <button class="btn btn-primary" (click)="login(loginUser)">
+            Log In
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
