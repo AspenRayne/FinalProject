@@ -12,5 +12,7 @@ public interface RecipeService {
 	public Set<Recipe> usersRecipes(String username);
 	
 	public Recipe create(String username, Recipe recipe);
+	
+	public Recipe update(String username, int recipeId, Recipe recipe);
 
 }

@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +48,21 @@ public class RecipeController {
 			urlSb.append("/").append(recipe.getId());
 			String url = urlSb.toString();
 			res.setHeader("Location", url);
+		} catch (Exception e) {
+			res.setStatus(400);
+			recipe = null;
+		}
+		return recipe;
+	}
+
+	@PutMapping("recipes/{id}")
+	public Recipe update(@PathVariable int id, @RequestBody Recipe recipe, HttpServletRequest req,
+			HttpServletResponse res, Principal principal) {
+		try {
+			recipe = recipeService.update(principal.getName(), id, recipe);
+			if (recipe == null) {
+				res.setStatus(404);
+			}
 		} catch (Exception e) {
 			res.setStatus(400);
 			recipe = null;

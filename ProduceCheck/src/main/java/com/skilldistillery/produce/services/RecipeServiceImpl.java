@@ -40,4 +40,18 @@ public class RecipeServiceImpl implements RecipeService {
 		return null;
 	}
 
+	@Override
+	public Recipe update(String username, int recipeId, Recipe recipe) {
+		Recipe managed = recipeRepo.findByUser_UsernameAndId(username, recipeId);
+		managed.setName(recipe.getName());
+		managed.setDescription(recipe.getDescription());
+		managed.setImgUrl(recipe.getImgUrl());
+		managed.setInstructions(recipe.getInstructions());
+		managed.setPrepTime(recipe.getPrepTime());
+		managed.setCookTime(recipe.getCookTime());
+		managed.setPublished(recipe.getPublished());
+		return recipeRepo.save(managed);
+
+	}
+
 }

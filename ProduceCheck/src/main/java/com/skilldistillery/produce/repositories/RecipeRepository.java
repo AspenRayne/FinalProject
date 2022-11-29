@@ -12,5 +12,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 	Set<Recipe> findByUsers_Username(String username);
 	
 	Recipe queryById(int recipeId);
+	
+	Recipe findByUser_UsernameAndId(String username, int recipeId);
 
 }
