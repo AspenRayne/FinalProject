@@ -54,4 +54,13 @@ public class RecipeServiceImpl implements RecipeService {
 
 	}
 
+	@Override
+	public boolean destroy(String username, int recipeId) {
+		User user = userRepo.findByUsername(username);
+		Recipe recipe = recipeRepo.findByUser_UsernameAndId(username, recipeId);
+		user.removeRecipe(recipe);
+		recipeRepo.deleteById(recipeId);
+		return !recipeRepo.existsById(recipeId);
+	}
+
 }
