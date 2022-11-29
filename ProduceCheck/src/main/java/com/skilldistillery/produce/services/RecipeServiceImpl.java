@@ -32,6 +32,11 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public Recipe create(String username, Recipe recipe) {
+		User user = userRepo.findByUsername(username);
+		if (user != null) {
+			recipe.setUser(user);
+			return recipeRepo.saveAndFlush(recipe);
+		}
 		return null;
 	}
 
