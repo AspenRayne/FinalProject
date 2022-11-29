@@ -108,7 +108,14 @@ CREATE TABLE IF NOT EXISTS `recipe` (
   `prep_time` INT NULL,
   `cook_time` INT NULL,
   `published` TINYINT NULL,
-  PRIMARY KEY (`id`))
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_recipe_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_recipe_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -326,7 +333,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `producedb`;
-INSERT INTO `recipe` (`id`, `name`, `description`, `img_url`, `creation_date`, `instructions`, `prep_time`, `cook_time`, `published`) VALUES (1, 'Duck Raviolis', 'A Recipe for Raviolis that have farm raised duck', NULL, '2022-11-23T00:00:00', 'm Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard du', 30, 60, 1);
+INSERT INTO `recipe` (`id`, `name`, `description`, `img_url`, `creation_date`, `instructions`, `prep_time`, `cook_time`, `published`, `user_id`) VALUES (1, 'Duck Raviolis', 'A Recipe for Raviolis that have farm raised duck', NULL, '2022-11-23T00:00:00', 'm Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard du', 30, 60, 1, 2);
 
 COMMIT;
 
@@ -373,7 +380,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `producedb`;
-INSERT INTO `reaction` (`id`, `emoji`) VALUES (1, 'X');
+INSERT INTO `reaction` (`id`, `emoji`) VALUES (1, '🤔');
 
 COMMIT;
 
