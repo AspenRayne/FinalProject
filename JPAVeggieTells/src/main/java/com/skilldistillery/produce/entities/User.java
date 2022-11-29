@@ -71,6 +71,10 @@ public class User {
 	@JoinTable(name="user_favorite_store", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private List<Store> stores;
 
+	@JsonIgnore
+	@OneToMany(mappedBy="user")
+	private List<Recipe> userRecipes;
+	
 	public User() {
 		super();
 	}
@@ -268,7 +272,34 @@ public class User {
 		}
 	}
 
-	
+	public List<Recipe> getUserRecipes() {
+		return userRecipes;
+	}
+
+	public void setUserRecipes(List<Recipe> userRecipes) {
+		this.userRecipes = userRecipes;
+	}
+
+	public void addUserRecipe(Recipe recipe) {
+		if (userRecipes == null) {
+			userRecipes = new ArrayList<>();
+		}
+		if (!userRecipes.contains(recipe)) {
+			userRecipes.add(recipe);
+			if (recipe.getUser() != null) {
+				recipe.getUser().getUserRecipes().remove(recipe);
+			}
+			recipe.setUser(this);
+		}
+	}
+
+	public void removeUserRecipe(Recipe recipe) {
+		if (userRecipes != null) {
+			userRecipes.remove(recipe);
+			recipe.setUser(null);
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(enabled, id, password, role, username);

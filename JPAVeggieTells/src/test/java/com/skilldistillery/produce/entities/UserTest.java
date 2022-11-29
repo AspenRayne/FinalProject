@@ -77,5 +77,10 @@ class UserTest {
 		assertTrue(user.getStores().size() > 0);
 
 	}
+	@Test
+	void test_User_OTM_Recipe_association() {
+		assertNotNull(user);
+		assertTrue(user.getUserRecipes().size() > 0);
+	}
 
 }

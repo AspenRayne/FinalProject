@@ -71,4 +71,9 @@ class RecipeTest {
 		assertNotNull(recipe);
 		assertTrue(recipe.getRecipeIngredients().size() > 0);
 	}
+	@Test
+	void test_Recipe_MTO_User_association() {
+		assertNotNull(recipe);
+		assertEquals("jdoe",recipe.getUser().getUsername());
+	}
 }
