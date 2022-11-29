@@ -3,15 +3,17 @@ import { User } from "./user";
 import { Comment } from "./comment";
 import { RecipeIngredient } from "./recipe-ingredient";
 
+
 export class Recipe {
   id: number;
-  name: string | undefined;
-  description: string | undefined;
-  imgUrl: string | undefined;
-  creationDate: string | undefined;
-  instruction: string | undefined;
+  name: string;
+  description: string;
+  imgUrl: string;
+  creationDate: string;
+  instructions: string;
   prepTime: number;
   cookTime: number;
+  published: boolean;
   users: User[];
   comments: Comment[];
   recipeReactions: RecipeReaction[];
@@ -19,31 +21,31 @@ export class Recipe {
 
   constructor(
     id: number = 0,
-    name?: string | undefined,
-    description?: string | undefined,
-    imgUrl?: string | undefined,
-    creationDate?: string | undefined,
-    instruction?: string | undefined,
+    name: string = '',
+    description: string = '',
+    imgUrl: string = '',
+    creationDate: string = '',
+    instructions: string = '',
     prepTime: number = 0,
     cookTime: number = 0,
+    published: boolean = false,
     users: User[] = [],
     comments: Comment[] = [],
     recipeReactions: RecipeReaction[] = [],
-    recipeIngredients: RecipeIngredient[] = []) {
-
-          this.id = id;
-          this.name = name;
-          this.description = description;
-          this.imgUrl = imgUrl;
-          this.creationDate = creationDate;
-          this.instruction = instruction;
-          this.prepTime = prepTime;
-          this.cookTime = cookTime;
-          this.users = users;
-          this.comments = comments;
-          this.recipeReactions = recipeReactions;
-          this.recipeIngredients = recipeIngredients;
-    }
-
-
+    recipeIngredients: RecipeIngredient[] = []
+  ) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.imgUrl = imgUrl;
+    this.creationDate = creationDate;
+    this.instructions = instructions;
+    this.prepTime = prepTime;
+    this.cookTime = cookTime;
+    this.published = published;
+    this.users = users;
+    this.comments = comments;
+    this.recipeReactions = recipeReactions;
+    this.recipeIngredients = recipeIngredients;
+  }
 }

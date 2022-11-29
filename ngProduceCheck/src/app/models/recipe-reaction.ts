@@ -11,8 +11,8 @@ export class RecipeReaction {
 
   constructor(
     id: number = 0,
-    recipe: Recipe = new Recipe(),
-    user: User = new User(),
+    recipe: Recipe,
+    user: User,
     reactionDate: string = '',
     reaction: Reaction = new Reaction()
   ) {
