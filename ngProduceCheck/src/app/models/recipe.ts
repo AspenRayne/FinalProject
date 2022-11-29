@@ -1,6 +1,7 @@
 import { RecipeReaction } from "./recipe-reaction";
 import { User } from "./user";
 import { Comment } from "./comment";
+import { RecipeIngredient } from "./recipe-ingredient";
 
 export class Recipe {
   id: number;
