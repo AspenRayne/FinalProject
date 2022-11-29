@@ -9,5 +9,7 @@ import com.skilldistillery.produce.entities.Comment;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	
 	List<Comment> findByRecipeId(int recipeId);
+	
+	Comment findByRecipeIdAndId(int recipeId, int commentId);
 
 }

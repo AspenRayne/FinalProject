@@ -47,4 +47,17 @@ public class CommentServiceImpl implements CommentService {
 		return comment;
 	}
 
+	@Override
+	public boolean delete(int recipeId, int commentId, String username) {
+		boolean deleted = false;
+		User user = userRepo.findByUsername(username);
+		Comment comment = commentRepo.findByRecipeIdAndId(recipeId, commentId);
+		if(comment != null ) {
+			user.removeComment(comment);
+			commentRepo.delete(comment);
+			deleted = true;
+		}
+		return deleted;
+	}
+
 }

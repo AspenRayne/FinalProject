@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,19 @@ public class CommentController {
 			comment = null;
 		}
 		return comment;
+	}
+
+	@DeleteMapping("recipes/{id}/comments/{cid}")
+	public void delete(@PathVariable int id, @PathVariable int cid, HttpServletResponse res, Principal principal) {
+		try {
+			if (commentService.delete(id, cid, principal.getName())) {
+				res.setStatus(204);
+			} else {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			res.setStatus(400);
+		}
 	}
 
 }
