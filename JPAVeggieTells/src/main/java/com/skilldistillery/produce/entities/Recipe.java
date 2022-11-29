@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Recipe {
 
@@ -43,15 +45,19 @@ public class Recipe {
 
 	private Boolean published;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "recipes")
 	private List<User> users;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "recipe")
 	private List<RecipeReaction> recipeReactions;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "recipe")
 	private List<Comment> comments;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="recipe")
 	private List<RecipeIngredient> recipeIngredients;
 
