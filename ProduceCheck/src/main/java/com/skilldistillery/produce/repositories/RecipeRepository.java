@@ -10,5 +10,7 @@ import com.skilldistillery.produce.entities.Recipe;
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 	
 	Set<Recipe> findByUsers_Username(String username);
+	
+	Recipe queryById(int recipeId);
 
 }

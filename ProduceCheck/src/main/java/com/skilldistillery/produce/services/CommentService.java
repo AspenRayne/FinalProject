@@ -8,5 +8,7 @@ public interface CommentService {
 	
 	List<Comment> findByRecipeId(int recipeId);
 	
+	Comment create(int recipeId, String username, Comment comment);
+	
 
 }
