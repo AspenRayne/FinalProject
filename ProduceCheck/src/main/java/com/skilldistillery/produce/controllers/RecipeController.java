@@ -84,4 +84,19 @@ public class RecipeController {
 		}
 	}
 
+	@PostMapping("recipes/{id}")
+	public Recipe save(@PathVariable int id, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		Recipe recipe = null;
+		try {
+			recipe = recipeService.saveRecipe(principal.getName(), id);
+			if (recipe == null) {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			res.setStatus(400);
+		}
+		return recipe;
+
+	}
+
 }

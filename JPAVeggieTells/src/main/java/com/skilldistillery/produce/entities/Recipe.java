@@ -152,7 +152,7 @@ public class Recipe {
 	}
 
 	public void addUser(User user) {
-		if (users != null) {
+		if (users == null) {
 			users = new ArrayList<>();
 		}
 		if (!users.contains(user)) {

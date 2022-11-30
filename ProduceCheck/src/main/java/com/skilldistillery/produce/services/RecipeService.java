@@ -16,5 +16,7 @@ public interface RecipeService {
 	public Recipe update(String username, int recipeId, Recipe recipe);
 
 	public boolean destroy(String username, int recipeId);
+	
+	public Recipe saveRecipe(String username, int recipeId);
 
 }
