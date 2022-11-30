@@ -8,7 +8,7 @@ public interface UserService {
 
 	List<User> listAllUsers();
 	User show(int id);
-	User create(User user);
+//	User create(User user);
 	User update(int id, User user);
 	boolean delete(int id);
 }

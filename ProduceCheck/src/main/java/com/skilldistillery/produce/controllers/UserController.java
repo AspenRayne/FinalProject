@@ -1,5 +1,6 @@
 package com.skilldistillery.produce.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,22 +34,25 @@ public class UserController {
 	
 	@GetMapping("users/{id}")
 	public User find(@PathVariable int id, HttpServletResponse res) {
-		
-		return userServ.show(id);
+		User user = userServ.show(id);
+		if(user == null) {
+			res.setStatus(404);
+		}
+		return user;
 	}
 	
-	@PostMapping("users")
-	public User create(@RequestBody User user, HttpServletResponse res) {
-		User newUser = null;
-		try {
-			newUser = userServ.create(user);
-			res.setStatus(201);
-		}catch(Exception e) {
-			e.printStackTrace();
-			res.setStatus(400);
-		}
-		return newUser;
-	}
+//	@PostMapping("users")
+//	public User create(@RequestBody User user, HttpServletResponse res, Principal principal) {
+//		User newUser = null;
+//		try {
+//			newUser = userServ.create(principal.getName(), user);
+//			res.setStatus(201);
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//			res.setStatus(400);
+//		}
+//		return newUser;
+//	}
 	
 	@PutMapping("users/{id}")
 	public User update(@PathVariable int id, @RequestBody User user, HttpServletResponse res) {
