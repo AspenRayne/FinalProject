@@ -14,6 +14,7 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UserComponent } from './components/user/user.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RecipeComponent,
     LogoutComponent,
     NotFoundComponent,
-    UserComponent
+    UserComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
