@@ -3,6 +3,7 @@ package com.skilldistillery.produce.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.skilldistillery.produce.entities.User;
@@ -13,6 +14,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private PasswordEncoder encoder;
 	
 	
 	@Override
@@ -25,21 +29,23 @@ public class UserServiceImpl implements UserService {
 		return userRepo.searchById(id);
 	}
 
-	@Override
-	public User create(User user) {
-		return userRepo.saveAndFlush(user);
-	}
+//	@Override
+//	public User create(User user) {
+//		return userRepo.saveAndFlush(user);
+//	}
 
 	@Override
 	public User update(int id, User user) {
 		User dbUser = show(id);
+		String encodedPW = encoder.encode(dbUser.getPassword());
 		if(dbUser != null) {
 			dbUser.setUsername(user.getUsername());
-			dbUser.setPassword(user.getPassword());
+			if(user.getPassword()== null) {
+				dbUser.setPassword(dbUser.getPassword());
+			}else {
+				dbUser.setPassword(encodedPW);
+			}
 			dbUser.setEnabled(user.getEnabled());
-			dbUser.setRole(user.getRole());
-			dbUser.setCreatedDate(user.getCreatedDate());
-			dbUser.setLoginTimestamp(user.getLoginTimestamp());
 			dbUser.setAboutMe(user.getAboutMe());
 			dbUser.setProfilePic(user.getProfilePic());
 			dbUser.setFirstName(user.getFirstName());
