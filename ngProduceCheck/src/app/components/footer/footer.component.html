@@ -40,7 +40,9 @@
         <!-- Grid column -->
         <div class="col-md-2">
           <h6 class="text-uppercase font-weight-bold">
-            <a href="#!" class="text-white" [routerLink]="['/login']">Login</a>
+            <a *ngIf="!checkLogin()" href="#!" class="text-white" [routerLink]="['/login']">Login</a>
+            <a *ngIf="checkLogin()" href="#!" class="text-white" [routerLink]="['/logout']">Logout</a>
+
           </h6>
         </div>
         <!-- Grid column -->
@@ -64,26 +66,7 @@
     <!-- Section: Text -->
 
     <!-- Section: Social -->
-    <section class="text-center mb-5">
-      <a href="" class="text-white me-4">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="" class="text-white me-4">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="" class="text-white me-4">
-        <i class="fab fa-google"></i>
-      </a>
-      <a href="" class="text-white me-4">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="" class="text-white me-4">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="" class="text-white me-4">
-        <i class="fab fa-github"></i>
-      </a>
-    </section>
+
   </div>
 
 
