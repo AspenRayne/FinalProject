@@ -77,4 +77,18 @@ public class RecipeServiceImpl implements RecipeService {
 		return null;
 	}
 
+	@Override
+	public boolean unsaveRecipe(String username, int recipeId) {
+		Recipe recipe = recipeRepo.queryById(recipeId);
+		User user = userRepo.findByUsername(username);
+		if (recipe != null) {
+			user.removeRecipe(recipe);
+			recipe.removeUser(user);
+			userRepo.save(user);
+			recipeRepo.save(recipe);
+			return true;
+		}
+		return false;
+	}
+
 }

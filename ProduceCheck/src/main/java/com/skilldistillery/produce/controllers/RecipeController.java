@@ -98,5 +98,19 @@ public class RecipeController {
 		return recipe;
 
 	}
+	
+	@DeleteMapping("favoritedRecipes/{id}")
+	public void unsaveRecipe(@PathVariable int id, HttpServletResponse res, Principal principal) {
+		try {
+			if (recipeService.unsaveRecipe(principal.getName(), id)) {
+				res.setStatus(204);
+			} else {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			res.setStatus(400);
+		}
+		
+	}
 
 }
