@@ -9,6 +9,6 @@ public interface UserService {
 	List<User> listAllUsers();
 	User show(int id);
 //	User create(User user);
-	User update(int id, User user);
-	boolean delete(int id);
+	User update(String username, int id, User user);
+	boolean delete(String username, int id);
 }
