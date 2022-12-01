@@ -15,14 +15,14 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private datePipe: DatePipe,
+    // private datePipe: DatePipe,
     private auth: AuthService
   ) { }
 
   getHttpOptions(){
     let options = {
       headers: {
-        Authorization: 'Basic' + this.auth.getCredentials(),
+        Authorization: 'Basic ' + this.auth.getCredentials(),
         'X-Requested-With': 'XMLHttpRequest',
       },
     };

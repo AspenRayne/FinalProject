@@ -1,1 +1,46 @@
-<p>user works!</p>
+
+<div class="topProfPage" id="topProfPage">
+  <h1> Greetings {{user!.firstName}}! Welcome to your Profile Page</h1>
+  <div class="card">
+    <div class="card-body">
+      {{user!.aboutMe}}
+
+    </div>
+    <div class="card-body">
+      <ul>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+
+
+<form class="row g-3">
+  <div class="col-md-6">
+    <label for="firstname" class="form-label">First Name</label>
+    <input type="text" class="form-control" id="firstname" name="firstname" >
+  </div>
+  <div class="col-md-6">
+    <label for="lastname" class="form-label">Last Name</label>
+    <input type="text" class="form-control" id="lastname" name="lastname" >
+  </div>
+  <div class="col-12">
+    <label for="aboutMe" class="form-label">About Me</label>
+    <input type="text" class="form-control" id="aboutMe" placeholder="Tell us a bit about yourself!">
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">Something that Drops Down</label>
+    <select id="inputState" class="form-select">
+      <option selected>Choose...</option>
+      <option>...</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-warning" (click)="deleteUser(user!.id)">Deactive Account </button>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary" (click)="updateUser(user!)">Update</button>
+  </div>
+</form>
