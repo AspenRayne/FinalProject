@@ -282,6 +282,42 @@ CREATE TABLE IF NOT EXISTS `client_access` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `category`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `category` ;
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(100) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ingredient_has_category`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ingredient_has_category` ;
+
+CREATE TABLE IF NOT EXISTS `ingredient_has_category` (
+  `ingredient_id` INT NOT NULL,
+  `category_id` INT NOT NULL,
+  PRIMARY KEY (`ingredient_id`, `category_id`),
+  INDEX `fk_ingredient_has_category_category1_idx` (`category_id` ASC),
+  INDEX `fk_ingredient_has_category_ingredient1_idx` (`ingredient_id` ASC),
+  CONSTRAINT `fk_ingredient_has_category_ingredient1`
+    FOREIGN KEY (`ingredient_id`)
+    REFERENCES `ingredient` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ingredient_has_category_category1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `category` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 SET SQL_MODE = '';
 DROP USER IF EXISTS produceuser@localhost;
 SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
