@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,11 +11,14 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserComponent implements OnInit {
 
+
+  user: User | null = null;
   selected: User | null = null;
   users: User[] = [];
   editUser: User | null = null;
 
   constructor(
+    private auth: AuthService,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router
@@ -42,6 +46,17 @@ export class UserComponent implements OnInit {
     }
 
     this.reload();
+    this.auth.getLoggedInUser().subscribe(
+      {
+        next: (data) => {
+          this.user = data
+        },
+        error: (err) => {
+          console.error("UserComponent.reload(): error loading Users");
+          console.error(err);
+
+        }
+      });
 
 
   }

@@ -8,6 +8,7 @@ import { RecipeComponent } from './components/recipe/recipe.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AboutComponent } from './components/about/about.component';
 import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
+import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'recipe', component: RecipeComponent},
   { path: 'create', component: CreateRecipeComponent },
+  { path: 'profile', component: UserComponent },
   { path: '**', component: NotFoundComponent},
 
 
