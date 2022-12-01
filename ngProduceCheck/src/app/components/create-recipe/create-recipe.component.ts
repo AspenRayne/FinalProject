@@ -6,11 +6,11 @@ import { RecipeIngredient } from 'src/app/models/recipe-ingredient';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
-  selector: 'app-recipe',
-  templateUrl: './recipe.component.html',
-  styleUrls: ['./recipe.component.css']
+  selector: 'app-create-recipe',
+  templateUrl: './create-recipe.component.html',
+  styleUrls: ['./create-recipe.component.css']
 })
-export class RecipeComponent implements OnInit {
+export class CreateRecipeComponent implements OnInit {
 
   constructor(
     private recipeService: RecipeService,
@@ -26,7 +26,6 @@ export class RecipeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("Trying reload() function in recipe")
     this.reload();
   }
   reload(){
@@ -51,9 +50,22 @@ export class RecipeComponent implements OnInit {
     this.recipeIngredient.push(tri);
   }
   addRecipe(recipe: Recipe) {
-    this.recipeService.create
+    this.recipeService.create(recipe).subscribe(
+      {
+        next: (data) => {
+          this.selectedRecipe = data;
+          // this.editUser = null;
+          this.reload();
+        },
+        error: (err) => {
+          console.error('RecipeComponent.updateRecipe(): Error updating recipe');
+          console.error(err);
+
+        }
+    });
     recipe = new Recipe();
   }
+
   displayRecipe(recipe: Recipe){
     this.selectedRecipe = recipe;
   }

@@ -7,6 +7,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RecipeComponent } from './components/recipe/recipe.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AboutComponent } from './components/about/about.component';
+import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'recipe', component: RecipeComponent},
+  { path: 'create', component: CreateRecipeComponent },
   { path: '**', component: NotFoundComponent},
 
 
