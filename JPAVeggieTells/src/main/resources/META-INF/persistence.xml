@@ -9,6 +9,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<!-- entities -->
+		<class>com.skilldistillery.produce.entities.ClientAccess</class>
 		<class>com.skilldistillery.produce.entities.Comment</class>
 		<class>com.skilldistillery.produce.entities.Company</class>
 		<class>com.skilldistillery.produce.entities.Ingredient</class>
