@@ -26,11 +26,17 @@ public class ClientAccess {
 
 	}
 
-	public void setExpiration() {
-		Instant instance = Instant.now().plusSeconds(1790);
+	public ClientAccess(String key, Long timeout) {
+		super();
+		this.key = key;
+		this.expiration = setExpiration(timeout - 10);
+	}
+
+	public Timestamp setExpiration(Long timeout) {
+		Instant instance = Instant.now().plusSeconds(timeout);
 		Timestamp timestamp = Timestamp.from(instance);
 
-		this.expiration = timestamp;
+		return timestamp;
 	}
 
 	public int getId() {
