@@ -9,3 +9,4 @@ default
 .gradle
 *.war
 *.bak
+**/KrogerApiSecret.java
