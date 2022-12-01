@@ -5,12 +5,12 @@ export class RecipeIngredient {
   id: number;
   recipe: Recipe;
   ingredient: Ingredient;
-  measurement: string;
+  measurement: string | null;
 
   constructor(
     id: number = 0,
-    recipe: Recipe = new Recipe(),
-    ingredient: Ingredient = new Ingredient(),
+    recipe: Recipe = new Recipe,
+    ingredient: Ingredient = new Ingredient,
     measurement: string = ''
   ) {
     this.id = id;

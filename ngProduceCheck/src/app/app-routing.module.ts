@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'recipe', component: RecipeComponent},
-  { path: 'createRecipe', component: CreateRecipeComponent },
+  { path: 'create', component: CreateRecipeComponent },
   { path: '**', component: NotFoundComponent},
 
 
