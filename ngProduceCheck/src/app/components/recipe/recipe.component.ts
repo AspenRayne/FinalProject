@@ -23,7 +23,7 @@ export class RecipeComponent implements OnInit {
   newRecipe: Recipe = new Recipe;
   ingredient: Ingredient = new Ingredient;
   recipeIngredient: RecipeIngredient[] = [];
-
+  selected: boolean = false;
 
   ngOnInit(): void {
     console.log("Trying reload() function in recipe")

@@ -1,2 +1,20 @@
-<p>recipe works!</p>
-<p *ngFor="let r of recipes">{{r.name}}</p>
+<div name="maintable" *ngIf="!selectedRecipe">
+<table class="table" >
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Recipe Name</th>
+      <th scope="col">User</th>
+      <th scope="col">Prep Time</th>
+      <th scope="col">Cook Time</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let r of recipes">
+    <tr >
+      <td>{{r.name}}</td>
+      <td>{{r.user.username}}</td>
+      <td>{{r.prepTime}}</td>
+      <td>{{r.cookTime}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
