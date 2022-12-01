@@ -14,7 +14,7 @@ export class Recipe {
   prepTime: number;
   cookTime: number;
   published: boolean;
-  users: User[];
+  user: User;
   comments: Comment[];
   recipeReactions: RecipeReaction[];
   recipeIngredients: RecipeIngredient[];
@@ -29,7 +29,7 @@ export class Recipe {
     prepTime: number = 0,
     cookTime: number = 0,
     published: boolean = false,
-    users: User[] = [],
+    user: User = new User,
     comments: Comment[] = [],
     recipeReactions: RecipeReaction[] = [],
     recipeIngredients: RecipeIngredient[] = []
@@ -43,7 +43,7 @@ export class Recipe {
     this.prepTime = prepTime;
     this.cookTime = cookTime;
     this.published = published;
-    this.users = users;
+    this.user = user;
     this.comments = comments;
     this.recipeReactions = recipeReactions;
     this.recipeIngredients = recipeIngredients;

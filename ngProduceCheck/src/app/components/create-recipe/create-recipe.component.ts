@@ -63,7 +63,7 @@ export class CreateRecipeComponent implements OnInit {
 
         }
     });
-    recipe = new Recipe();
+    this.newRecipe = new Recipe();
   }
 
   displayRecipe(recipe: Recipe){
@@ -85,14 +85,14 @@ export class CreateRecipeComponent implements OnInit {
         }
     });
   }
-  deleteUser(id: number){
+  deleteRecipe(id: number){
     this.recipeService.destroy(id).subscribe(
       {
         next: () => {
           this.reload();
         },
         error: (err) => {
-          console.error('UserComponent.deleteUser(): Error de-activating User');
+          console.error('RecipeComponent.deleteRecipe(): Error de-activating Recipe');
           console.error(err);
 
 
