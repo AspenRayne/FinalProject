@@ -43,6 +43,13 @@ export class RecipeComponent implements OnInit {
     })
   }
 
+  chooseRecipe(recipe: Recipe) {
+    this.selectedRecipe = recipe;
+    this.selected = true;
+    console.log(recipe);
+    console.log(' BEEN CHOSEN');
+  }
+
   pushIngredient(ingredient: Ingredient) {
     let tri = new RecipeIngredient();
     tri.ingredient = ingredient;
