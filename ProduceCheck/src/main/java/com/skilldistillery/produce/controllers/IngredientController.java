@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.produce.entities.Ingredient;
-import com.skilldistillery.produce.services.PluImport;
+import com.skilldistillery.produce.services.PluImportService;
 import com.skilldistillery.produce.services.api.KrogerAPIService;
 
 @RestController
@@ -21,7 +21,7 @@ public class IngredientController {
 	private KrogerAPIService krogerService;
 	
 	@Autowired
-	private PluImport csvService;
+	private PluImportService csvService;
 	
 	@GetMapping("ingredientsLookup")
 	public List<Ingredient> searchIngredients(){

@@ -179,5 +179,6 @@ public class Ingredient {
 		builder.append("]");
 		return builder.toString();
 	}
+	
 
 }
