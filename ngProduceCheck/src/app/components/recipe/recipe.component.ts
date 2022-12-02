@@ -67,19 +67,14 @@ export class RecipeComponent implements OnInit {
       }
     })
   }
+
+  // Recipe Work
   chooseRecipe(recipe: Recipe) {
     this.selectedRecipe = recipe;
     this.selected = true;
     this.getComments(this.selectedRecipe.id);
   }
 
-  pushIngredient(ingredient: Ingredient) {
-    let tri = new RecipeIngredient();
-    tri.ingredient = ingredient;
-    tri.recipe = this.newRecipe;
-    tri.measurement = '';
-    this.recipeIngredient.push(tri);
-  }
   addRecipe(recipe: Recipe) {
     this.recipeService.create
     recipe = new Recipe();
@@ -134,5 +129,13 @@ export class RecipeComponent implements OnInit {
 
         }
     });
+  }
+
+  pushIngredient(ingredient: Ingredient) {
+    let tri = new RecipeIngredient();
+    tri.ingredient = ingredient;
+    tri.recipe = this.newRecipe;
+    tri.measurement = '';
+    this.recipeIngredient.push(tri);
   }
 }
