@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'recipe', component: RecipeComponent},
   { path: 'create', component: CreateRecipeComponent },
   { path: 'profile', component: UserComponent },
+  { path: 'admin', component: UserComponent },
   { path: '**', component: NotFoundComponent},
 
 

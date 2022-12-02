@@ -25,27 +25,27 @@ export class UserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    let routeId = this.route.snapshot.paramMap.get('id');
-    console.log(routeId);
-    if(routeId && !this.selected){
-      let userId = Number.parseInt(routeId);
-      if(isNaN(userId)){
-        this.router.navigateByUrl('invalidId');
-      }else{
-        this.userService.show(userId).subscribe({
-          next: (user) => {
-            this.selected = user;
-          },
-          error: (fail) => {
-            console.error('UserService.ngOnInit: User not found')
-            this.router.navigateByUrl('userNotFound');
+    // let routeId = this.route.snapshot.paramMap.get('id');
+    // console.log(routeId);
+    // if(routeId && !this.selected){
+    //   let userId = Number.parseInt(routeId);
+    //   if(isNaN(userId)){
+    //     this.router.navigateByUrl('invalidId');
+    //   }else{
+    //     this.userService.show(userId).subscribe({
+    //       next: (user) => {
+    //         this.selected = user;
+    //       },
+    //       error: (fail) => {
+    //         console.error('UserService.ngOnInit: User not found')
+    //         this.router.navigateByUrl('userNotFound');
 
-          }
-        })
-      }
-    }
+    //       }
+    //     })
+    //   }
+    // }
 
-    this.reload();
+    // this.reload();
     this.auth.getLoggedInUser().subscribe(
       {
         next: (data) => {
@@ -60,32 +60,48 @@ export class UserComponent implements OnInit {
 
 
   }
-
-  reload(){
-    this.userService.index().subscribe(
+  setEditUser() {
+    this.auth.getLoggedInUser().subscribe(
       {
-      next: (data) => {
-        this.users = data
-      },
-      error: (err) => {
-        console.error("UserComponent.reload(): error loading Users");
-        console.error(err);
+        next: (data) => {
+          this.editUser = data
+        },
+        error: (err) => {
+          console.error("UserComponent.reload(): error loading Users");
+          console.error(err);
 
-      }
-    })
+        }
+      })
+
   }
+
+  // reload(){
+  //   this.userService.index().subscribe(
+  //     {
+  //     next: (data) => {
+  //       this.user = data
+  //     },
+  //     error: (err) => {
+  //       console.error("UserComponent.reload(): error loading Users");
+  //       console.error(err);
+
+  //     }
+  //   })
+  // }
 
   displayUser(user: User){
     this.selected = user;
   }
 
-  updateUser(updatedUser: User){
-    this.userService.update(updatedUser).subscribe(
+  updateUser(editUser: User){
+    console.log(editUser);
+
+    this.userService.update(editUser).subscribe(
       {
         next: (data) => {
-          this.selected = data;
+          this.user= data;
           this.editUser = null;
-          this.reload();
+          // this.reload();
         },
         error: (err) => {
           console.error('UserComponent.updateUser(): Error updating User');
@@ -98,7 +114,7 @@ export class UserComponent implements OnInit {
     this.userService.destroy(id).subscribe(
       {
         next: () => {
-          this.reload();
+          // this.reload();
         },
         error: (err) => {
           console.error('UserComponent.deleteUser(): Error de-activating User');
