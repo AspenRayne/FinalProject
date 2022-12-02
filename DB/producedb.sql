@@ -277,7 +277,7 @@ DROP TABLE IF EXISTS `client_access` ;
 
 CREATE TABLE IF NOT EXISTS `client_access` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `key` VARCHAR(2000) NULL,
+  `apikey` VARCHAR(2000) NULL,
   `expiration` TIMESTAMP NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
