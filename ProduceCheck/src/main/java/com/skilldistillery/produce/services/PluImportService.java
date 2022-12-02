@@ -38,23 +38,24 @@ public class PluImportService {
 			String variety;
 			List<String> pluCodeList = new ArrayList<>();
 			List<Ingredient> ingredients = new ArrayList<>();
-			int count = 0;
-			while ((line = bufIn.readLine()) != null && count < 2) {
-				if (count == 0) {
-					count+=1;
-					continue;
-				}
-				count+=1;
-				String[] row = line.split(splitBy);
-				pluCode = "000000000" + row[0].replace("\"", "");
-				category = row[1].replace("\"", "");
-				commodity = row[2].replace("\"", "");
-				variety = row[3].replace("\"", "");
-				if (variety.contentEquals("Retailer Assigned")) {
-					continue;
-				}
-				pluCodeList.add(pluCode);
-			}
+			pluCodeList.add("0000000003283");
+//			int count = 0;
+//			while ((line = bufIn.readLine()) != null) {
+//				if (count == 0) {
+//					count+=1;
+//					continue;
+//				}
+//				count+=1;
+//				String[] row = line.split(splitBy);
+//				pluCode = "000000000" + row[0].replace("\"", "");
+//				category = row[1].replace("\"", "");
+//				commodity = row[2].replace("\"", "");
+//				variety = row[3].replace("\"", "");
+//				if (variety.contentEquals("Retailer Assigned")) {
+//					continue;
+//				}
+//				pluCodeList.add(pluCode);
+//			}
 			for(String upc : pluCodeList) {
 				Ingredient ingredient = apiService.ingredientDescription(upc);
 				if (ingredient == null) {

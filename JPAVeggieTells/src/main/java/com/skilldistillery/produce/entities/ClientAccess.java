@@ -18,7 +18,7 @@ public class ClientAccess {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private String key;
+	private String apikey;
 
 	private Timestamp expiration;
 
@@ -28,7 +28,7 @@ public class ClientAccess {
 
 	public ClientAccess(String key, Long timeout) {
 		super();
-		this.key = key;
+		this.apikey = key;
 		this.expiration = setExpiration(timeout - 10);
 	}
 
@@ -47,12 +47,12 @@ public class ClientAccess {
 		this.id = id;
 	}
 
-	public String getKey() {
-		return key;
+	public String getApikey() {
+		return apikey;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
 	}
 
 	public Timestamp getExpiration() {
@@ -78,7 +78,7 @@ public class ClientAccess {
 
 	@Override
 	public String toString() {
-		return "ClientAccess [id=" + id + ", key=" + key + ", expiration=" + expiration + "]";
+		return "ClientAccess [id=" + id + ", key=" + apikey + ", expiration=" + expiration + "]";
 	}
 
 }

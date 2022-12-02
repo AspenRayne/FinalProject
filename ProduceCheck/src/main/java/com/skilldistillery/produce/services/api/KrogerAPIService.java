@@ -6,11 +6,13 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
 
+import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.fluent.Content;
 import org.apache.hc.client5.http.fluent.Form;
 import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.client5.http.fluent.Response;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -63,7 +65,7 @@ public class KrogerAPIService {
 		
 		// If expired, request new code and store
 		if(clientAccess != null && now.before(clientAccess.getExpiration())) {
-			return clientAccess.getKey();
+			return clientAccess.getApikey();
 		} else {
 			try {
 				return this.requestClientAuthorization();
@@ -113,7 +115,6 @@ public class KrogerAPIService {
 			Ingredient ingredient = this.requestProductDetails(upc);
 			return ingredient;
 		} catch (IOException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -123,33 +124,19 @@ public class KrogerAPIService {
 	 * 
 	 * 
 	 * */
-	private Ingredient requestProductDetails(String upc) throws IOException {
+	private Ingredient requestProductDetails(String upc) throws IOException, HttpResponseException {
 		String url = baseUrl + "products/" + upc;
-		
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httpPost = new HttpPost(url);
-		httpPost.setEntity(new UrlEncodedFormEntity(null));
-		httpPost.setHeader(HttpHeaders.AUTHORIZATION, this.accessKey);
-		httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
-		
-		CloseableHttpResponse response = httpclient.execute(httpPost);
-		int status = response.getCode();
-		Object result = JSONValue.parse(response.getEntity().toString());
-		System.out.println(result);
-		System.out.println(status);
-//		Response response = Request.post(url)
-//				.bodyForm(Form.form().build())
-//				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-//				.addHeader(HttpHeaders.AUTHORIZATION, this.accessKey)
-//				.execute();
-//		HttpResponse httpResponse = response.returnResponse();
-//		int status = httpResponse.getCode();
-//		byte[] bytes = EntityUtils.toString(httpResponse.getEntity)
-//		Object result = JSONValue.parse(httpResponse.get);
+
+		Content response = Request.get(url)
+				.bodyForm(Form.form().build())
+				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+				.addHeader(HttpHeaders.AUTHORIZATION, this.accessKey)
+				.execute().returnContent();
+		Object result = JSONValue.parse(response.asString());
 		
 		
-//		Ingredient ingredient = this.unpackKrogerProduct(result);
-		return null;
+		Ingredient ingredient = this.unpackKrogerProduct(result);
+		return ingredient;
 	}
 	
 	private String requestClientAuthorization() throws IOException {
@@ -191,13 +178,13 @@ public class KrogerAPIService {
 			JSONObject data = (JSONObject) obj.get("data");
 			ingredient.setUpc(data.get("upc").toString());
 			ingredient.setName(data.get("description").toString());
-			JSONArray categoryArray = (JSONArray) obj.get("categories");
+			JSONArray categoryArray = (JSONArray) data.get("categories");
 			for(Object categoryName : categoryArray ) {
 				String name = categoryName.toString();
 				ingredient.addCategory(new Category(name));
 			}
 			
-			JSONArray perspectiveArray = (JSONArray) obj.get("images");
+			JSONArray perspectiveArray = (JSONArray) data.get("images");
 			for(Object perspectiveObj : perspectiveArray) {
 				JSONObject perspectiveJSONObj = (JSONObject) perspectiveObj;
 				if(perspectiveJSONObj.get("perspective").toString().equals("front")) {
