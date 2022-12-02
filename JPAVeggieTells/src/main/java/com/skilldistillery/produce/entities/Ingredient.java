@@ -9,29 +9,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Ingredient {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String name;
-	
+
 	private String description;
-	
+
 	private String upc;
-	
-	@Column(name="img_url")
+
+	@Column(name = "img_url")
 	private String imgUrl;
-	
+
 	private String plu;
 
-	@OneToMany(mappedBy="ingredient")
-	List <RecipeIngredient> recipeIngredients;
-	
+	@OneToMany(mappedBy = "ingredient")
+	List<RecipeIngredient> recipeIngredients;
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "ingredients")
+	private List<Category> categories;
+
 	public Ingredient() {
 		super();
 	}
@@ -83,7 +90,6 @@ public class Ingredient {
 	public void setPlu(String plu) {
 		this.plu = plu;
 	}
-	
 
 	public List<RecipeIngredient> getRecipeIngredients() {
 		return recipeIngredients;
@@ -92,7 +98,7 @@ public class Ingredient {
 	public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
 		this.recipeIngredients = recipeIngredients;
 	}
-	
+
 	public void addRecipeIngredient(RecipeIngredient ingredient) {
 		if (recipeIngredients == null) {
 			recipeIngredients = new ArrayList<>();
@@ -112,8 +118,31 @@ public class Ingredient {
 			ingredient.setIngredient(null);
 		}
 	}
-	
-	
+
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+
+	public void addCategory(Category category) {
+		if (categories == null) {
+			categories = new ArrayList<>();
+		}
+		if (!categories.contains(category)) {
+			categories.add(category);
+			category.addIngredient(this);
+		}
+	}
+
+	public void removeCategory(Category category) {
+		if (categories != null && categories.contains(category)) {
+			categories.remove(category);
+			category.removeIngredient(this);
+		}
+	}
 
 	@Override
 	public int hashCode() {
@@ -150,7 +179,5 @@ public class Ingredient {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
 
 }

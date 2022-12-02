@@ -6,6 +6,7 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.List;
 
 import org.apache.hc.client5.http.fluent.Content;
 import org.apache.hc.client5.http.fluent.Form;
@@ -45,14 +46,7 @@ public class KrogerAPIService {
 		return encodedSecrets;
 	}
 	
-	
-	/* 
-	 * Public Query Methods
-	 * 
-	 * 
-	 * */
-	
-	public String getClientAuthorization() {
+	private String getClientAuthorization() {
 		// Check ClientAuthorization Repository for most recent code
 		ClientAccess clientAccess = clientRepo.findFirstByOrderByExpirationDesc();
 		Instant instance = Instant.now();
@@ -71,6 +65,27 @@ public class KrogerAPIService {
 		
 		return null;
 		
+	}
+	
+	/* 
+	 * Public Query Methods
+	 * 
+	 * 
+	 * */
+	
+	
+	public List<Ingredient> ingredientsLookup(){
+		String accessKey = this.getClientAuthorization();
+		if (accessKey == null) {
+			return null;
+		}
+		
+		
+		return null;
+	}
+	
+	public Ingredient ingredientDescription(String upc, boolean storeOnFind) {
+		return null;
 	}
 	
 	/* 

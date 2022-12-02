@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.produce.entities.Ingredient;
+import com.skilldistillery.produce.services.PluImport;
 import com.skilldistillery.produce.services.api.KrogerAPIService;
 
 @RestController
@@ -19,11 +20,18 @@ public class IngredientController {
 	@Autowired
 	private KrogerAPIService krogerService;
 	
-	@GetMapping("krogerApi")
+	@Autowired
+	private PluImport csvService;
+	
+	@GetMapping("ingredientsLookup")
 	public List<Ingredient> searchIngredients(){
-		String accessKey = krogerService.getClientAuthorization();
+		return krogerService.ingredientsLookup();
 		
-		return null; 
+	}
+	
+	@GetMapping("seedDatabasePlu")
+	public void seedDatabasePlu(){
+		csvService.readCsv();
 	}
 
 }
