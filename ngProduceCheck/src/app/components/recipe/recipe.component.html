@@ -33,8 +33,7 @@ You must be logged in to utilize this feature.
 
 <div name="noSearchResult" *ngIf="nothingFound">
   <h1>No recipes found, sorry!</h1>
-
-  </div>
+</div>
 
     <div name="searchTable" *ngIf="searchClicked && !nothingFound">
     <table class="table">
@@ -59,7 +58,7 @@ You must be logged in to utilize this feature.
 </div>
 <div name="selectedtable" *ngIf="selected" style="height:fit-content">
   <img src="{{selectedRecipe?.imgUrl}}" alt="No image found">
-  <table>
+  <table id="recipe-table" class="table table-bordered">
     <tr><th>{{selectedRecipe!.name}} submitted by {{selectedRecipe!.user.username}}</th></tr>
     <tr><td>Preparation Time: {{selectedRecipe!.prepTime}} minutes</td></tr>
     <tr><td>Cook Time: {{selectedRecipe!.cookTime}} minutes</td></tr>
@@ -74,4 +73,14 @@ You must be logged in to utilize this feature.
     <tr><td>{{selectedRecipe!.recipeIngredients}}</td></tr>
   <button (click)="selected=false">Back</button><button>Like</button>
   </table>
+  Comments
+  <table>
+    <!-- <td>{{comments}}</td> -->
+    <td *ngFor="let comment of recipeComments">{{comment.comment}} was said by {{comment.user.username}}</td>
+  </table>
+</div>
+
+<div name="noComments" *ngIf="noCommentsYet">
+<h2>No comments for the recipe yet, be the first!</h2>
+<button>Add Comment</button>
 </div>

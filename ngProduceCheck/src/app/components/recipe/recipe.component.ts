@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Ingredient } from 'src/app/models/ingredient';
 import { Recipe } from 'src/app/models/recipe';
+import { Comment } from 'src/app/models/comment';
 import { RecipeIngredient } from 'src/app/models/recipe-ingredient';
 import { AuthService } from 'src/app/services/auth.service';
+import { CommentService } from 'src/app/services/comment.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -15,6 +17,7 @@ export class RecipeComponent implements OnInit {
 
   constructor(
     private recipeService: RecipeService,
+    private commentService: CommentService,
     private auth: AuthService,
     private route: ActivatedRoute,
     private router: Router
@@ -29,7 +32,8 @@ export class RecipeComponent implements OnInit {
   searchWord: string = '';
   searchClicked: boolean = false;
   nothingFound: boolean = false;
-
+  noCommentsYet: boolean = false;
+  recipeComments: Comment[] = [];
   ngOnInit(): void {
 
   }
@@ -66,6 +70,7 @@ export class RecipeComponent implements OnInit {
   chooseRecipe(recipe: Recipe) {
     this.selectedRecipe = recipe;
     this.selected = true;
+    this.getComments(this.selectedRecipe.id);
   }
 
   pushIngredient(ingredient: Ingredient) {
@@ -98,6 +103,24 @@ export class RecipeComponent implements OnInit {
         }
     });
   }
+
+  getComments(recipeId: number) {
+    if (this.selectedRecipe) {
+      this.commentService.show(this.selectedRecipe.id).subscribe({
+          next: (data) => {
+            this.recipeComments = data
+              if (this.recipeComments.length === 0) {
+                this.noCommentsYet = true;
+              }
+            },
+          error: (err) => {
+            console.error("CommentComponent.getComments(): error loading comments");
+            console.error(err);
+            this.noCommentsYet = true;
+          },
+    });
+  }
+}
   deleteUser(id: number){
     this.recipeService.destroy(id).subscribe(
       {
