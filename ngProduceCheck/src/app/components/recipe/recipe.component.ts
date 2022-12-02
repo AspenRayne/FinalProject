@@ -24,13 +24,26 @@ export class RecipeComponent implements OnInit {
   ingredient: Ingredient = new Ingredient;
   recipeIngredient: RecipeIngredient[] = [];
   selected: boolean = false;
-
+  searchWord: string = '';
   ngOnInit(): void {
-    console.log("Trying reload() function in recipe")
-    this.reload();
+    // console.log("Trying reload() function in recipe")
+    // this.reload();
   }
-  reload(){
-    this.recipeService.index().subscribe(
+  // reload(){
+  //   this.recipeService.index().subscribe(
+  //     {
+  //     next: (data) => {
+  //       this.recipes = data
+  //     },
+  //     error: (err) => {
+  //       console.error("RecipeComponent.reload(): error loading Recipes");
+  //       console.error(err);
+
+  //     }
+  //   })
+  // }
+  searchForRecipe(searchWord: string) {
+    this.recipeService.search(searchWord).subscribe(
       {
       next: (data) => {
         this.recipes = data
@@ -42,12 +55,9 @@ export class RecipeComponent implements OnInit {
       }
     })
   }
-
   chooseRecipe(recipe: Recipe) {
     this.selectedRecipe = recipe;
     this.selected = true;
-    console.log(recipe);
-    console.log(' BEEN CHOSEN');
   }
 
   pushIngredient(ingredient: Ingredient) {
@@ -71,7 +81,7 @@ export class RecipeComponent implements OnInit {
         next: (data) => {
           this.selectedRecipe = data;
           // this.editUser = null;
-          this.reload();
+          // this.reload();
         },
         error: (err) => {
           console.error('RecipeComponent.updateRecipe(): Error updating recipe');
@@ -84,7 +94,7 @@ export class RecipeComponent implements OnInit {
     this.recipeService.destroy(id).subscribe(
       {
         next: () => {
-          this.reload();
+          // this.reload();
         },
         error: (err) => {
           console.error('UserComponent.deleteUser(): Error de-activating User');

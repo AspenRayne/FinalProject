@@ -1,5 +1,34 @@
+
+
+
+
 <div name="maintable" *ngIf="!selected">
-<table class="table" >
+  <form>
+    <div class="container-fluid text-center">
+      <div class="card w-50">
+        <div class="card-body">
+          <h5 class="card-title">Recipe Search</h5>
+          <input
+            class="form-control"
+            type="text"
+            name="search"
+            placeholder="Search a Recipe By Key Word"
+            [(ngModel)]="searchWord"
+          />
+
+          <div class="text-center">
+            <button class="btn btn-primary" (click)="searchForRecipe(searchWord)">
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+
+  <table class="table" >
   <thead class="thead-dark">
     <tr>
       <th scope="col">Recipe Name</th>
@@ -18,8 +47,8 @@
   </tbody>
 </table>
 </div>
-<div name="selectedtable" *ngIf="selected">
-  <img src="selectedRecipe!.imgUrl" alt="No image found">
+<div name="selectedtable" *ngIf="selected" style="height:fit-content">
+  <img src="{{selectedRecipe?.imgUrl}}" alt="No image found">
   <table>
     <tr><th>{{selectedRecipe!.name}} submitted by {{selectedRecipe!.user.username}}</th></tr>
     <tr><td>Preparation Time: {{selectedRecipe!.prepTime}} minutes</td></tr>
