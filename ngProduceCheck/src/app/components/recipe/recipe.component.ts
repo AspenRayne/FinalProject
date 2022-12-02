@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Ingredient } from 'src/app/models/ingredient';
 import { Recipe } from 'src/app/models/recipe';
 import { RecipeIngredient } from 'src/app/models/recipe-ingredient';
+import { AuthService } from 'src/app/services/auth.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class RecipeComponent implements OnInit {
 
   constructor(
     private recipeService: RecipeService,
+    private auth: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -25,33 +27,39 @@ export class RecipeComponent implements OnInit {
   recipeIngredient: RecipeIngredient[] = [];
   selected: boolean = false;
   searchWord: string = '';
-  ngOnInit(): void {
-    // console.log("Trying reload() function in recipe")
-    // this.reload();
-  }
-  // reload(){
-  //   this.recipeService.index().subscribe(
-  //     {
-  //     next: (data) => {
-  //       this.recipes = data
-  //     },
-  //     error: (err) => {
-  //       console.error("RecipeComponent.reload(): error loading Recipes");
-  //       console.error(err);
+  searchClicked: boolean = false;
+  nothingFound: boolean = false;
 
-  //     }
-  //   })
-  // }
+  ngOnInit(): void {
+
+  }
+
+  searchBeenClicked() {
+    this.nothingFound = false;
+    if (this.searchWord === '') {
+      this.searchClicked = false;
+      console.log('nothing entered');
+      return;
+    }
+    this.searchClicked = true;
+  }
+  checkLogin(): boolean {
+    return this.auth.checkLogin();
+  }
   searchForRecipe(searchWord: string) {
+    this.searchBeenClicked();
     this.recipeService.search(searchWord).subscribe(
       {
       next: (data) => {
         this.recipes = data
-      },
+        if (this.recipes.length === 0) {
+          this.nothingFound = true;
+        }
+        },
       error: (err) => {
         console.error("RecipeComponent.reload(): error loading Recipes");
         console.error(err);
-
+        this.nothingFound = true;
       }
     })
   }

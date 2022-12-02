@@ -1,8 +1,12 @@
+<div name="notLoggedIn" *ngIf="!checkLogin()">
+You must be logged in to utilize this feature.
+<br>
+<button [routerLink]="['/login']">Log in</button> <button [routerLink]="['/register']">Register</button>
+</div>
 
 
 
-
-<div name="maintable" *ngIf="!selected">
+<div name="maintable" *ngIf="!selected && checkLogin()">
   <form>
     <div class="container-fluid text-center">
       <div class="card w-50">
@@ -27,25 +31,31 @@
   </form>
 
 
+<div name="noSearchResult" *ngIf="nothingFound">
+  <h1>No recipes found, sorry!</h1>
 
-  <table class="table" >
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Recipe Name</th>
-      <th scope="col">User</th>
-      <th scope="col">Prep Time</th>
-      <th scope="col">Cook Time</th>
-    </tr>
-  </thead>
-  <tbody *ngFor="let r of recipes" >
-    <tr (click)="chooseRecipe(r)">
-      <td>{{r.name}}</td>
-      <td>{{r.user.username}}</td>
-      <td>{{r.prepTime}}</td>
-      <td>{{r.cookTime}}</td>
-    </tr>
-  </tbody>
-</table>
+  </div>
+
+    <div name="searchTable" *ngIf="searchClicked && !nothingFound">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+              <th scope="col">Recipe Name</th>
+              <th scope="col">User</th>
+              <th scope="col">Prep Time</th>
+              <th scope="col">Cook Time</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let r of recipes" >
+            <tr (click)="chooseRecipe(r)">
+              <td>{{r.name}}</td>
+              <td>{{r.user.username}}</td>
+              <td>{{r.prepTime}}</td>
+              <td>{{r.cookTime}}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
 </div>
 <div name="selectedtable" *ngIf="selected" style="height:fit-content">
   <img src="{{selectedRecipe?.imgUrl}}" alt="No image found">
