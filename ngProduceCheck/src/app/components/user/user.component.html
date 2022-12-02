@@ -1,19 +1,36 @@
 
 <div *ngIf="!editUser"class="topProfPage" id="topProfPage">
-  <h1> Greetings {{user!.firstName}}! Welcome to your Profile Page</h1>
-  <div class="card">
+  <h1> Greetings {{user?.firstName}}! Welcome to your Profile Page</h1>
+  <!-- <div class="card">
     <div class="card-body">
-      {{user!.aboutMe}}
+      {{user?.aboutMe}}
 
     </div>
-  </div>
-   <div class="card">
+  </div> -->
+   <!-- <div class="card">
      <div class="card-body">
        <ul>
-         <li>List of Recipes?????</li>
+         <li *ngFor="let r of user?.recipes">
+          {{r.name}}</li>
         </ul>
      </div>
-  </div>
+  </div> -->
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>About Me</th>
+        <th>My Recipe Book</th>
+        <th>My Published Recipes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ user?.aboutMe}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>
 
@@ -50,4 +67,10 @@
   <button *ngIf="!editUser"class="btn btn-success" (click)="setEditUser()">Edit Profile</button>
 </div>
 
+<!-- <div *ngIf="isAdmin()">
+  <ul  *ngFor="let u of users">
+    <li>{{u.username}}
+    </li>
+  </ul>
 
+</div> -->

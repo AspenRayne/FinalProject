@@ -16,6 +16,8 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCurrentUser();
+
+
   }
 
   checkLogin(): boolean {

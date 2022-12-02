@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserComponent implements OnInit {
 
-
+  public loggedInUser: User | null = null;
   user: User | null = null;
   selected: User | null = null;
   users: User[] = [];
@@ -75,19 +75,19 @@ export class UserComponent implements OnInit {
 
   }
 
-  // reload(){
-  //   this.userService.index().subscribe(
-  //     {
-  //     next: (data) => {
-  //       this.user = data
-  //     },
-  //     error: (err) => {
-  //       console.error("UserComponent.reload(): error loading Users");
-  //       console.error(err);
+  showAll(){
+    this.userService.index().subscribe(
+      {
+      next: (data) => {
+        this.users = data
+      },
+      error: (err) => {
+        console.error("UserComponent.reload(): error loading Users");
+        console.error(err);
 
-  //     }
-  //   })
-  // }
+      }
+    })
+  }
 
   displayUser(user: User){
     this.selected = user;
@@ -124,4 +124,36 @@ export class UserComponent implements OnInit {
         }
     });
   }
+  checkLogin(): boolean {
+    return this.auth.checkLogin();
+  }
+
+  getCurrentUser(): void {
+     this.auth.getLoggedInUser().subscribe(
+      {
+        next: (data) => {
+          this.loggedInUser= data;
+          console.log(this.loggedInUser);
+
+          // this.editUser = null;
+          // this.reload();
+        },
+        error: (err) => {
+          console.error('NavigationComponent.getCurrentUser(): Error retrieving Logged In User');
+          console.error(err);
+
+        }
+      });
+
+
+    }
+    isAdmin(): boolean {
+        if(this.checkLogin()){
+          if(this.loggedInUser?.role === 'ADMIN'){
+            return true;
+          }
+        }
+        return false;
+    }
+
 }
