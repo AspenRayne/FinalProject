@@ -65,6 +65,7 @@ export class CreateRecipeComponent implements OnInit {
           this.selectedRecipe = data;
           // this.editUser = null;
           this.reload();
+          this.displayRecipe(recipe);
         },
         error: (err) => {
           console.error('RecipeComponent.updateRecipe(): Error updating recipe');
