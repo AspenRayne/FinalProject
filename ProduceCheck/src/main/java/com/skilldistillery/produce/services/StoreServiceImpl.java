@@ -80,6 +80,13 @@ public class StoreServiceImpl implements StoreService {
 		}
 		return false;
 	}
+
+	@Override
+	public List<Store> getUserStores(String username) {
+		User user = userRepo.findByUsername(username);
+		
+		return user.getStores();
+	}
 	
 	
 

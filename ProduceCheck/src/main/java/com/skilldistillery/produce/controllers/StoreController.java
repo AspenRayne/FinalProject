@@ -67,5 +67,15 @@ public class StoreController {
 		
 	}
 	
+	@GetMapping("favoriteStores")
+	public List<Store> getUserStores(HttpServletResponse res, HttpServletRequest req,
+			Principal principal){
+		List<Store> stores = storeService.getUserStores(principal.getName());
+		if (stores == null) {
+			res.setStatus(204);
+		}
+		return stores;
+	}
+	
 
 }
