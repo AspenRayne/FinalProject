@@ -56,6 +56,17 @@ export class RecipeService {
       })
     );
   }
+  showRecipeByUser(): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(this.baseUrl, this.getHttpOptions()).pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () =>
+            new Error('RecipeService.index():error retrieving recipes: ' + err)
+        );
+      })
+    );
+  }
   update(recipe: Recipe) {
     return this.http.put<Recipe>(this.baseUrl + '/' + recipe.id, recipe, this.getHttpOptions()).pipe(
       catchError((err: any) => {

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Recipe } from 'src/app/models/recipe';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { RecipeService } from 'src/app/services/recipe.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -12,12 +14,16 @@ import { UserService } from 'src/app/services/user.service';
 export class UserComponent implements OnInit {
 
   public loggedInUser: User | null = null;
+
+  recipe: Recipe | null = null;
+  recipes: Recipe[] = [];
   user: User | null = null;
   selected: User | null = null;
   users: User[] = [];
   editUser: User | null = null;
 
   constructor(
+    private recipeService: RecipeService,
     private auth: AuthService,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -46,6 +52,8 @@ export class UserComponent implements OnInit {
     // }
 
     // this.reload();
+    console.log('inside init');
+
     this.auth.getLoggedInUser().subscribe(
       {
         next: (data) => {
@@ -57,7 +65,15 @@ export class UserComponent implements OnInit {
 
         }
       });
+      console.log("before cond");
 
+      // if(this.user){
+        console.log("inside cond");
+
+        this.getUserRecipes();
+        console.log(this.recipes);
+
+      // }
 
   }
   setEditUser() {
@@ -156,4 +172,19 @@ export class UserComponent implements OnInit {
         return false;
     }
 
+    getUserRecipes(){
+      this.recipeService.showRecipeByUser().subscribe(
+        {
+          next: (data) => {
+            this.recipes = data;
+            // this.editUser = null;
+            // this.reload();
+          },
+          error: (err) => {
+            console.error('RecipeComponent.showRecipeByUser(): Error retrieving User recipes');
+            console.error(err);
+
+          }
+      })
+    }
 }

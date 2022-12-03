@@ -18,6 +18,7 @@ export class NavigationComponent implements OnInit {
     this.getCurrentUser();
 
 
+
   }
 
   checkLogin(): boolean {
