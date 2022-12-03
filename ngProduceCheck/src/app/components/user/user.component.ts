@@ -3,8 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Recipe } from 'src/app/models/recipe';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { CommentService } from 'src/app/services/comment.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { UserService } from 'src/app/services/user.service';
+import { Comment } from 'src/app/models/comment';
 
 @Component({
   selector: 'app-user',
@@ -15,14 +17,20 @@ export class UserComponent implements OnInit {
 
   public loggedInUser: User | null = null;
 
+  selectedRecipe: Recipe | null = null;
   recipe: Recipe | null = null;
   recipes: Recipe[] = [];
   user: User | null = null;
   selected: User | null = null;
+  selectedRec: boolean = false;
   users: User[] = [];
   editUser: User | null = null;
+  recipeComments: Comment[] = [];
+  noCommentsYet: boolean = false;
+
 
   constructor(
+    private commentService: CommentService,
     private recipeService: RecipeService,
     private auth: AuthService,
     private userService: UserService,
@@ -186,5 +194,27 @@ export class UserComponent implements OnInit {
 
           }
       })
+    }
+    chooseRecipe(recipe: Recipe) {
+      this.selectedRecipe = recipe;
+      this.selectedRec = true;
+      this.getComments(this.selectedRecipe.id);
+    }
+    getComments(recipeId: number) {
+      if (this.selectedRecipe) {
+        this.commentService.show(this.selectedRecipe.id).subscribe({
+            next: (data) => {
+              this.recipeComments = data
+                if (this.recipeComments.length === 0) {
+                  this.noCommentsYet = true;
+                }
+              },
+            error: (err) => {
+              console.error("CommentComponent.getComments(): error loading comments");
+              console.error(err);
+              this.noCommentsYet = true;
+              },
+        });
+      }
     }
 }
