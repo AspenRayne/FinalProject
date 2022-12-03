@@ -28,7 +28,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let r of recipes | publishedRecipe"><td>{{r.name}}</td></tr>
+      <tr *ngFor="let r of recipes | publishedRecipe">
+        <td>{{r.name}}</td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -46,6 +48,10 @@
   <div class="col-md-6">
     <label for="lastName" class="form-label">Last Name</label>
     <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="editUser.lastName">
+  </div>
+  <div class="col-md-6">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editUser.email">
   </div>
   <div class="col-12">
     <label for="aboutMe" class="form-label">About Me</label>
