@@ -7,13 +7,13 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema producedb
 -- -----------------------------------------------------
--- This is the database for PLU price tracking	
+-- This is the database for PLU price tracking
 DROP SCHEMA IF EXISTS `producedb` ;
 
 -- -----------------------------------------------------
 -- Schema producedb
 --
--- This is the database for PLU price tracking	
+-- This is the database for PLU price tracking
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `producedb` DEFAULT CHARACTER SET utf8 ;
 USE `producedb` ;
@@ -1098,7 +1098,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `producedb`;
-INSERT INTO `reaction` (`id`, `emoji`) VALUES (1, '🤔');
+INSERT INTO `reaction` (`id`, `emoji`) VALUES (1, 'X');
 
 COMMIT;
 
@@ -1760,4 +1760,3 @@ INSERT INTO `ingredient_has_category` (`ingredient_id`, `category_id`) VALUES (5
 INSERT INTO `ingredient_has_category` (`ingredient_id`, `category_id`) VALUES (600, 8);
 
 COMMIT;
-
