@@ -16,17 +16,23 @@ import { Comment } from 'src/app/models/comment';
 export class UserComponent implements OnInit {
 
   public loggedInUser: User | null = null;
+  currentUser: User = new User();
 
   selectedRecipe: Recipe | null = null;
   recipe: Recipe | null = null;
   recipes: Recipe[] = [];
   user: User | null = null;
-  selected: User | null = null;
+  selectedUser: User | null = null;
   selectedRec: boolean = false;
   users: User[] = [];
   editUser: User | null = null;
   recipeComments: Comment[] = [];
   noCommentsYet: boolean = false;
+  newComment: Comment = new Comment;
+  isCommentUserIdSame: boolean = false;
+  selected: boolean = false;
+  nothingFound: boolean = false;
+  searchClicked: boolean = false;
 
 
   constructor(
@@ -82,6 +88,7 @@ export class UserComponent implements OnInit {
         console.log(this.recipes);
 
       // }
+      this.showAll();
 
   }
   setEditUser() {
@@ -104,6 +111,7 @@ export class UserComponent implements OnInit {
       {
       next: (data) => {
         this.users = data
+        this.users.shift();
       },
       error: (err) => {
         console.error("UserComponent.reload(): error loading Users");
@@ -114,7 +122,7 @@ export class UserComponent implements OnInit {
   }
 
   displayUser(user: User){
-    this.selected = user;
+    this.selectedUser = user;
   }
 
   updateUser(editUser: User){
@@ -217,4 +225,51 @@ export class UserComponent implements OnInit {
         });
       }
     }
+    checkUser(commentId: number, userId: number) {
+      if (commentId === userId) {
+        this.isCommentUserIdSame = true; return true;
+      }
+      return false;
+  }
+  removeComment(commentId: number) {
+    if (this.selectedRecipe) {
+    this.commentService.destroy(this.selectedRecipe.id, commentId).subscribe(
+      {
+        next: () => {
+          window.location.reload();
+          console.log('comment deleted')
+          },
+        error: (err) => {
+          console.error("CommentComponent.removeComment(): error removing comment from Recipes");
+          console.error(err);
+          this.nothingFound = true;
+        }
+      });
+    }
+  }
+  addNewComment(comment: Comment) {
+    if (this.selectedRecipe) {
+      this.commentService.create(this.selectedRecipe.id, comment).subscribe(
+        {
+          next: (data) => {
+            console.log("added new comment");
+          },
+          error: (err) => {
+            console.error('RecipeComponent.updateRecipe(): Error updating recipe');
+            console.error(err);
+
+          }
+      });
+    }
+    window.location.reload();
+    this.selected = true;
+    this.getComments(this.selectedRecipe!.id);
+    this.searchClicked = true;
+    this.nothingFound = false;
+
+  }
+  test(): void {
+    console.log("test");
+
+  }
 }
