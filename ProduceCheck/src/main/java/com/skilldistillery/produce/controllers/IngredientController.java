@@ -29,16 +29,16 @@ public class IngredientController {
 			@PathVariable String lookup, 
 			@PathVariable int pagination, 
 			HttpServletResponse res){
-		
+		// pagination starts at 1
 		System.out.println(lookup);
 		
 		return krogerService.ingredientsLookup(lookup, pagination, true);
 		
 	}
 	
-	@GetMapping("seedDatabasePlu")
-	public void seedDatabasePlu(){
-		csvService.readCsv();
-	}
+//	@GetMapping("seedDatabasePlu")
+//	public void seedDatabasePlu(){
+//		csvService.readCsv();
+//	}
 
 }

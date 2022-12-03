@@ -61,6 +61,7 @@ public class PluImportService {
 //					System.out.println("Ingredient not created: " + upc);
 					continue;
 				}
+				ingredient.setPlu(upc.substring(9,13));
 				System.out.println("CREATED : " + upc);
 				ingredients.add(ingredient);
 			}

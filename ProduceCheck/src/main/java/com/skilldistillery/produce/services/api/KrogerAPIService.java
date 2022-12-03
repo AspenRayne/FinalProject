@@ -102,16 +102,15 @@ public class KrogerAPIService {
 		}
 		response.put("recommendedIngredients", recommendedIngredients);
 
-		JSONArray apiIngredients = new JSONArray();
 		try {
-			List<Ingredient> apiResults = this.requestProducts(lookup, pagination);
-			apiIngredients.add(apiResults);
+			JSONObject apiResults = this.requestProducts(lookup, pagination);
+			response.put("apiData", apiResults.get("data"));
+			response.put("pagination", apiResults.get("pagination"));
 		} catch (HttpResponseException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		response.put("apiIngredients", apiIngredients);
 
 		return response;
 	}
@@ -141,8 +140,10 @@ public class KrogerAPIService {
 	 * 
 	 */
 
-	private List<Ingredient> requestProducts(String lookup, int pagination) 
+	@SuppressWarnings("unchecked")
+	private JSONObject requestProducts(String lookup, int pagination) 
 			throws IOException, HttpResponseException {
+		JSONObject dataResponse = new JSONObject();
 		
 		String url = baseUrl + "products?filter.limit=50&filter.term=" 
 				+ lookup.replace(" ", "%20")
@@ -153,6 +154,10 @@ public class KrogerAPIService {
 		JSONObject result = (JSONObject) JSONValue.parse(response.asString());
 		JSONArray resultList = (JSONArray) result.get("data");
 		
+		// Pagination Details
+		JSONObject meta = (JSONObject) result.get("meta");
+		dataResponse.put("pagination", (JSONObject) meta.get("pagination"));
+		
 		List<Ingredient> products = new ArrayList<>();
 		for (Object data : resultList) {
 			Ingredient product = this.unpackKrogerProduct((JSONObject) data);
@@ -161,7 +166,10 @@ public class KrogerAPIService {
 			}
 			products.add(product);
 		}
-		return products;
+		// Data
+		dataResponse.put("data", products);
+		
+		return dataResponse;
 	}
 
 	private Ingredient requestProductDetails(String upc) throws IOException, HttpResponseException {
