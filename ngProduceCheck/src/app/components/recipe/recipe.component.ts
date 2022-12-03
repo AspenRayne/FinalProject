@@ -140,6 +140,23 @@ export class RecipeComponent implements OnInit {
     }
   }
 
+  removeComment(commentId: number) {
+    if (this.selectedRecipe) {
+    this.commentService.destroy(this.selectedRecipe.id, commentId).subscribe(
+      {
+        next: () => {
+          window.location.reload();
+          console.log('comment deleted')
+          },
+        error: (err) => {
+          console.error("CommentComponent.removeComment(): error removing comment from Recipes");
+          console.error(err);
+          this.nothingFound = true;
+        }
+      });
+    }
+  }
+
 
   checkUser(commentId: number, userId: number) {
       if (commentId === userId) {
