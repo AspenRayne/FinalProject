@@ -16,6 +16,7 @@ import { UserComponent } from './components/user/user.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AboutComponent } from './components/about/about.component';
 import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
+import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CreateRecipeComponent } from './components/create-recipe/create-recipe.
     NotFoundComponent,
     UserComponent,
     AboutComponent,
-    CreateRecipeComponent
+    CreateRecipeComponent,
+    PublishedRecipePipe
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,7 @@ import { CreateRecipeComponent } from './components/create-recipe/create-recipe.
     FormsModule,
     NgbModule
   ],
-  providers: [],
+  providers: [PublishedRecipePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

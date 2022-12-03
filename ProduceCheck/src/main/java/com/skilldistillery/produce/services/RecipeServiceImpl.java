@@ -27,7 +27,7 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public Set<Recipe> usersRecipes(String username) {
-		return recipeRepo.findByUsers_Username(username);
+		return recipeRepo.findByUser_Username(username);
 	}
 
 	@Override
