@@ -27,7 +27,7 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public Set<Recipe> usersRecipes(String username) {
-		return recipeRepo.findByUsers_Username(username);
+		return recipeRepo.findByUser_Username(username);
 	}
 
 	@Override
@@ -90,5 +90,14 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 		return false;
 	}
+
+	@Override
+	public List<Recipe> searchRecipe(String keyword) {
+		String searchString = '%' + keyword + '%';
+		List<Recipe> recipes = recipeRepo.findByNameLike(searchString);
+		return recipes;
+	}
+	
+	
 
 }

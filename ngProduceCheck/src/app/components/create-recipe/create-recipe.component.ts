@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Ingredient } from 'src/app/models/ingredient';
 import { Recipe } from 'src/app/models/recipe';
 import { RecipeIngredient } from 'src/app/models/recipe-ingredient';
+import { AuthService } from 'src/app/services/auth.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -13,6 +14,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 export class CreateRecipeComponent implements OnInit {
 
   constructor(
+    private auth: AuthService,
     private recipeService: RecipeService,
     private route: ActivatedRoute,
     private router: Router
@@ -26,7 +28,14 @@ export class CreateRecipeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if (this.checkLogin())
+    {
     this.reload();
+    }
+  }
+
+  checkLogin(): boolean {
+    return this.auth.checkLogin();
   }
   reload(){
     this.recipeService.index().subscribe(
@@ -63,7 +72,7 @@ export class CreateRecipeComponent implements OnInit {
 
         }
     });
-    recipe = new Recipe();
+    this.newRecipe = new Recipe();
   }
 
   displayRecipe(recipe: Recipe){
@@ -85,14 +94,14 @@ export class CreateRecipeComponent implements OnInit {
         }
     });
   }
-  deleteUser(id: number){
+  deleteRecipe(id: number){
     this.recipeService.destroy(id).subscribe(
       {
         next: () => {
           this.reload();
         },
         error: (err) => {
-          console.error('UserComponent.deleteUser(): Error de-activating User');
+          console.error('RecipeComponent.deleteRecipe(): Error de-activating Recipe');
           console.error(err);
 
 

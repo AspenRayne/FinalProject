@@ -41,6 +41,12 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/recipe']">Recipe Look Up</a>
         </li>
+        <li *ngIf="checkLogin()">
+          <a class="nav-link" [routerLink]="['/profile']">View Profile</a>
+        </li>
+        <li *ngIf="isAdmin()">
+          <a class="nav-link" [routerLink]="['/admin']">Admin View</a>
+        </li>
 
       </ul>
       <div *ngIf="checkLogin()">

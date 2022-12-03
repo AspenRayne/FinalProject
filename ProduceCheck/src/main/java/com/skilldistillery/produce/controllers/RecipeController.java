@@ -112,5 +112,10 @@ public class RecipeController {
 		}
 		
 	}
+	@GetMapping("recipes/search/{search}")
+	public List<Recipe> recipeSearch(@PathVariable String search) {
+		return recipeService.searchRecipe(search);
+	}
+
 
 }

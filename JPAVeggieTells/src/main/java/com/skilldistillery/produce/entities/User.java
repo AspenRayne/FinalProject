@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class User {
@@ -33,6 +34,8 @@ public class User {
 	private Boolean enabled;
 
 	private String role;
+	
+	private String email;
 
 	@Column(name = "created_date")
 	@CreationTimestamp
@@ -117,6 +120,14 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public LocalDateTime getCreatedDate() {
@@ -320,9 +331,9 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled
-				+ ", role=" + role + ", createdDate=" + createdDate + ", loginTimestamp=" + loginTimestamp
-				+ ", aboutMe=" + aboutMe + ", profilePic=" + profilePic + ", firstName=" + firstName + ", lastName="
-				+ lastName + "]";
+				+ ", role=" + role + ", email=" + email + ", createdDate=" + createdDate + ", loginTimestamp="
+				+ loginTimestamp + ", aboutMe=" + aboutMe + ", profilePic=" + profilePic + ", firstName=" + firstName
+				+ ", lastName=" + lastName + "]";
 	}
 
 }

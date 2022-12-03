@@ -1,5 +1,10 @@
-<p>create-recipe works!</p>
+<div name="notLoggedIn" *ngIf="!checkLogin()">
+  You must be logged in to utilize this feature.
+  <br>
+  <button [routerLink]="['/login']">Log in</button> <button [routerLink]="['/register']">Register</button>
+  </div>
 
+<div name="mainCreateRecipe" *ngIf="checkLogin()">
 Name: <input type="text" name="recipeName" [(ngModel)]="newRecipe.name"><br>
 Description: <input type="text" name="description" [(ngModel)]="newRecipe.description"><br>
 Image Link: <input type="text" name="imgUrl" [(ngModel)]="newRecipe.imgUrl"><br>
@@ -27,3 +32,4 @@ Ingredient: <input type="text" name="ingredient" [(ngModel)]="ingredient.name">
   <option value="2">Two</option>
   <option value="3">Three</option>
 </select> -->
+</div>

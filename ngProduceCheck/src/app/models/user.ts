@@ -9,6 +9,7 @@ export class User {
   password: string;
   email: string;
   role: string;
+  enabled: boolean;
   createdDate: string;
   loginTimestamp: string;
   aboutMe: string;
@@ -26,6 +27,7 @@ export class User {
     password: string = '',
     email: string = '',
     role: string = '',
+    enabled: boolean = true,
     createdDate: string = '',
     loginTimestamp: string = '',
     aboutMe: string = '',
@@ -42,6 +44,7 @@ export class User {
     this.password = password;
     this.email = email;
     this.role = role;
+    this.enabled = enabled;
     this.createdDate = createdDate;
     this.loginTimestamp = loginTimestamp;
     this.aboutMe = aboutMe;

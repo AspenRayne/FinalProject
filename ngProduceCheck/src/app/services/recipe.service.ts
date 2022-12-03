@@ -11,7 +11,7 @@ export class RecipeService {
 
   private baseUrl = 'http://localhost:8088/api/recipes';
   private indexUrl = 'http://localhost:8088/api/allrecipes';
-
+  private searchUrl = 'http://localhost:8088/api/recipes/search'
 
   constructor(
     private http: HttpClient,
@@ -56,6 +56,17 @@ export class RecipeService {
       })
     );
   }
+  showRecipeByUser(): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(this.baseUrl, this.getHttpOptions()).pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () =>
+            new Error('RecipeService.index():error retrieving recipes: ' + err)
+        );
+      })
+    );
+  }
   update(recipe: Recipe) {
     return this.http.put<Recipe>(this.baseUrl + '/' + recipe.id, recipe, this.getHttpOptions()).pipe(
       catchError((err: any) => {
@@ -66,7 +77,17 @@ export class RecipeService {
       })
     );
   }
-
+  search(keyword: string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(this.searchUrl + '/' + keyword, this.getHttpOptions()).pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () =>
+            new Error('RecipeService.index():error retrieving recipes: ' + err)
+        );
+      })
+    );
+  }
   destroy(id: number) {
     return this.http.delete<void>(this.baseUrl + '/' + id, this.getHttpOptions()).pipe(
       catchError((err: any) => {

@@ -1,4 +1,4 @@
-<footer id="footer" class="text-center text-white" style="background-color: #6c6d70">
+<footer id="footer" class="fixed-bottom text-center text-white" style="background-color: #6c6d70">
   <!-- Grid container -->
   <div class="container">
     <!-- Section: Links -->
@@ -8,18 +8,9 @@
         <!-- Grid column -->
         <div class="col-md-2">
           <h6 class="text-uppercase font-weight-bold">
-            <a href="#!" class="text-white">About us</a>
+            <a href="#!" class="text-white" [routerLink]="['/about']">About us</a>
           </h6>
         </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-2">
-          <h6 class="text-uppercase font-weight-bold">
-            <a href="#!" class="text-white" [routerLink]="['/contact']">Contact</a>
-          </h6>
-        </div>
-        <!-- Grid column -->
 
         <!-- Grid column -->
         <div class="col-md-2">
@@ -32,7 +23,7 @@
         <!-- Grid column -->
         <div class="col-md-2">
           <h6 class="text-uppercase font-weight-bold">
-            <a href="#!" class="text-white" [routerLink]="['/recipes']">Recipes</a>
+            <a href="#!" class="text-white" [routerLink]="['/recipe']">Recipes</a>
           </h6>
         </div>
         <!-- Grid column -->

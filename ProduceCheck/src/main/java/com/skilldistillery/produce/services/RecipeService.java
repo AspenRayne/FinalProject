@@ -20,5 +20,7 @@ public interface RecipeService {
 	public Recipe saveRecipe(String username, int recipeId);
 	
 	public boolean unsaveRecipe(String username, int recipeId);
+	
+	public List<Recipe> searchRecipe(String keyword);
 
 }

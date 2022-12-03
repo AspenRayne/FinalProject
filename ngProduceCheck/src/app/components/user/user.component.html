@@ -1,1 +1,77 @@
-<p>user works!</p>
+
+<div *ngIf="!editUser"class="topProfPage" id="topProfPage">
+  <h1> Greetings {{user?.firstName}}! Welcome to your Profile Page</h1>
+  <div class="card">
+    <div class="card-body">
+      {{user?.aboutMe}}
+
+    </div>
+  </div>
+<div class="container">
+  <div class="row">
+  <table class="col table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>My Recipe Book</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr  *ngFor="let r of recipes">
+        <td>{{r.name}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="col table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>My Published Recipes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of recipes | publishedRecipe">
+        <td>{{r.name}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+</div>
+
+
+
+<form *ngIf="editUser" class="row g-3">
+  <div class="col-md-6">
+    <label for="firstName" class="form-label">First Name</label>
+    <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="editUser.firstName">
+  </div>
+  <div class="col-md-6">
+    <label for="lastName" class="form-label">Last Name</label>
+    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="editUser.lastName">
+  </div>
+  <div class="col-md-6">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editUser.email">
+  </div>
+  <div class="col-12">
+    <label for="aboutMe" class="form-label">About Me</label>
+    <input type="text" class="form-control" id="aboutMe" name="aboutMe" placeholder="Tell us a bit about yourself!" [(ngModel)]="editUser.aboutMe">
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">Something that Drops Down</label>
+    <select id="inputState" class="form-select">
+      <option selected>Choose...</option>
+      <option>...</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary" (click)="updateUser(editUser)">Update</button>
+  </div>
+</form>
+<div class="col-12">
+  <button class="btn btn-warning" (click)="deleteUser(user!.id)">Deactive Account </button>
+</div>
+<div class="col-12">
+  <button *ngIf="!editUser"class="btn btn-success" (click)="setEditUser()">Edit Profile</button>
+</div>
+
