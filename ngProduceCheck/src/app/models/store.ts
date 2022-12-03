@@ -10,6 +10,7 @@ export class Store {
   zipcode: string;
   users: User[];
   company: Company;
+  locationId: number;
 
   constructor(
     id: number = 0,
@@ -19,7 +20,8 @@ export class Store {
     state: string = '',
     zipcode: string = '',
     users: User[] = [],
-    company: Company = new Company()
+    company: Company = new Company,
+    locationId: number = 0
   ) {
     this.id = id;
     this.street1 = street1;
@@ -29,5 +31,6 @@ export class Store {
     this.zipcode = zipcode;
     this.users = users;
     this.company = company;
+    this.locationId = locationId;
   }
 }
