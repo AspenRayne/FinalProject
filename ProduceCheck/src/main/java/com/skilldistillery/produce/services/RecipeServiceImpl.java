@@ -1,12 +1,15 @@
 package com.skilldistillery.produce.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skilldistillery.produce.entities.Ingredient;
 import com.skilldistillery.produce.entities.Recipe;
+import com.skilldistillery.produce.entities.RecipeIngredient;
 import com.skilldistillery.produce.entities.User;
 import com.skilldistillery.produce.repositories.RecipeRepository;
 import com.skilldistillery.produce.repositories.UserRepository;
@@ -19,6 +22,9 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Autowired
 	private UserRepository userRepo;
+
+	@Autowired
+	private IngredientService ingredientService;
 
 	@Override
 	public List<Recipe> index() {
@@ -50,6 +56,7 @@ public class RecipeServiceImpl implements RecipeService {
 		managed.setPrepTime(recipe.getPrepTime());
 		managed.setCookTime(recipe.getCookTime());
 		managed.setPublished(recipe.getPublished());
+
 		return recipeRepo.save(managed);
 
 	}
@@ -97,7 +104,32 @@ public class RecipeServiceImpl implements RecipeService {
 		List<Recipe> recipes = recipeRepo.findByNameLike(searchString);
 		return recipes;
 	}
-	
-	
+
+	@Override
+	public Recipe addIngredient(String username, int recipeId, Ingredient ingredient) {
+		List<Ingredient> ingredients = new ArrayList<>();
+		ingredients.add(ingredient);
+		ingredients = ingredientService.bulkCreate(ingredients);
+		Ingredient storedIngredient = ingredients.get(0);
+		if (storedIngredient == null) {
+			return null;
+		}
+		System.out.println(username);
+		System.out.println(recipeId);
+		Recipe recipe = recipeRepo.findByUser_UsernameAndId(username, recipeId);
+		if (recipe == null) {
+			return null;
+		}
+		
+		RecipeIngredient recipeIngredient = new RecipeIngredient();
+
+		recipeIngredient.setRecipe(recipe);
+		recipeIngredient.setIngredient(storedIngredient);
+
+		recipe.addRecipeIngredient(recipeIngredient);
+		recipe = recipeRepo.saveAndFlush(recipe); 
+		return recipe;
+
+	}
 
 }

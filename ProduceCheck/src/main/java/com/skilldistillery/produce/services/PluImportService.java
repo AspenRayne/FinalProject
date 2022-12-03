@@ -65,7 +65,7 @@ public class PluImportService {
 				System.out.println("CREATED : " + upc);
 				ingredients.add(ingredient);
 			}
-			ingredientService.categoryUnificationProcessor(ingredients);
+			ingredientService.bulkCreate(ingredients);
 
 
 		} catch (IOException e) {

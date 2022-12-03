@@ -32,10 +32,10 @@ public class Ingredient {
 
 	private String plu;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "ingredient")
 	List<RecipeIngredient> recipeIngredients;
 
-	@JsonIgnore
 	@ManyToMany(mappedBy = "ingredients")
 	private List<Category> categories;
 
