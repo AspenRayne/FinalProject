@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Store {
 
@@ -26,12 +28,16 @@ public class Store {
 	@Column(name="zipcode")
 	private String zipCode;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "stores")
 	private List<User> users;
 	
 	@ManyToOne
 	@JoinColumn(name="company_id")
 	private Company company;
+	
+	@Column(name="location_id")
+	private Integer locationId;
 	
 	public Store() { }
 
@@ -92,7 +98,7 @@ public class Store {
 	}
 	
 	public void addUser(User user) {
-		if (users != null) {
+		if (users == null) {
 			users = new ArrayList<>();
 		}
 		if (!users.contains(user)) {
@@ -116,6 +122,14 @@ public class Store {
 		this.company = company;
 	}
 	
+	public Integer getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -136,7 +150,7 @@ public class Store {
 	@Override
 	public String toString() {
 		return "Store [id=" + id + ", street1=" + street1 + ", street2=" + street2 + ", city=" + city + ", state="
-				+ state + ", zipCode=" + zipCode + "]";
+				+ state + ", zipCode=" + zipCode + ", locationId=" + locationId + "]";
 	}
 	
 	
