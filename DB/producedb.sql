@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS `ingredient` ;
 
 CREATE TABLE IF NOT EXISTS `ingredient` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(200) NOT NULL,
   `description` TEXT(0) NULL,
   `upc` VARCHAR(45) NULL,
   `img_url` VARCHAR(2000) NULL,
