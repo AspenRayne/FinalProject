@@ -7,6 +7,7 @@ import { RecipeIngredient } from 'src/app/models/recipe-ingredient';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { RecipeService } from 'src/app/services/recipe.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-recipe',
@@ -23,19 +24,41 @@ export class RecipeComponent implements OnInit {
     private router: Router
   ) { }
 
+  currentUser: User = new User();
+
   recipes: Recipe[] = [];
   selectedRecipe: Recipe | null = null;
   newRecipe: Recipe = new Recipe;
+
   ingredient: Ingredient = new Ingredient;
   recipeIngredient: RecipeIngredient[] = [];
+
   selected: boolean = false;
   searchWord: string = '';
   searchClicked: boolean = false;
   nothingFound: boolean = false;
   noCommentsYet: boolean = false;
+
+  newComment: Comment = new Comment;
   recipeComments: Comment[] = [];
+
   ngOnInit(): void {
 
+    this.getCurrentUser();
+    console.log(this.currentUser?.username);
+  }
+
+  getCurrentUser() {
+    this.auth.getLoggedInUser().subscribe({
+      next: (data) => {
+        this.currentUser = data;
+      },
+      error: (err) => {
+        console.error("getCurrentUser() error retriving logged in User");
+        console.error(err);
+      }
+
+    })
   }
 
   searchBeenClicked() {
@@ -65,7 +88,7 @@ export class RecipeComponent implements OnInit {
         console.error(err);
         this.nothingFound = true;
       }
-    })
+    });
   }
 
   // Recipe Work
@@ -75,29 +98,31 @@ export class RecipeComponent implements OnInit {
     this.getComments(this.selectedRecipe.id);
   }
 
+<<<<<<< HEAD
   addRecipe(recipe: Recipe) {
     this.recipeService.create
     recipe = new Recipe();
   }
   displayRecipe(recipe: Recipe){
     this.selectedRecipe = recipe;
+=======
+  addNewComment(comment: Comment) {
+    if (this.selectedRecipe) {
+      this.commentService.create(this.selectedRecipe.id, comment).subscribe(
+        {
+          next: (data) => {
+            console.log("added new comment");
+          },
+          error: (err) => {
+            console.error('RecipeComponent.updateRecipe(): Error updating recipe');
+            console.error(err);
+
+          }
+      });
+    }
+>>>>>>> recipeWork
   }
 
-  updateRecipe(updateRecipe: Recipe){
-    this.recipeService.update(updateRecipe).subscribe(
-      {
-        next: (data) => {
-          this.selectedRecipe = data;
-          // this.editUser = null;
-          // this.reload();
-        },
-        error: (err) => {
-          console.error('RecipeComponent.updateRecipe(): Error updating recipe');
-          console.error(err);
-
-        }
-    });
-  }
 
   getComments(recipeId: number) {
     if (this.selectedRecipe) {
@@ -112,25 +137,20 @@ export class RecipeComponent implements OnInit {
             console.error("CommentComponent.getComments(): error loading comments");
             console.error(err);
             this.noCommentsYet = true;
-          },
-    });
-  }
-}
-  deleteUser(id: number){
-    this.recipeService.destroy(id).subscribe(
-      {
-        next: () => {
-          // this.reload();
-        },
-        error: (err) => {
-          console.error('UserComponent.deleteUser(): Error de-activating User');
-          console.error(err);
-
-
-        }
-    });
+            },
+      });
+    }
   }
 
+
+  checkUser(commentId: number, userId: number): boolean {
+    console.log('Comment.User.ID = ' + commentId);
+    console.log('USER.ID = ' + userId);
+      if (commentId === userId) return true;
+      return false;
+  }
+
+<<<<<<< HEAD
   pushIngredient(ingredient: Ingredient) {
     let tri = new RecipeIngredient();
     tri.ingredient = ingredient;
@@ -138,4 +158,6 @@ export class RecipeComponent implements OnInit {
     tri.measurement = '';
     this.recipeIngredient.push(tri);
   }
+=======
+>>>>>>> recipeWork
 }

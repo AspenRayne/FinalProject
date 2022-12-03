@@ -7,7 +7,7 @@ export class Comment {
   comment: string;
   user: User;
   recipe: Recipe;
-  replyComment: Comment;
+  replyComment: Comment | null | undefined;
   comments: Comment[];
 
   constructor(
@@ -16,7 +16,7 @@ export class Comment {
     comment: string = '',
     user: User = new User(),
     recipe: Recipe = new Recipe(),
-    replyComment: Comment = new Comment(),
+    replyComment: Comment | null = null,
     comments: Comment[] = []
   ) {
     this.id = id;
