@@ -267,7 +267,7 @@ public class User {
 	}
 	
 	public void addStore(Store store) {
-		if (stores != null) {
+		if (stores == null) {
 			stores = new ArrayList<>();
 		}
 		if (!stores.contains(store)) {

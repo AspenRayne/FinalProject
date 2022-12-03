@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Company {
 
@@ -23,6 +25,7 @@ public class Company {
 	@Column(name = "api_host_url")
 	private String apiHostUrl;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="company")
 	private List<Store> stores;
 

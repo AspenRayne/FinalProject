@@ -135,20 +135,24 @@ public class KrogerAPIService {
 			return null;
 		}
 	}
-	
-	public Store storeLookup(String zipcode) {
+
+	public List<Store> storeLookup(String zipcode) {
 		String accessKey;
 		if (this.accessKey == null) {
 			accessKey = this.getClientAuthorization();
 			if (accessKey == null) {
 				return null;
-
 			}
 			this.accessKey = accessKey;
 		}
-		
-//		Store store = this.requestLocations(zipcode);
-		return null;
+		List<Store> stores;
+		try {
+			stores = this.requestLocations(zipcode);
+			return stores;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/*
@@ -158,23 +162,21 @@ public class KrogerAPIService {
 	 */
 
 	@SuppressWarnings("unchecked")
-	private JSONObject requestProducts(String lookup, int pagination) 
-			throws IOException, HttpResponseException {
+	private JSONObject requestProducts(String lookup, int pagination) throws IOException, HttpResponseException {
 		JSONObject dataResponse = new JSONObject();
-		
-		String url = baseUrl + "products?filter.limit=50&filter.term=" 
-				+ lookup.replace(" ", "%20")
-				+ "&filter.start=" + pagination;
+
+		String url = baseUrl + "products?filter.limit=50&filter.term=" + lookup.replace(" ", "%20") + "&filter.start="
+				+ pagination;
 		Content response = Request.get(url).bodyForm(Form.form().build())
 				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
 				.addHeader(HttpHeaders.AUTHORIZATION, this.accessKey).execute().returnContent();
 		JSONObject result = (JSONObject) JSONValue.parse(response.asString());
 		JSONArray resultList = (JSONArray) result.get("data");
-		
+
 		// Pagination Details
 		JSONObject meta = (JSONObject) result.get("meta");
 		dataResponse.put("pagination", (JSONObject) meta.get("pagination"));
-		
+
 		List<Ingredient> products = new ArrayList<>();
 		for (Object data : resultList) {
 			Ingredient product = this.unpackKrogerProduct((JSONObject) data);
@@ -185,7 +187,7 @@ public class KrogerAPIService {
 		}
 		// Data
 		dataResponse.put("data", products);
-		
+
 		return dataResponse;
 	}
 
@@ -225,10 +227,9 @@ public class KrogerAPIService {
 		}
 
 	}
-	
-	private List<Store> requestLocations(String zipcode) throws IOException{
+
+	private List<Store> requestLocations(String zipcode) throws IOException {
 		String url = baseUrl + "locations?filter.zipCode.near=" + zipcode;
-		
 
 		Content response = Request.get(url).bodyForm(Form.form().build())
 				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
@@ -236,11 +237,14 @@ public class KrogerAPIService {
 		JSONObject result = (JSONObject) JSONValue.parse(response.asString());
 		JSONArray dataArray = (JSONArray) result.get("data");
 		List<Store> stores = new ArrayList<>();
-		for(Object data : dataArray) {
+		for (Object data : dataArray) {
 			Store store = this.unpackKrogerStore((JSONObject) data);
+			if (store != null) {
+				stores.add(store);
+			}
 		}
-		
-		return stores; 
+
+		return stores;
 	}
 
 	/*
@@ -286,22 +290,22 @@ public class KrogerAPIService {
 		}
 		return ingredient;
 	}
-	
+
 	private Store unpackKrogerStore(JSONObject storeData) {
 		Store store = new Store();
-		store.setLocationId((Integer)storeData.get("locationId"));
+		store.setLocationId(Integer.parseInt(storeData.get("locationId").toString()));
 		JSONObject address = (JSONObject) storeData.get("address");
 		store.setStreet1(address.get("addressLine1").toString());
 		store.setCity(address.get("city").toString());
 		store.setState(address.get("state").toString());
-		store.setZipCode(address.get("zipcode").toString());
-		
+		store.setZipCode(address.get("zipCode").toString());
+
 		Company company = new Company();
 		company.setName(storeData.get("chain").toString());
-		
-		
-		return null;
-		
+
+		store.setCompany(company);
+		return store;
+
 	}
 
 }
