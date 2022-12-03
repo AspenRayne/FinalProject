@@ -6,5 +6,6 @@ public interface StoreService {
 	
 	Store setFavoriteStore(String username, Store store);
 	Store createStore(Store store);
+	boolean unsaveStore(String username, int storeId);
 
 }

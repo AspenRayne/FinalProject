@@ -62,6 +62,24 @@ public class StoreServiceImpl implements StoreService {
 		
 		return storeRepo.saveAndFlush(store);
 	}
+
+	@Override
+	public boolean unsaveStore(String username, int storeId) {
+		Store store = storeRepo.queryById(storeId);
+		User user = userRepo.findByUsername(username);
+		try {
+			if (store != null) {
+				user.removeStore(store);
+				store.removeUser(user);
+				userRepo.save(user);
+				storeRepo.save(store);
+				return true;
+			}
+		} catch(Exception e) {
+			return false;
+		}
+		return false;
+	}
 	
 	
 

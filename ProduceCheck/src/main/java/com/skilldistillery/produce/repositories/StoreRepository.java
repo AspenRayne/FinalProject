@@ -7,4 +7,5 @@ import com.skilldistillery.produce.entities.Store;
 public interface StoreRepository extends JpaRepository<Store, Integer> {
 
 	Store findByLocationId(Integer locationId);
+	Store queryById(int storeId);
 }
