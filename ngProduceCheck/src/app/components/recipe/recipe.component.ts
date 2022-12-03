@@ -38,7 +38,7 @@ export class RecipeComponent implements OnInit {
   searchClicked: boolean = false;
   nothingFound: boolean = false;
   noCommentsYet: boolean = false;
-
+  isCommentUserIdSame: boolean = false;
   newComment: Comment = new Comment;
   recipeComments: Comment[] = [];
 
@@ -98,14 +98,7 @@ export class RecipeComponent implements OnInit {
     this.getComments(this.selectedRecipe.id);
   }
 
-<<<<<<< HEAD
-  addRecipe(recipe: Recipe) {
-    this.recipeService.create
-    recipe = new Recipe();
-  }
-  displayRecipe(recipe: Recipe){
-    this.selectedRecipe = recipe;
-=======
+
   addNewComment(comment: Comment) {
     if (this.selectedRecipe) {
       this.commentService.create(this.selectedRecipe.id, comment).subscribe(
@@ -120,7 +113,12 @@ export class RecipeComponent implements OnInit {
           }
       });
     }
->>>>>>> recipeWork
+    window.location.reload();
+    this.selected = true;
+    this.getComments(this.selectedRecipe!.id);
+    this.searchClicked = true;
+    this.nothingFound = false;
+
   }
 
 
@@ -143,21 +141,12 @@ export class RecipeComponent implements OnInit {
   }
 
 
-  checkUser(commentId: number, userId: number): boolean {
-    console.log('Comment.User.ID = ' + commentId);
-    console.log('USER.ID = ' + userId);
-      if (commentId === userId) return true;
+  checkUser(commentId: number, userId: number) {
+      if (commentId === userId) {
+        this.isCommentUserIdSame = true; return true;
+      }
       return false;
   }
 
-<<<<<<< HEAD
-  pushIngredient(ingredient: Ingredient) {
-    let tri = new RecipeIngredient();
-    tri.ingredient = ingredient;
-    tri.recipe = this.newRecipe;
-    tri.measurement = '';
-    this.recipeIngredient.push(tri);
-  }
-=======
->>>>>>> recipeWork
+
 }

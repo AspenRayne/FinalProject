@@ -78,7 +78,8 @@ You must be logged in to utilize this feature.
     <tr *ngFor="let comment of recipeComments">
       <td style="color: gray">{{comment.user.username}} @ {{comment.commentDate}}</td>
      <td>{{comment.comment}}</td>
-     <td><button  *ngIf()="checkUser(comment.user.id, currentUser.id)">Delete</button></td>
+     <td><button *ngIf="checkUser(comment.user.id, currentUser.id)" class="btn btn-danger">Delete</button>
+     </td>
     </tr>
   </table>
   <input type="text" [(ngModel)]="newComment.comment">
