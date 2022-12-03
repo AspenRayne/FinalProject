@@ -25,11 +25,14 @@ public class IngredientServiceImpl implements IngredientService {
 
 	@Override
 	public Ingredient create(Ingredient ingredient) {
+		ingredient = ingredientRepo.saveAndFlush(ingredient);
 		List<Category> categories = ingredient.getCategories();
-		for (Category category : categories) {
-			categoryRepo.saveAndFlush(category);
+		if (categories != null) {
+			for (Category category : categories) {
+				categoryRepo.save(category);
+			}
 		}
-		return ingredientRepo.saveAndFlush(ingredient);
+		return ingredient;
 	}
 
 	@Override
@@ -41,34 +44,25 @@ public class IngredientServiceImpl implements IngredientService {
 		 * ingredient list into a set check and pull from database existing categories
 		 * to preserve uniqueness
 		 */
-
-		Set<Category> categorySet = new HashSet<>();
-		Set<String> categoryNameSet = new HashSet<>();
-
-		for (Ingredient ingredient : ingredients) {
-			// Check if ingredient exists in db
-			Ingredient dbIngredient = ingredientRepo.findByUpc(ingredient.getUpc());
-			if (dbIngredient != null) {
-				continue;
-			}
-			List<Category> categories = ingredient.getCategories();
-			for (Category category : categories) {
-				// if category name is in the set
-				if (categoryNameSet.contains(category.getName())) {
-					continue;
-				}
-				categorySet.add(category);
-				categoryNameSet.add(category.getName());
-			}
-		}
+		List<Category> categoryList = categoryRepo.findAll();
 		Map<String, Category> categoryMap = new HashMap<>();
-		// Check database for categories
-		for (Category category : categorySet) {
-			Category dbCategory = categoryRepo.findByName(category.getName());
-			if (dbCategory == null) {
-				dbCategory = category;
+		for (Category category : categoryList) {
+			categoryMap.put(category.getName(), category);
+		}
+		
+		// Add new categories onto map
+		for (Ingredient ingredient : ingredients) {
+
+			List<Category> categories = ingredient.getCategories();
+			if (categories != null) {
+				for (Category category : categories) {
+					// if category name is in the set
+					if (categoryMap.get(category.getName()) != null) {
+						continue;
+					}
+					categoryMap.put(category.getName(), category);
+				}
 			}
-			categoryMap.put(dbCategory.getName(), dbCategory);
 		}
 
 		// add the database inclusive list of categories back onto the ingredients
@@ -76,16 +70,25 @@ public class IngredientServiceImpl implements IngredientService {
 		// prevent duplicate many to many
 
 		for (Ingredient ingredient : ingredients) {
+			// Check if ingredient exists in db
+			Ingredient dbIngredient = ingredientRepo.findByUpc(ingredient.getUpc());
+			if (dbIngredient != null) {
+				continue;
+			}
+			
 			List<Category> categories = ingredient.getCategories();
 			Set<String> categoryNames = new HashSet<>();
 			for (Category category : categories) {
 				categoryNames.add(category.getName());
 			}
+			
 			ingredient.setCategories(null);
 			for (String name : categoryNames) {
 				Category category = categoryMap.get(name);
-				ingredient.addCategory(category);
-				category.addIngredient(ingredient);
+				if (category != null) {
+					ingredient.addCategory(category);
+					category.addIngredient(ingredient);
+				}
 			}
 
 		}

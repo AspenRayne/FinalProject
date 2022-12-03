@@ -38,8 +38,10 @@ public class PluImportService {
 			String variety;
 			List<String> pluCodeList = new ArrayList<>();
 			List<Ingredient> ingredients = new ArrayList<>();
-			pluCodeList.add("0000000003283");
-//			int count = 0;
+			int count = 0;
+			pluCodeList.add("0000000003463");
+			pluCodeList.add("0000000003465");
+			pluCodeList.add("0000000003488");
 //			while ((line = bufIn.readLine()) != null) {
 //				if (count == 0) {
 //					count+=1;
@@ -59,9 +61,10 @@ public class PluImportService {
 			for(String upc : pluCodeList) {
 				Ingredient ingredient = apiService.ingredientDescription(upc);
 				if (ingredient == null) {
-					System.out.println("Ingredient not created: " + upc);
+//					System.out.println("Ingredient not created: " + upc);
 					continue;
 				}
+				System.out.println("CREATED : " + ingredient.toString());
 				ingredients.add(ingredient);
 			}
 			List<Ingredient> ingredientsDbUnified = ingredientService.categoryUnificationProcessor(ingredients);
