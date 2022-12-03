@@ -1,14 +1,15 @@
 package com.skilldistillery.produce.controllers;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.skilldistillery.produce.entities.Ingredient;
 import com.skilldistillery.produce.services.PluImportService;
 import com.skilldistillery.produce.services.api.KrogerAPIService;
 
@@ -23,9 +24,15 @@ public class IngredientController {
 	@Autowired
 	private PluImportService csvService;
 	
-	@GetMapping("ingredientsLookup")
-	public List<Ingredient> searchIngredients(){
-		return krogerService.ingredientsLookup();
+	@GetMapping("ingredientsLookup/{lookup}/{pagination}")
+	public JSONObject searchIngredients(
+			@PathVariable String lookup, 
+			@PathVariable int pagination, 
+			HttpServletResponse res){
+		
+		System.out.println(lookup);
+		
+		return krogerService.ingredientsLookup(lookup, pagination, true);
 		
 	}
 	
