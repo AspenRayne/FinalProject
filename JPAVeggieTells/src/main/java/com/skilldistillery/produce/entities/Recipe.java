@@ -60,7 +60,7 @@ public class Recipe {
 	@OneToMany(mappedBy = "recipe")
 	private List<Comment> comments;
 	
-	@JsonIgnore
+	@JsonIgnoreProperties({"recipe"})
 	@OneToMany(mappedBy="recipe")
 	private List<RecipeIngredient> recipeIngredients;
 

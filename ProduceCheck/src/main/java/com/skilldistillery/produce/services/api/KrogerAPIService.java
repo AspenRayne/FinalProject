@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import com.skilldistillery.apiSecrets.KrogerApiSecret;
 import com.skilldistillery.produce.entities.Category;
 import com.skilldistillery.produce.entities.ClientAccess;
+import com.skilldistillery.produce.entities.Company;
 import com.skilldistillery.produce.entities.Ingredient;
+import com.skilldistillery.produce.entities.Store;
 import com.skilldistillery.produce.repositories.CategoryRepository;
 import com.skilldistillery.produce.repositories.ClientAccessRepository;
 import com.skilldistillery.produce.repositories.IngredientRepository;
@@ -133,6 +135,21 @@ public class KrogerAPIService {
 			return null;
 		}
 	}
+	
+	public Store storeLookup(String zipcode) {
+		String accessKey;
+		if (this.accessKey == null) {
+			accessKey = this.getClientAuthorization();
+			if (accessKey == null) {
+				return null;
+
+			}
+			this.accessKey = accessKey;
+		}
+		
+//		Store store = this.requestLocations(zipcode);
+		return null;
+	}
 
 	/*
 	 * Kroger API
@@ -208,6 +225,23 @@ public class KrogerAPIService {
 		}
 
 	}
+	
+	private List<Store> requestLocations(String zipcode) throws IOException{
+		String url = baseUrl + "locations?filter.zipCode.near=" + zipcode;
+		
+
+		Content response = Request.get(url).bodyForm(Form.form().build())
+				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+				.addHeader(HttpHeaders.AUTHORIZATION, this.accessKey).execute().returnContent();
+		JSONObject result = (JSONObject) JSONValue.parse(response.asString());
+		JSONArray dataArray = (JSONArray) result.get("data");
+		List<Store> stores = new ArrayList<>();
+		for(Object data : dataArray) {
+			Store store = this.unpackKrogerStore((JSONObject) data);
+		}
+		
+		return stores; 
+	}
 
 	/*
 	 * Unpack Data Objects
@@ -251,6 +285,23 @@ public class KrogerAPIService {
 
 		}
 		return ingredient;
+	}
+	
+	private Store unpackKrogerStore(JSONObject storeData) {
+		Store store = new Store();
+		store.setLocationId((Integer)storeData.get("locationId"));
+		JSONObject address = (JSONObject) storeData.get("address");
+		store.setStreet1(address.get("addressLine1").toString());
+		store.setCity(address.get("city").toString());
+		store.setState(address.get("state").toString());
+		store.setZipCode(address.get("zipcode").toString());
+		
+		Company company = new Company();
+		company.setName(storeData.get("chain").toString());
+		
+		
+		return null;
+		
 	}
 
 }

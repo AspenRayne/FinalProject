@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import com.skilldistillery.produce.entities.Ingredient;
 import com.skilldistillery.produce.entities.Recipe;
 import com.skilldistillery.produce.entities.RecipeIngredient;
+import com.skilldistillery.produce.entities.RecipeIngredientId;
 import com.skilldistillery.produce.entities.User;
+import com.skilldistillery.produce.repositories.IngredientRepository;
+import com.skilldistillery.produce.repositories.RecipeIngredientRepository;
 import com.skilldistillery.produce.repositories.RecipeRepository;
 import com.skilldistillery.produce.repositories.UserRepository;
 
@@ -21,7 +24,13 @@ public class RecipeServiceImpl implements RecipeService {
 	private RecipeRepository recipeRepo;
 
 	@Autowired
+	private IngredientRepository ingredientRepo;
+
+	@Autowired
 	private UserRepository userRepo;
+
+	@Autowired
+	private RecipeIngredientRepository recipeIngredientRepo;
 
 	@Autowired
 	private IngredientService ingredientService;
@@ -114,20 +123,24 @@ public class RecipeServiceImpl implements RecipeService {
 		if (storedIngredient == null) {
 			return null;
 		}
-		System.out.println(username);
-		System.out.println(recipeId);
 		Recipe recipe = recipeRepo.findByUser_UsernameAndId(username, recipeId);
 		if (recipe == null) {
 			return null;
 		}
-		
-		RecipeIngredient recipeIngredient = new RecipeIngredient();
 
+		RecipeIngredient recipeIngredient = new RecipeIngredient();
+		RecipeIngredientId recipeIngredientId = new RecipeIngredientId(recipe.getId(), storedIngredient.getId());
+
+		recipeIngredient.setId(recipeIngredientId);
 		recipeIngredient.setRecipe(recipe);
 		recipeIngredient.setIngredient(storedIngredient);
+		recipeIngredientRepo.saveAndFlush(recipeIngredient);
 
 		recipe.addRecipeIngredient(recipeIngredient);
-		recipe = recipeRepo.saveAndFlush(recipe); 
+		recipe = recipeRepo.save(recipe);
+
+		storedIngredient.addRecipeIngredient(recipeIngredient);
+		ingredientRepo.save(storedIngredient);
 		return recipe;
 
 	}

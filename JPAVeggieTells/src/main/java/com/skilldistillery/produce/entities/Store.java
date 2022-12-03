@@ -33,6 +33,9 @@ public class Store {
 	@JoinColumn(name="company_id")
 	private Company company;
 	
+	@Column(name="location_id")
+	private Integer locationId;
+	
 	public Store() { }
 
 	public int getId() {
@@ -116,6 +119,14 @@ public class Store {
 		this.company = company;
 	}
 	
+	public Integer getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
