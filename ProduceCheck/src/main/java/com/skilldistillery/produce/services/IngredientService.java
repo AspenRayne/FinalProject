@@ -6,5 +6,6 @@ import com.skilldistillery.produce.entities.Ingredient;
 
 public interface IngredientService {
 	Ingredient create(Ingredient ingredient);
+	List<Ingredient> bulkCreate(List<Ingredient> ingredients);
 	List<Ingredient> categoryUnificationProcessor(List<Ingredient> ingredients);
 }

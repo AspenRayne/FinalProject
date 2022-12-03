@@ -39,38 +39,33 @@ public class PluImportService {
 			List<String> pluCodeList = new ArrayList<>();
 			List<Ingredient> ingredients = new ArrayList<>();
 			int count = 0;
-			pluCodeList.add("0000000003463");
-			pluCodeList.add("0000000003465");
-			pluCodeList.add("0000000003488");
-//			while ((line = bufIn.readLine()) != null) {
-//				if (count == 0) {
-//					count+=1;
-//					continue;
-//				}
-//				count+=1;
-//				String[] row = line.split(splitBy);
-//				pluCode = "000000000" + row[0].replace("\"", "");
-//				category = row[1].replace("\"", "");
-//				commodity = row[2].replace("\"", "");
-//				variety = row[3].replace("\"", "");
-//				if (variety.contentEquals("Retailer Assigned")) {
-//					continue;
-//				}
-//				pluCodeList.add(pluCode);
-//			}
+			while ((line = bufIn.readLine()) != null) {
+				if (count == 0) {
+					count+=1;
+					continue;
+				}
+				count+=1;
+				String[] row = line.split(splitBy);
+				pluCode = "000000000" + row[0].replace("\"", "");
+				category = row[1].replace("\"", "");
+				commodity = row[2].replace("\"", "");
+				variety = row[3].replace("\"", "");
+				if (variety.contentEquals("Retailer Assigned")) {
+					continue;
+				}
+				pluCodeList.add(pluCode);
+			}
 			for(String upc : pluCodeList) {
 				Ingredient ingredient = apiService.ingredientDescription(upc);
 				if (ingredient == null) {
 //					System.out.println("Ingredient not created: " + upc);
 					continue;
 				}
-				System.out.println("CREATED : " + ingredient.toString());
+				System.out.println("CREATED : " + upc);
 				ingredients.add(ingredient);
 			}
-			List<Ingredient> ingredientsDbUnified = ingredientService.categoryUnificationProcessor(ingredients);
-			for(Ingredient ingredient : ingredientsDbUnified) {
-				ingredientService.create(ingredient);
-			}
+			ingredientService.categoryUnificationProcessor(ingredients);
+
 
 		} catch (IOException e) {
 			System.err.println(e);

@@ -1,5 +1,6 @@
 package com.skilldistillery.produce.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,14 +26,29 @@ public class IngredientServiceImpl implements IngredientService {
 
 	@Override
 	public Ingredient create(Ingredient ingredient) {
-		ingredient = ingredientRepo.saveAndFlush(ingredient);
+//		ingredient = ingredientRepo.saveAndFlush(ingredient);
 		List<Category> categories = ingredient.getCategories();
-		if (categories != null) {
+		if (categories != null) { 
 			for (Category category : categories) {
+				
 				categoryRepo.save(category);
 			}
 		}
 		return ingredient;
+	}
+	
+	@Override
+	public List<Ingredient> bulkCreate(List<Ingredient> ingredients){
+		for (Ingredient ingredient : ingredients) {
+			List<Category> categories = ingredient.getCategories();
+			if (categories != null) {
+				for (Category category : categories) {
+					
+				}
+			}
+		}
+		return null;
+		
 	}
 
 	@Override
@@ -46,11 +62,14 @@ public class IngredientServiceImpl implements IngredientService {
 		 */
 		List<Category> categoryList = categoryRepo.findAll();
 		Map<String, Category> categoryMap = new HashMap<>();
+		
+		// add db categories to map
 		for (Category category : categoryList) {
 			categoryMap.put(category.getName(), category);
 		}
 		
-		// Add new categories onto map
+		// Add all new categories onto map
+		// Save new categories into database to get their ID
 		for (Ingredient ingredient : ingredients) {
 
 			List<Category> categories = ingredient.getCategories();
@@ -60,21 +79,26 @@ public class IngredientServiceImpl implements IngredientService {
 					if (categoryMap.get(category.getName()) != null) {
 						continue;
 					}
+					category.setIngredients(null);
+					category = categoryRepo.saveAndFlush(category);
 					categoryMap.put(category.getName(), category);
 				}
 			}
 		}
-
+		
+		
 		// add the database inclusive list of categories back onto the ingredients
 		// many kroger api ingredients duplicate their category. use a name set to
 		// prevent duplicate many to many
-
+		List<Ingredient> newIngredients = new ArrayList<>();
+		
 		for (Ingredient ingredient : ingredients) {
 			// Check if ingredient exists in db
 			Ingredient dbIngredient = ingredientRepo.findByUpc(ingredient.getUpc());
 			if (dbIngredient != null) {
 				continue;
 			}
+			
 			
 			List<Category> categories = ingredient.getCategories();
 			Set<String> categoryNames = new HashSet<>();
@@ -83,17 +107,25 @@ public class IngredientServiceImpl implements IngredientService {
 			}
 			
 			ingredient.setCategories(null);
+			ingredient = ingredientRepo.saveAndFlush(ingredient);
 			for (String name : categoryNames) {
 				Category category = categoryMap.get(name);
+				
 				if (category != null) {
 					ingredient.addCategory(category);
+					
 					category.addIngredient(ingredient);
+					category = categoryRepo.saveAndFlush(category);
+					
+					categoryMap.put(category.getName(), category);
 				}
+				
 			}
-
+			newIngredients.add(ingredientRepo.saveAndFlush(ingredient));
+			
 		}
 
-		return ingredients;
+		return newIngredients;
 	}
 
 }
