@@ -18,6 +18,8 @@ import { AboutComponent } from './components/about/about.component';
 import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
 import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
 import { RecipeSearchComponent } from './components/recipe-search/recipe-search.component';
+import { SelectedUserRecipesPipe } from './pipes/selected-user-recipes.pipe';
+
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { RecipeSearchComponent } from './components/recipe-search/recipe-search.
     CreateRecipeComponent,
     PublishedRecipePipe,
     RecipeSearchComponent,
+    SelectedUserRecipesPipe
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,7 @@ import { RecipeSearchComponent } from './components/recipe-search/recipe-search.
     FormsModule,
     NgbModule
   ],
-  providers: [PublishedRecipePipe],
+  providers: [PublishedRecipePipe, SelectedUserRecipesPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
