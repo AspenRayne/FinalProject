@@ -174,12 +174,7 @@ export class RecipeSearchComponent implements OnInit {
   replyComment(commentId: number) {
   }
 
-  checkUser(commentId: number, userId: number) {
-      if (commentId === userId) {
-        this.isCommentUserIdSame = true; return true;
-      }
-      return false;
-  }
+
 
 
 }
