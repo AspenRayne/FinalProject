@@ -18,6 +18,7 @@ import { AboutComponent } from './components/about/about.component';
 import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
 import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
 import { RecipeSearchComponent } from './components/recipe-search/recipe-search.component';
+import { IngredientComponent } from './components/ingredient/ingredient.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { RecipeSearchComponent } from './components/recipe-search/recipe-search.
     CreateRecipeComponent,
     PublishedRecipePipe,
     RecipeSearchComponent,
+    IngredientComponent,
   ],
   imports: [
     BrowserModule,
