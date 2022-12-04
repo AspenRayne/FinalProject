@@ -33,7 +33,7 @@ export class UserComponent implements OnInit {
   selected: boolean = false;
   nothingFound: boolean = false;
   searchClicked: boolean = false;
-
+  allRec: Recipe[] = [];
 
   constructor(
     private commentService: CommentService,
@@ -89,7 +89,7 @@ export class UserComponent implements OnInit {
 
       // }
       this.showAll();
-
+      this.getAllUserRecipes();
   }
   setEditUser() {
     this.auth.getLoggedInUser().subscribe(
@@ -193,6 +193,21 @@ export class UserComponent implements OnInit {
         {
           next: (data) => {
             this.recipes = data;
+            // this.editUser = null;
+            // this.reload();
+          },
+          error: (err) => {
+            console.error('RecipeComponent.showRecipeByUser(): Error retrieving User recipes');
+            console.error(err);
+
+          }
+      })
+    }
+    getAllUserRecipes(){
+      this.recipeService.index().subscribe(
+        {
+          next: (data) => {
+            this.allRec = data;
             // this.editUser = null;
             // this.reload();
           },
