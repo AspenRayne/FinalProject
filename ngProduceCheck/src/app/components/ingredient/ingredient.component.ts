@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { IngredientService } from 'src/app/services/ingredient.service';
 import { RecipeService } from 'src/app/services/recipe.service';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-ingredient',
@@ -18,13 +19,19 @@ export class IngredientComponent implements OnInit {
   currentUser: User | null = null;
   lookup: string = '';
   currentPage: number = 1;
+  totalItemsReturned: number = 0;
   selectedLocation: Store | null = null;
+  locationOptions: Store [] | null = null;
+  zipcode: string = "";
+  apiIngredients: Ingredient[] | null = null;
+  recommendedIngredients: Ingredient[] | null = null;
 
   constructor(
     private recipeService: RecipeService,
     private ingredientService: IngredientService,
     private auth: AuthService,
     private route: ActivatedRoute,
+    private storeService: StoreService,
     private router: Router
   ) {}
 
@@ -34,6 +41,7 @@ export class IngredientComponent implements OnInit {
       this.recipeService.show(recipeId).subscribe({
         next: (data) => {
           this.recipe = data;
+          this.getCurrentUser()
         },
         error: (err) => {
           console.error('ngOnInit() error retriving recipe');
@@ -85,6 +93,11 @@ export class IngredientComponent implements OnInit {
       .subscribe({
         next: (data) => {
           console.log(data);
+          this.apiIngredients = data.apiData;
+          this.recommendedIngredients = data.recommendedIngredients;
+          this.currentPage = data.pagination.start + data.pagination.limit -1;
+          this.totalItemsReturned = data.pagination.total;
+          console.log(this.recommendedIngredients);
         },
 
         error: (err) => {
@@ -110,5 +123,33 @@ export class IngredientComponent implements OnInit {
         },
       });
     }
+  }
+
+  searchStoresByZipcode(){
+    this.storeService.getStoreLocations(this.zipcode).subscribe({
+      next: (data) => {
+        this.locationOptions = data;
+        console.log(data);
+      },
+      error: (err) => {
+        console.error(
+          'IngredientComponent.searchStoresByZipcode): error searching locations'
+        );
+        console.error(err);
+      },
+    })
+  }
+  saveStoreToUser(store: Store){
+    this.storeService.setFavoriteStore(store).subscribe({
+      next: (data) => {
+        this.selectedLocation = data;
+      },
+      error: (err) => {
+        console.error(
+          'IngredientComponent.saveStoreToUser(): error saving store to user'
+        );
+        console.error(err);
+      },
+    })
   }
 }

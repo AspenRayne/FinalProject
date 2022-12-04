@@ -1,11 +1,76 @@
-<form>
-  <input
-    class="form-control"
-    type="text"
-    name="lookup"
-    placeholder="Product"
-    [(ngModel)]="lookup"
-  />
-  <hr />
-  <button class="btn btn-dark" (click)="searchIngredients()">Search</button>
-</form>
+<div *ngIf="selectedLocation">
+  <h2>Searching {{ selectedLocation.company.name }}</h2>
+</div>
+<div *ngIf="!selectedLocation">
+  <h2>Select Store from Saved or Search by Zip Code</h2>
+  <div *ngIf="currentUser?.stores">
+    <div class="row">
+      <div class="col">
+        <div ngbDropdown class="d-inline-block">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            id="dropdownBasic1"
+            ngbDropdownToggle
+          >
+            Saved Stores
+          </button>
+          <div *ngFor="let store of currentUser?.stores">
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem (click)="selectStore(store)">
+                {{ store.city }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form>
+      <input
+        class="form-control"
+        type="text"
+        name="zipcode"
+        placeholder="Zipcode"
+        [(ngModel)]="zipcode"
+      />
+
+      <button (click)="searchStoresByZipcode()">Search</button>
+
+      <ul *ngFor="let location of locationOptions">
+        <li>
+          <a class="dropdown-item">{{ location.city }}</a>
+        </li>
+      </ul>
+    </form>
+  </div>
+</div>
+<div *ngIf="selectedLocation">
+<h1>Adding Ingredients to {{recipe?.name}}</h1>
+
+  <form>
+    <input
+      class="form-control"
+      type="text"
+      name="lookup"
+      placeholder="Product"
+      [(ngModel)]="lookup"
+    />
+    <hr />
+    <button class="btn btn-dark" (click)="searchIngredients()">Search</button>
+  </form>
+
+  <div *ngIf="recommendedIngredients">
+    <h3>Recommended Results</h3>
+    <div *ngFor="let recommended of recommendedIngredients">
+      <p>{{ recommended.name }}</p>
+    </div>
+
+  </div>
+  <div *ngIf="apiIngredients">
+    <h3>Api Results</h3>
+    <div *ngFor="let api of apiIngredients">
+      <p>{{ api.name }}</p>
+    </div>
+
+  </div>
+</div>

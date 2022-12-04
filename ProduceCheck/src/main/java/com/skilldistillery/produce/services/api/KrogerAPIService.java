@@ -95,12 +95,11 @@ public class KrogerAPIService {
 		this.setClientAuthorization();
 
 		JSONObject response = new JSONObject();
-		JSONArray recommendedIngredients = new JSONArray();
 		if (recommended) {
 			List<Ingredient> dbIngredients = ingredientRepo.findByNameContains(lookup);
-			recommendedIngredients.add(dbIngredients);
+			response.put("recommendedIngredients", dbIngredients);
 		}
-		response.put("recommendedIngredients", recommendedIngredients);
+		
 
 		try {
 			JSONObject apiResults = this.requestProducts(lookup, pagination, locationId);
