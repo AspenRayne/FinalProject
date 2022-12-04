@@ -144,11 +144,20 @@
     <thead class="table-dark">
       <tr>
         <th>My Published Recipes</th>
+        <th>Take A Look</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let r of allRec | publishedRecipe | selectedUserRecipes: selectedUser.id">
-        <td (click)="chooseRecipe(r)">{{r.name}}</td>
+        <!-- <td (click)="chooseRecipe(r)">{{r.name}}</td> -->
+        <td>{{r.name}}</td>
+        <td>
+          <button class="btn btn-primary">
+            <a class="btn btn-primary" [routerLink]="['/recipe/', selectedUser.id]">View</a>
+          </button>
+        </td>
+
+
       </tr>
     </tbody>
   </table>
