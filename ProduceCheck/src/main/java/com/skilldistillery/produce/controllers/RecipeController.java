@@ -56,6 +56,22 @@ public class RecipeController {
 		}
 		return recipe;
 	}
+	
+	@GetMapping("recipes/{id}")
+	public Recipe show(@PathVariable int id, HttpServletRequest req,
+			HttpServletResponse res, Principal principal) {
+		Recipe recipe = new Recipe();
+		try {
+			recipe = recipeService.show(id);
+			if (recipe == null) {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			res.setStatus(400);
+			recipe = null;
+		}
+		return recipe;
+	}
 
 	@PutMapping("recipes/{id}")
 	public Recipe update(@PathVariable int id, @RequestBody Recipe recipe, HttpServletRequest req,

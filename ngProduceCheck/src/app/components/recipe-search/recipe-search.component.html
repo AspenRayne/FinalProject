@@ -1,1 +1,100 @@
-<p>recipe-search works!</p>
+<!-- <div name="notLoggedIn" *ngIf="!checkLogin()">
+  You must be logged in to utilize this feature.
+  <br>
+  <button [routerLink]="['/login']">Log in</button> <button [routerLink]="['/register']">Register</button>
+  </div>
+   -->
+
+
+  <div name="maintable">
+    <form>
+      <div class="container-fluid text-center">
+        <div class="card w-50">
+          <div class="card-body">
+            <h5 class="card-title">Recipe Search</h5>
+            <input
+              class="form-control"
+              type="text"
+              name="search"
+              placeholder="Search a Recipe By Key Word"
+              [(ngModel)]="searchWord"
+            />
+
+            <div class="text-center">
+              <button class="btn btn-primary">
+                <a class="btn btn-white-view" [routerLink]="['/recipe/', '1']">view</a>
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  <div name="noSearchResult" *ngIf="nothingFound">
+    <h1>No recipes found, sorry!</h1>
+  </div>
+
+      <div name="searchTable" *ngIf="searchClicked && !nothingFound">
+      <table class="table">
+          <thead class="thead-dark">
+              <tr>
+                <th scope="col">Recipe Name</th>
+                <th scope="col">User</th>
+                <th scope="col">Prep Time</th>
+                <th scope="col">Cook Time</th>
+              </tr>
+          </thead>
+          <tbody *ngFor="let r of recipes" >
+              <tr (click)="chooseRecipe(r)">
+                <td>{{r.name}}</td>
+                <td>{{r.user.username}}</td>
+                <td>{{r.prepTime}}</td>
+                <td>{{r.cookTime}}</td>
+              </tr>
+          </tbody>
+      </table>
+      </div>
+  </div>
+  <div name="selectedtable" *ngIf="selected" style="height:fit-content">
+    <img src="{{selectedRecipe?.imgUrl}}" alt="No image found">
+    <table id="recipe-table" class="table table-bordered">
+      <tr><th>{{selectedRecipe!.name}} submitted by {{selectedRecipe!.user.username}}</th></tr>
+      <tr><td>Preparation Time: {{selectedRecipe!.prepTime}} minutes</td></tr>
+      <tr><td>Cook Time: {{selectedRecipe!.cookTime}} minutes</td></tr>
+
+      <tr><th>Description</th></tr>
+      <tr><td>{{selectedRecipe!.description}}</td></tr>
+
+      <tr><th>Directions</th></tr>
+      <tr><td>{{selectedRecipe!.instructions}}</td></tr>
+
+      <tr><th>Ingredients</th></tr>
+      <tr><td>{{selectedRecipe!.recipeIngredients}}</td></tr>
+    <button (click)="selected=false">Back</button><button>Like</button>
+    </table>
+    Comments
+    <table class="table-bordered">
+      <tr *ngFor="let comment of recipeComments">
+        <td style="color: gray">{{comment.user.username}} @ {{comment.commentDate | date:'shortTime' }}</td>
+       <td>{{comment.comment}}</td>
+       <td><button *ngIf="checkUser(comment.user.id, currentUser.id)" class="btn btn-danger" (click)="removeComment(comment.id)">Delete</button>
+        <td><button *ngIf="!checkUser(comment.user.id, currentUser.id)" class="btn btn-dark">Reply</button>
+
+      </td>
+      </tr>
+    </table>
+   <input type="text" [(ngModel)]="newComment.comment">
+    <button (click)="addNewComment(newComment)">Add Comment</button>
+  </div>
+
+  <div name="replyCommentDiv" *ngIf="replyToComment">
+  <input type="text">
+
+  </div>
+
+
+  <div name="noComments" *ngIf="noCommentsYet">
+    <h2>No comments for the recipe yet, be the first!</h2>
+
+  </div> -->
