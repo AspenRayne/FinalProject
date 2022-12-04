@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.skilldistillery.produce.entities.Ingredient;
 import com.skilldistillery.produce.entities.Recipe;
 import com.skilldistillery.produce.services.RecipeService;
 
@@ -115,6 +116,24 @@ public class RecipeController {
 	@GetMapping("recipes/search/{search}")
 	public List<Recipe> recipeSearch(@PathVariable String search) {
 		return recipeService.searchRecipe(search);
+	}
+	
+	@PutMapping("recipes/addIngredient/{id}")
+	public Recipe addIngredient(@PathVariable int id, @RequestBody Ingredient ingredient,
+			HttpServletResponse res, HttpServletRequest req, Principal principal) {
+		Recipe recipe;
+		try {
+			recipe = recipeService.addIngredient(principal.getName(), id, ingredient);
+			if (recipe == null) {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(400);
+			recipe = null;
+		}
+		return recipe;
+		
 	}
 
 

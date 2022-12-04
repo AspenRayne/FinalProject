@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import com.skilldistillery.apiSecrets.KrogerApiSecret;
 import com.skilldistillery.produce.entities.Category;
 import com.skilldistillery.produce.entities.ClientAccess;
+import com.skilldistillery.produce.entities.Company;
 import com.skilldistillery.produce.entities.Ingredient;
+import com.skilldistillery.produce.entities.Store;
 import com.skilldistillery.produce.repositories.CategoryRepository;
 import com.skilldistillery.produce.repositories.ClientAccessRepository;
 import com.skilldistillery.produce.repositories.IngredientRepository;
@@ -83,7 +85,7 @@ public class KrogerAPIService {
 	 */
 
 	@SuppressWarnings("unchecked")
-	public JSONObject ingredientsLookup(String lookup, int pagination, boolean recommended) {
+	public JSONObject ingredientsLookup(String lookup, int pagination, boolean recommended, int locationId) {
 		String accessKey;
 		if (this.accessKey == null) {
 			accessKey = this.getClientAuthorization();
@@ -103,7 +105,7 @@ public class KrogerAPIService {
 		response.put("recommendedIngredients", recommendedIngredients);
 
 		try {
-			JSONObject apiResults = this.requestProducts(lookup, pagination);
+			JSONObject apiResults = this.requestProducts(lookup, pagination, locationId);
 			response.put("apiData", apiResults.get("data"));
 			response.put("pagination", apiResults.get("pagination"));
 		} catch (HttpResponseException e) {
@@ -134,6 +136,52 @@ public class KrogerAPIService {
 		}
 	}
 
+	public List<Store> storeLookup(String zipcode) {
+		String accessKey;
+		if (this.accessKey == null) {
+			accessKey = this.getClientAuthorization();
+			if (accessKey == null) {
+				return null;
+			}
+			this.accessKey = accessKey;
+		}
+		List<Store> stores;
+		try {
+			stores = this.requestLocations(zipcode);
+			return stores;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject availabilityCheck(int storeId, List<String> productIds) {
+		String accessKey;
+		if (this.accessKey == null) {
+			accessKey = this.getClientAuthorization();
+			if (accessKey == null) {
+				return null;
+			}
+			this.accessKey = accessKey;
+		}
+		
+		JSONObject responseData = new JSONObject();
+		for (String productId : productIds) {
+			try {
+				JSONObject productStats = this.requestProductStats(storeId, productId);
+				responseData.put(productStats.get("upc"), productStats);
+			} catch (IOException e) {
+				// TODO advanced error handling instead of breaking the loop
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		return responseData;
+	}
+	
+
 	/*
 	 * Kroger API
 	 * 
@@ -141,23 +189,31 @@ public class KrogerAPIService {
 	 */
 
 	@SuppressWarnings("unchecked")
-	private JSONObject requestProducts(String lookup, int pagination) 
-			throws IOException, HttpResponseException {
+	private JSONObject requestProducts(String lookup, int pagination, int locationId) throws IOException, HttpResponseException {
 		JSONObject dataResponse = new JSONObject();
+		String url;
+		if (locationId > 0) {
+			url = baseUrl + "products?filter.limit=50" 
+					+ "&filter.term=" + lookup.replace(" ", "%20") 
+					+ "&filter.start=" + pagination
+					+ "&filter.fulfillment=ais"
+					+ "&filter.locationId=" + locationId;
+		} else {
+			url = baseUrl + "products?filter.limit=50" 
+					+ "&filter.term=" + lookup.replace(" ", "%20") 
+					+ "&filter.start=" + pagination;
+		}
 		
-		String url = baseUrl + "products?filter.limit=50&filter.term=" 
-				+ lookup.replace(" ", "%20")
-				+ "&filter.start=" + pagination;
 		Content response = Request.get(url).bodyForm(Form.form().build())
 				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
 				.addHeader(HttpHeaders.AUTHORIZATION, this.accessKey).execute().returnContent();
 		JSONObject result = (JSONObject) JSONValue.parse(response.asString());
 		JSONArray resultList = (JSONArray) result.get("data");
-		
+
 		// Pagination Details
 		JSONObject meta = (JSONObject) result.get("meta");
 		dataResponse.put("pagination", (JSONObject) meta.get("pagination"));
-		
+
 		List<Ingredient> products = new ArrayList<>();
 		for (Object data : resultList) {
 			Ingredient product = this.unpackKrogerProduct((JSONObject) data);
@@ -168,9 +224,10 @@ public class KrogerAPIService {
 		}
 		// Data
 		dataResponse.put("data", products);
-		
+
 		return dataResponse;
 	}
+	
 
 	private Ingredient requestProductDetails(String upc) throws IOException, HttpResponseException {
 		String url = baseUrl + "products/" + upc;
@@ -184,6 +241,23 @@ public class KrogerAPIService {
 		Ingredient ingredient = this.unpackKrogerProduct(data);
 		return ingredient;
 	}
+	
+	
+	private JSONObject requestProductStats(int storeId, String upc) throws IOException {
+		String url = baseUrl + "products/" + upc 
+				+ "?filter.locationId=" + storeId;
+
+		Content response = Request.get(url).bodyForm(Form.form().build())
+				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+				.addHeader(HttpHeaders.AUTHORIZATION, this.accessKey).execute().returnContent();
+		JSONObject result = (JSONObject) JSONValue.parse(response.asString());
+		JSONObject data = (JSONObject) result.get("data");
+		
+		JSONObject stats = this.unpackProductStats(data);
+		
+		return stats;
+	}
+	
 
 	private String requestClientAuthorization() throws IOException {
 		this.encodedAuthString = this.base64EncodeSecrets();
@@ -207,6 +281,25 @@ public class KrogerAPIService {
 			return null;
 		}
 
+	}
+
+	private List<Store> requestLocations(String zipcode) throws IOException {
+		String url = baseUrl + "locations?filter.zipCode.near=" + zipcode;
+
+		Content response = Request.get(url).bodyForm(Form.form().build())
+				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+				.addHeader(HttpHeaders.AUTHORIZATION, this.accessKey).execute().returnContent();
+		JSONObject result = (JSONObject) JSONValue.parse(response.asString());
+		JSONArray dataArray = (JSONArray) result.get("data");
+		List<Store> stores = new ArrayList<>();
+		for (Object data : dataArray) {
+			Store store = this.unpackKrogerStore((JSONObject) data);
+			if (store != null) {
+				stores.add(store);
+			}
+		}
+
+		return stores;
 	}
 
 	/*
@@ -251,6 +344,66 @@ public class KrogerAPIService {
 
 		}
 		return ingredient;
+	}
+
+	private Store unpackKrogerStore(JSONObject storeData) {
+		Store store = new Store();
+		store.setLocationId(Integer.parseInt(storeData.get("locationId").toString()));
+		JSONObject address = (JSONObject) storeData.get("address");
+		store.setStreet1(address.get("addressLine1").toString());
+		store.setCity(address.get("city").toString());
+		store.setState(address.get("state").toString());
+		store.setZipCode(address.get("zipCode").toString());
+
+		Company company = new Company();
+		company.setName(storeData.get("chain").toString());
+
+		store.setCompany(company);
+		return store;
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	private JSONObject unpackProductStats(JSONObject data) {
+		JSONObject stats = new JSONObject();
+		stats.put("upc", data.get("upc").toString());
+		stats.put("aisles", (JSONArray) data.get("aisleLocations"));
+		stats.put("inStore", false);
+		stats.put("price", null);
+		stats.put("salePrice", null);
+		stats.put("availability", null);
+		
+		JSONArray items = (JSONArray) data.get("items");
+		if (items.size() > 0) {
+			JSONObject first = (JSONObject) items.get(0);
+			JSONObject fulfillment = (JSONObject) first.get("fulfillment");
+			boolean instore = false;
+			if (fulfillment != null) {
+				instore = Boolean.parseBoolean(fulfillment.get("inStore").toString());
+			}
+			stats.put("inStore", instore);
+			
+			JSONObject priceObj = (JSONObject) first.get("price");
+			Double price = null;
+			Double salePrice = null;
+			if (priceObj != null) {
+				price = Double.parseDouble(priceObj.get("regular").toString());
+				salePrice = Double.parseDouble(priceObj.get("promo").toString());
+			}
+			stats.put("price", price);
+			stats.put("salePrice", salePrice);
+			
+			// Stock level
+			JSONObject inventory = (JSONObject) first.get("inventory");
+			String stockInfo = null;
+			if (inventory != null) {
+				stockInfo = inventory.get("stockLevel").toString();
+			}
+			stats.put("availability", stockInfo);
+			
+		} 
+		
+		return stats;
 	}
 
 }

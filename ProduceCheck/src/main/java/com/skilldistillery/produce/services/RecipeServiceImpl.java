@@ -1,13 +1,19 @@
 package com.skilldistillery.produce.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skilldistillery.produce.entities.Ingredient;
 import com.skilldistillery.produce.entities.Recipe;
+import com.skilldistillery.produce.entities.RecipeIngredient;
+import com.skilldistillery.produce.entities.RecipeIngredientId;
 import com.skilldistillery.produce.entities.User;
+import com.skilldistillery.produce.repositories.IngredientRepository;
+import com.skilldistillery.produce.repositories.RecipeIngredientRepository;
 import com.skilldistillery.produce.repositories.RecipeRepository;
 import com.skilldistillery.produce.repositories.UserRepository;
 
@@ -18,7 +24,16 @@ public class RecipeServiceImpl implements RecipeService {
 	private RecipeRepository recipeRepo;
 
 	@Autowired
+	private IngredientRepository ingredientRepo;
+
+	@Autowired
 	private UserRepository userRepo;
+
+	@Autowired
+	private RecipeIngredientRepository recipeIngredientRepo;
+
+	@Autowired
+	private IngredientService ingredientService;
 
 	@Override
 	public List<Recipe> index() {
@@ -50,6 +65,7 @@ public class RecipeServiceImpl implements RecipeService {
 		managed.setPrepTime(recipe.getPrepTime());
 		managed.setCookTime(recipe.getCookTime());
 		managed.setPublished(recipe.getPublished());
+
 		return recipeRepo.save(managed);
 
 	}
@@ -81,12 +97,16 @@ public class RecipeServiceImpl implements RecipeService {
 	public boolean unsaveRecipe(String username, int recipeId) {
 		Recipe recipe = recipeRepo.queryById(recipeId);
 		User user = userRepo.findByUsername(username);
-		if (recipe != null) {
-			user.removeRecipe(recipe);
-			recipe.removeUser(user);
-			userRepo.save(user);
-			recipeRepo.save(recipe);
-			return true;
+		try {
+			if (recipe != null) {
+				user.removeRecipe(recipe);
+				recipe.removeUser(user);
+				userRepo.save(user);
+				recipeRepo.save(recipe);
+				return true;
+			}
+		} catch (Exception e) {
+			return false;
 		}
 		return false;
 	}
@@ -97,7 +117,36 @@ public class RecipeServiceImpl implements RecipeService {
 		List<Recipe> recipes = recipeRepo.findByNameLike(searchString);
 		return recipes;
 	}
-	
-	
+
+	@Override
+	public Recipe addIngredient(String username, int recipeId, Ingredient ingredient) {
+		List<Ingredient> ingredients = new ArrayList<>();
+		ingredients.add(ingredient);
+		ingredients = ingredientService.bulkCreate(ingredients);
+		Ingredient storedIngredient = ingredients.get(0);
+		if (storedIngredient == null) {
+			return null;
+		}
+		Recipe recipe = recipeRepo.findByUser_UsernameAndId(username, recipeId);
+		if (recipe == null) {
+			return null;
+		}
+
+		RecipeIngredient recipeIngredient = new RecipeIngredient();
+		RecipeIngredientId recipeIngredientId = new RecipeIngredientId(recipe.getId(), storedIngredient.getId());
+
+		recipeIngredient.setId(recipeIngredientId);
+		recipeIngredient.setRecipe(recipe);
+		recipeIngredient.setIngredient(storedIngredient);
+		recipeIngredientRepo.saveAndFlush(recipeIngredient);
+
+		recipe.addRecipeIngredient(recipeIngredient);
+		recipe = recipeRepo.save(recipe);
+
+		storedIngredient.addRecipeIngredient(recipeIngredient);
+		ingredientRepo.save(storedIngredient);
+		return recipe;
+
+	}
 
 }

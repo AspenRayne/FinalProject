@@ -1,11 +1,32 @@
 
-<div *ngIf="!editUser"class="topProfPage" id="topProfPage">
-  <h1> Greetings {{user?.firstName}}! Welcome to your Profile Page</h1>
+<div *ngIf="!editUser && !selectedRec"class="topProfPage" id="topProfPage">
+  <h1> Greetings {{user?.username}}! Welcome to your Profile Page</h1>
   <div class="card">
+    <label for="aboutMe">About Me</label>
     <div class="card-body">
       {{user?.aboutMe}}
 
     </div>
+  </div>
+  <div class="card">
+    <label for="firstName">First Name</label>
+    <div class="card-body">
+      {{user?.firstName}}
+
+    </div>
+  </div>
+  <div class="card">
+    <label for="lastName">Last Name</label>
+    <div class="card-body">
+      {{user?.lastName}}
+
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">Find Other Users</label>
+    <select (change)="test()"  id="inputState" class="form-select">
+      <option *ngFor="let u of users" [ngValue]="u">{{u.username}}</option>
+    </select>
   </div>
 <div class="container">
   <div class="row">
@@ -37,7 +58,35 @@
 </div>
 
 </div>
+<div name="selectedtable" *ngIf="selectedRec" style="height:fit-content">
+  <img src="{{selectedRecipe?.imgUrl}}" alt="No image found">
+  <table id="recipe-table" class="table table-bordered">
+    <tr><th>{{selectedRecipe!.name}} submitted by {{selectedRecipe!.user.username}}</th></tr>
+    <tr><td>Preparation Time: {{selectedRecipe!.prepTime}} minutes</td></tr>
+    <tr><td>Cook Time: {{selectedRecipe!.cookTime}} minutes</td></tr>
 
+    <tr><th>Description</th></tr>
+    <tr><td>{{selectedRecipe!.description}}</td></tr>
+
+    <tr><th>Directions</th></tr>
+    <tr><td>{{selectedRecipe!.instructions}}</td></tr>
+
+    <tr><th>Ingredients</th></tr>
+    <tr><td>{{selectedRecipe!.recipeIngredients}}</td></tr>
+  <button (click)="selectedRec=false">Back</button><button>Like</button>
+  </table>
+  Comments
+  <table id="recipe-table" class="table table-bordered">
+    <tr *ngFor="let comment of recipeComments">
+      <td style="color: gray">{{comment.user.username}} @ {{comment.commentDate | date:'shortTime' }}</td>
+     <td>{{comment.comment}}</td>
+     <td><button *ngIf="checkUser(comment.user.id, currentUser.id)" class="btn btn-danger" (click)="removeComment(comment.id)">Delete</button>
+     </td>
+    </tr>
+  </table>
+  <input type="text" [(ngModel)]="newComment.comment">
+  <button (click)="addNewComment(newComment)">Add Comment</button>
+</div>
 
 
 <form *ngIf="editUser" class="row g-3">
@@ -55,23 +104,23 @@
   </div>
   <div class="col-12">
     <label for="aboutMe" class="form-label">About Me</label>
-    <input type="text" class="form-control" id="aboutMe" name="aboutMe" placeholder="Tell us a bit about yourself!" [(ngModel)]="editUser.aboutMe">
-  </div>
-  <div class="col-md-4">
-    <label for="inputState" class="form-label">Something that Drops Down</label>
-    <select id="inputState" class="form-select">
-      <option selected>Choose...</option>
-      <option>...</option>
-    </select>
+    <input type="text" class="form-control" id="aboutMe" name="aboutMe" [(ngModel)]="editUser.aboutMe">
   </div>
   <div class="col-12">
     <button class="btn btn-primary" (click)="updateUser(editUser)">Update</button>
   </div>
 </form>
 <div class="col-12">
-  <button class="btn btn-warning" (click)="deleteUser(user!.id)">Deactive Account </button>
+  <button *ngIf="!selectedRec" class="btn btn-warning" (click)="deleteUser(user!.id)">Deactive Account </button>
 </div>
 <div class="col-12">
-  <button *ngIf="!editUser"class="btn btn-success" (click)="setEditUser()">Edit Profile</button>
+  <button *ngIf="!editUser && !selectedRec"class="btn btn-success" (click)="setEditUser()">Edit Profile</button>
 </div>
 
+<div *ngIf="selectedUser" class="col-md-6">
+  <h1>jhjjhjhj</h1>
+  <table>
+  </table>
+
+
+</div>

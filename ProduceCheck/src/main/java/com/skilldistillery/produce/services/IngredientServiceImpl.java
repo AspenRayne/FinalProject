@@ -37,22 +37,10 @@ public class IngredientServiceImpl implements IngredientService {
 		return ingredient;
 	}
 	
-	@Override
-	public List<Ingredient> bulkCreate(List<Ingredient> ingredients){
-		for (Ingredient ingredient : ingredients) {
-			List<Category> categories = ingredient.getCategories();
-			if (categories != null) {
-				for (Category category : categories) {
-					
-				}
-			}
-		}
-		return null;
-		
-	}
+
 
 	@Override
-	public List<Ingredient> categoryUnificationProcessor(List<Ingredient> ingredients) {
+	public List<Ingredient> bulkCreate(List<Ingredient> ingredients) {
 
 		/*
 		 * ---- Persistence Layer Storage Checks---- SKIPS INGREDIENTS THAT ALREADY
@@ -96,6 +84,7 @@ public class IngredientServiceImpl implements IngredientService {
 			// Check if ingredient exists in db
 			Ingredient dbIngredient = ingredientRepo.findByUpc(ingredient.getUpc());
 			if (dbIngredient != null) {
+				newIngredients.add(dbIngredient);
 				continue;
 			}
 			
