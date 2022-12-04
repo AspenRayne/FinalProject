@@ -27,5 +27,7 @@ public interface RecipeService {
 	public List<Recipe> searchRecipe(String keyword);
 	
 	public Recipe addIngredient(String username, int recipeId, Ingredient ingredient);
+	
+	public Recipe unsaveIngredient(String username, int recipeId, int ingredientId);
 
 }

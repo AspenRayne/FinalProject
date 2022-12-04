@@ -121,7 +121,7 @@ export class RecipeService {
 
   addIngredient(recipeId: number, ingredient: Ingredient): Observable<Recipe> {
     return this.http
-      .post<Recipe>(
+      .put<Recipe>(
         `${this.baseUrl}/addIngredient/${recipeId}`,
         ingredient,
         this.getHttpOptions()
@@ -133,6 +133,26 @@ export class RecipeService {
             () =>
               new Error(
                 'RecipeService.addIngredient():error adding ingredient to recipe: ' +
+                  err
+              )
+          );
+        })
+      );
+  }
+
+  unsaveIngredient(recipeId: number, ingredientId: number): Observable<Recipe> {
+    return this.http
+      .delete<Recipe>(
+        `${this.baseUrl}/removeIngredient/${recipeId}/${ingredientId}`,
+        this.getHttpOptions()
+      )
+      .pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(
+            () =>
+              new Error(
+                'RecipeService.unsaveIngredient():error unsaving ingredient: ' +
                   err
               )
           );

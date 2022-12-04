@@ -154,4 +154,24 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeRepo.findById(id);
 	}
 
+	@Override
+	public Recipe unsaveIngredient(String username, int recipeId, int ingredientId) {
+		Recipe recipe = recipeRepo.findById(recipeId);
+		if (!recipe.getUser().getUsername().equals(username)) {
+			return null;
+		}
+		for (RecipeIngredient recipeIngredient : recipe.getRecipeIngredients()) {
+			if (recipeIngredient.getIngredient().getId() == ingredientId) {
+				recipeIngredientRepo.delete(recipeIngredient);
+				recipe.removeRecipeIngredient(recipeIngredient);
+				
+				Ingredient ingredient = recipeIngredient.getIngredient();
+				ingredient.removeRecipeIngredient(recipeIngredient);
+				ingredientRepo.save(ingredient);
+				return recipeRepo.saveAndFlush(recipe);
+			}
+		}
+		return null;
+	}
+
 }

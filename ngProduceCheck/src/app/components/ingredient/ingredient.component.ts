@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Ingredient } from 'src/app/models/ingredient';
 import { Recipe } from 'src/app/models/recipe';
+import { RecipeIngredient } from 'src/app/models/recipe-ingredient';
 import { Store } from 'src/app/models/store';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -80,12 +81,16 @@ export class IngredientComponent implements OnInit {
     this.selectedLocation = store;
   }
 
-  searchIngredients() {
+
+  searchIngredients(resetPagination: boolean) {
     let locationId: number;
     if (this.selectedLocation === null) {
       return;
     } else {
       locationId = this.selectedLocation.locationId;
+    }
+    if (resetPagination){
+      this.currentPage = 1;
     }
 
     this.ingredientService
@@ -114,6 +119,7 @@ export class IngredientComponent implements OnInit {
       this.recipeService.addIngredient(this.recipe.id, ingredient).subscribe({
         next: (data) => {
           console.log(data);
+          this.recipe = data;
         },
         error: (err) => {
           console.error(
@@ -124,6 +130,23 @@ export class IngredientComponent implements OnInit {
       });
     }
   }
+  unsaveIngredient(ingredient: Ingredient) {
+    if (this.recipe) {
+      this.recipeService.unsaveIngredient(this.recipe.id, ingredient.id).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.recipe = data;
+        },
+        error: (err) => {
+          console.error(
+            'IngredientComponent.searchIngredients(): error searching Ingredients'
+          );
+          console.error(err);
+        },
+      });
+    }
+  }
+
 
   searchStoresByZipcode(){
     this.storeService.getStoreLocations(this.zipcode).subscribe({

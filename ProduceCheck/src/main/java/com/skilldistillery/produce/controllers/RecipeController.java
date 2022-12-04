@@ -151,6 +151,18 @@ public class RecipeController {
 		return recipe;
 		
 	}
+	
+	@DeleteMapping("recipes/removeIngredient/{id}/{ingredientId}")
+	public Recipe unsaveIngredient(@PathVariable int id, @PathVariable int ingredientId,
+			HttpServletResponse res, HttpServletRequest req, Principal principal) {
+			Recipe recipe = recipeService.unsaveIngredient(principal.getName(), id, ingredientId);
+			if (recipe == null) {
+				res.setStatus(404);
+			}
+			return recipe;
+		
+		
+	}
 
 
 }

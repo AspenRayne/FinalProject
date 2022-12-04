@@ -178,6 +178,7 @@ public class KrogerAPIService {
 					+ "&filter.term=" + lookup.replace(" ", "%20") 
 					+ "&filter.start=" + pagination;
 		}
+		System.out.println(url);
 		
 		Content response = Request.get(url).bodyForm(Form.form().build())
 				.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
