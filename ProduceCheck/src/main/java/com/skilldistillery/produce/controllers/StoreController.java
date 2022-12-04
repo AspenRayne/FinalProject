@@ -54,7 +54,7 @@ public class StoreController {
 	}
 	
 	@DeleteMapping("favoriteStore/{id}")
-	public void unsaveRecipe(@PathVariable int id, HttpServletResponse res, Principal principal) {
+	public void unsaveStore(@PathVariable int id, HttpServletResponse res, Principal principal) {
 		try {
 			if (storeService.unsaveStore(principal.getName(), id)) {
 				res.setStatus(204);

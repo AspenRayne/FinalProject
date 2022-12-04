@@ -1,3 +1,4 @@
+import { Category } from './category';
 import { RecipeIngredient } from './recipe-ingredient';
 
 export class Ingredient {
@@ -8,6 +9,7 @@ export class Ingredient {
   imgUrl: string;
   plu: string;
   recipeIngredients: RecipeIngredient[];
+  categories: Category[];
 
   constructor(
     id: number = 0,
@@ -16,7 +18,8 @@ export class Ingredient {
     upc: string = '',
     imgUrl: string = '',
     plu: string = '',
-    recipeIngredients: RecipeIngredient[] = []
+    recipeIngredients: RecipeIngredient[] = [],
+    categories: Category[] = []
   ) {
     this.id = id;
     this.name = name;
@@ -24,5 +27,6 @@ export class Ingredient {
     (this.upc = upc), (this.imgUrl = imgUrl);
     this.plu = plu;
     this.recipeIngredients = recipeIngredients;
+    this.categories = categories;
   }
 }
