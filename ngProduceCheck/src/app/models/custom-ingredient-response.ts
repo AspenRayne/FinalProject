@@ -7,7 +7,7 @@ export class CustomIngredientResponse {
     limit: number;
   };
   apiData: Ingredient[];
-  recommendedIngredient: Ingredient[];
+  recommendedIngredients: Ingredient[];
 
   constructor(
     pagination: {
@@ -20,6 +20,6 @@ export class CustomIngredientResponse {
   ) {
     this.pagination = pagination;
     this.apiData = apiData;
-    this.recommendedIngredient = recommendedIngredients;
+    this.recommendedIngredients = recommendedIngredients;
   }
 }

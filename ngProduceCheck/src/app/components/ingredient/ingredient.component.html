@@ -1,1 +1,144 @@
-<p>ingredient works!</p>
+<div *ngIf="selectedLocation">
+  <h2>Searching {{ selectedLocation.company.name }}</h2>
+</div>
+<div *ngIf="!selectedLocation">
+  <h2>Select Store from Saved or Search by Zip Code</h2>
+  <div *ngIf="currentUser?.stores">
+    <div class="row">
+      <div class="col">
+        <div ngbDropdown class="d-inline-block">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            id="dropdownBasic1"
+            ngbDropdownToggle
+          >
+            Saved Stores
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <div *ngFor="let store of currentUser?.stores">
+              <button ngbDropdownItem (click)="selectStore(store)">
+                {{ store.city }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form>
+      <input
+        class="form-control"
+        type="text"
+        name="zipcode"
+        placeholder="Zipcode"
+        [(ngModel)]="zipcode"
+      />
+
+      <button (click)="searchStoresByZipcode()">Search</button>
+
+      <ul *ngFor="let location of locationOptions">
+        <li>
+          <a (click)="saveStoreToUser(location)" >{{ location.company.name }}</a>
+        </li>
+      </ul>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="selectedLocation">
+<div class="container">
+  <div class="row justify-content-evenly">
+        <div class="col-8">
+        <form>
+          <input
+            class="form-control"
+            type="text"
+            name="lookup"
+            placeholder="Product"
+            [(ngModel)]="lookup"
+          />
+          <hr />
+          <button class="btn btn-dark" (click)="searchIngredients(true)">
+            Search
+          </button>
+        </form>
+
+        <div *ngIf="recommendedIngredients">
+          <h3>Recommended Results</h3>
+          <div *ngFor="let recommended of recommendedIngredients">
+            <div class="card mb-3" style="max-width: 540px">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img
+                    src="{{ recommended.imgUrl }}"
+                    class="img-fluid rounded-start"
+                  />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ recommended.name }}</h5>
+                    <p class="card-text">
+                      <small class="text-muted">{{ recommended.upc }}</small>
+                    </p>
+                    <p class="card-text">
+                      <button class="btn btn-primary" (click)="addIngredientToRecipe(recommended)">Add to {{recipe?.name}}</button>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="apiIngredients">
+          <h3>Api Results</h3>
+          <div *ngFor="let api of apiIngredients">
+            <div class="card mb-3" style="max-width: 540px">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="{{ api.imgUrl }}" class="img-fluid rounded-start" />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ api.name }}</h5>
+                    <p class="card-text">
+                      <small class="text-muted">{{ api.upc }}</small>
+                    </p>
+                    <p class="card-text">
+                      <button class="btn btn-primary" (click)="addIngredientToRecipe(api)" >Add to {{recipe?.name}}</button>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <h1>Adding Ingredients to {{ recipe?.name }}</h1>
+        <div *ngFor="let item of recipe?.recipeIngredients" >
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img
+                  src="{{ item.ingredient.imgUrl }}"
+                  class="img-fluid rounded-start"
+                />
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ item.ingredient.name }}</h5>
+                  <p class="card-text">
+                    <small class="text-muted">{{ item.ingredient.upc }}</small>
+                  </p>
+                  <p class="card-text">
+                    <button class="btn btn-danger" (click)="unsaveIngredient(item.ingredient)" >Remove</button>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

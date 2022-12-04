@@ -1,24 +1,85 @@
 <div name="notLoggedIn" *ngIf="!checkLogin()">
   You must be logged in to utilize this feature.
-  <br>
-  <button [routerLink]="['/login']">Log in</button> <button [routerLink]="['/register']">Register</button>
-  </div>
+  <br />
+  <button [routerLink]="['/login']">Log in</button>
+  <button [routerLink]="['/register']">Register</button>
+</div>
 
 <div name="mainCreateRecipe" *ngIf="checkLogin()">
-Name: <input type="text" name="recipeName" [(ngModel)]="newRecipe.name"><br>
-Description: <input type="text" name="description" [(ngModel)]="newRecipe.description"><br>
-Image Link: <input type="text" name="imgUrl" [(ngModel)]="newRecipe.imgUrl"><br>
-Instructions: <input type="text" name="instructions" [(ngModel)]="newRecipe.instructions"><br>
-
-Prep Time in Minutes: <input type="number" name="prepTime" [(ngModel)]="newRecipe.prepTime"><br>
-
-Cook Time in Minutes: <input type="number" name="cookTime" [(ngModel)]="newRecipe.cookTime"><br>
-<!--
+  <form>
+    <div class="container-fluid text-center">
+      <div class="card w-50">
+        <div class="card-body">
+          <h5 class="card-title">Create Recipe</h5>
+          <input
+            class="form-control"
+            type="text"
+            name="recipeName"
+            placeholder="Recipe Name"
+            [(ngModel)]="newRecipe.name"
+          />
+          <br />
+          <input
+            class="form-control"
+            type="text"
+            name="description"
+            placeholder="Description"
+            [(ngModel)]="newRecipe.description"
+          />
+          <br />
+          <input
+            class="form-control"
+            type="text"
+            name="imgUrl"
+            placeholder="Image Url"
+            [(ngModel)]="newRecipe.imgUrl"
+          />
+          <br />
+          <div class="input-group">
+            <span class="input-group-text">Instructions</span>
+            <textarea
+              class="form-control"
+              name="instructions"
+              [(ngModel)]="newRecipe.instructions"
+            >
+            </textarea>
+          </div>
+          <br />
+          <div class="input-group mb-3">
+            <span class="input-group-text">Prep Time</span>
+            <input
+              class="form-control"
+              type="number"
+              name="prepTime"
+              placeholder="Prep Time"
+              [(ngModel)]="newRecipe.prepTime"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Cook Time</span>
+            <input
+              class="form-control"
+              type="number"
+              name="cookTime"
+              placeholder="Cook Time"
+              [(ngModel)]="newRecipe.cookTime"
+            />
+          </div>
+          <hr />
+          <div class="text-center">
+            <button class="btn btn-primary" (click)="addRecipe(newRecipe)">
+              Create Recipe
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!--
 Ingredient: <input type="text" name="ingredient" [(ngModel)]="ingredient.name">
 <button (click)="pushIngredient(ingredient)">Add ingredient</button> -->
 
-<button (click)="addRecipe(newRecipe);">Create Recipe</button>
-<!--
+  <!--
 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
   <option selected>Open this select menu</option>
   <option value="1">One</option>

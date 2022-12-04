@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, NO_ERRORS_SCHEMA } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Store } from '../models/store';
+import { User } from '../models/user';
 import { AuthService } from './auth.service';
 
 @Injectable({

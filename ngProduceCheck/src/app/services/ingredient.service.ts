@@ -48,9 +48,28 @@ export class IngredientService {
       );
   }
 
-  availabilityLookup(storeId:number, upcNumbers: []):Observable<CustomIngredientStatistics>{
-    let data = {"data": upcNumbers}
-    return this.http.post<CustomIngredientStatistics>(`${this.availabilityUrl}/${storeId}`, data, this.getHttpOptions())
-
+  availabilityLookup(
+    storeId: number,
+    upcNumbers: []
+  ): Observable<CustomIngredientStatistics> {
+    let data = { data: upcNumbers };
+    return this.http
+      .post<CustomIngredientStatistics>(
+        `${this.availabilityUrl}/${storeId}`,
+        data,
+        this.getHttpOptions()
+      )
+      .pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(
+            () =>
+              new Error(
+                'IngredientService.availabilityLookup():error searching availability for ingredients: ' +
+                  err
+              )
+          );
+        })
+      );
   }
 }

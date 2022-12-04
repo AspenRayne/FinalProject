@@ -172,7 +172,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 		RecipeReaction recipeReaction = new RecipeReaction();
 		RecipeReactionId recipeReactionId = new RecipeReactionId(user.getId(), recipe.getId());
-		
+
 		recipeReaction.setRecipe(recipe);
 		recipeReaction.setUser(user);
 		recipeReaction.setId(recipeReactionId);
@@ -185,5 +185,29 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipe;
 
 	}
+		
+	@Override
+	public Recipe unsaveIngredient(String username, int recipeId, int ingredientId) {
+		Recipe recipe = recipeRepo.findById(recipeId);
+		if (!recipe.getUser().getUsername().equals(username)) {
+			return null;
+		}
+		for (RecipeIngredient recipeIngredient : recipe.getRecipeIngredients()) {
+			if (recipeIngredient.getIngredient().getId() == ingredientId) {
+				recipeIngredientRepo.delete(recipeIngredient);
+				recipe.removeRecipeIngredient(recipeIngredient);
+
+				Ingredient ingredient = recipeIngredient.getIngredient();
+				ingredient.removeRecipeIngredient(recipeIngredient);
+				ingredientRepo.save(ingredient);
+				return recipeRepo.saveAndFlush(recipe);
+			}
+		}
+		return null;
+	}
+				
+		
+
+				
 
 }

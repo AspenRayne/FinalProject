@@ -20,6 +20,7 @@ export class User {
   recipeReactions: RecipeReaction[];
   comments: Comment[];
   stores: Store[];
+  userRecipes: Recipe[];
 
   constructor(
     id: number = 0,
@@ -37,7 +38,8 @@ export class User {
     recipes: Recipe[] = [],
     recipeReactions: RecipeReaction[] = [],
     comments: Comment[] = [],
-    stores: Store[] = []
+    stores: Store[] = [],
+    userRecipes: Recipe[] = []
   ) {
     this.id = id;
     this.username = username;
@@ -55,5 +57,6 @@ export class User {
     this.recipeReactions = recipeReactions;
     this.comments = comments;
     this.stores = stores;
+    this.userRecipes = userRecipes;
   }
 }

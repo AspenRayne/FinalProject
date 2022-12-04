@@ -11,6 +11,7 @@ import { CreateRecipeComponent } from './components/create-recipe/create-recipe.
 import { UserComponent } from './components/user/user.component';
 import { DatePipe } from '@angular/common';
 import { RecipeSearchComponent } from './components/recipe-search/recipe-search.component';
+import { IngredientComponent } from './components/ingredient/ingredient.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -23,6 +24,8 @@ const routes: Routes = [
   { path: 'recipe/:id', component: RecipeComponent},
   { path: 'recipe-search', component: RecipeSearchComponent },
   { path: 'create', component: CreateRecipeComponent },
+  { path: 'ingredient', component: IngredientComponent },
+  { path: 'ingredient/:recipe', component: IngredientComponent },
   { path: 'profile', component: UserComponent },
   { path: 'admin', component: UserComponent },
   { path: '**', component: NotFoundComponent},

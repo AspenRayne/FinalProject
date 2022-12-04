@@ -12,7 +12,11 @@
 
   <tr><th>Ingredients</th></tr>
   <tr *ngFor="let recIng of recipe?.recipeIngredients"><td>{{recIng.ingredient.name}}</td></tr>
-  </table>
+  <button *ngIf="userCanEdit" class="btn btn-primary" [routerLink]="['/ingredient', recipe?.id]">
+    Edit Ingredients
+  </button>
+</table>
+
   <meta charset="UTF-8">
   Reaction
 <table>
