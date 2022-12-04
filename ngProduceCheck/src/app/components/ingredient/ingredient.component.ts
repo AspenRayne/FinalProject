@@ -13,6 +13,7 @@ import { IngredientService } from 'src/app/services/ingredient.service';
 export class IngredientComponent implements OnInit {
   recipe: Recipe | null = null;
   currentUser: User | null = null;
+  lookup: string | null = null;
 
   constructor(
     private ingredientService: IngredientService,
@@ -43,7 +44,9 @@ export class IngredientComponent implements OnInit {
     this.ingredientService
       .searchIngredients(lookup, pagination, locationId)
       .subscribe({
-        next: (data) => {},
+        next: (data) => {
+          console.log(data);
+        },
 
         error: (err) => {
           console.error('IngredientComponent.searchIngredients(): error searching Ingredients');

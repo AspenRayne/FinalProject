@@ -43,6 +43,7 @@ public class KrogerAPIService {
 	private String encodedAuthString;
 	private static String baseUrl = "https://api-ce.kroger.com/v1/";
 	private String accessKey;
+	private Timestamp accessKeyExpiration;
 
 	/*
 	 * API Utility
@@ -53,28 +54,33 @@ public class KrogerAPIService {
 		String secrets = KrogerApiSecret.clientId + ":" + KrogerApiSecret.clientSecret;
 		String encodedSecrets = "Basic " + Base64.getEncoder().encodeToString(secrets.getBytes());
 		secrets = null;
-		System.out.println(encodedSecrets);
 		return encodedSecrets;
 	}
 
-	private String getClientAuthorization() {
+	private void setClientAuthorization() {
+		Timestamp now = Timestamp.from(Instant.now());
+		if (this.accessKeyExpiration != null && this.accessKey != null) {
+			if (now.before(this.accessKeyExpiration)) {
+				return;
+			}
+		}
+		
 		// Check ClientAuthorization Repository for most recent code
 		ClientAccess clientAccess = clientRepo.findFirstByOrderByExpirationDesc();
-		Instant instance = Instant.now();
-		Timestamp now = Timestamp.from(instance);
 
 		// If expired, request new code and store
 		if (clientAccess != null && now.before(clientAccess.getExpiration())) {
-			return clientAccess.getApikey();
+			this.accessKey = clientAccess.getApikey();
+			this.accessKeyExpiration = clientAccess.getExpiration();
 		} else {
 			try {
-				return this.requestClientAuthorization();
+				ClientAccess access = this.requestClientAuthorization();
+				this.accessKey = access.getApikey();
+				this.accessKeyExpiration = access.getExpiration();
 			} catch (Exception e) {
 				System.out.println(e);
 			}
 		}
-
-		return null;
 
 	}
 
@@ -86,15 +92,7 @@ public class KrogerAPIService {
 
 	@SuppressWarnings("unchecked")
 	public JSONObject ingredientsLookup(String lookup, int pagination, boolean recommended, int locationId) {
-		String accessKey;
-		if (this.accessKey == null) {
-			accessKey = this.getClientAuthorization();
-			if (accessKey == null) {
-				return null;
-
-			}
-			this.accessKey = accessKey;
-		}
+		this.setClientAuthorization();
 
 		JSONObject response = new JSONObject();
 		JSONArray recommendedIngredients = new JSONArray();
@@ -118,15 +116,7 @@ public class KrogerAPIService {
 	}
 
 	public Ingredient ingredientDescription(String upc) {
-		String accessKey;
-		if (this.accessKey == null) {
-			accessKey = this.getClientAuthorization();
-			if (accessKey == null) {
-				return null;
-
-			}
-			this.accessKey = accessKey;
-		}
+		this.setClientAuthorization();
 
 		try {
 			Ingredient ingredient = this.requestProductDetails(upc);
@@ -137,14 +127,7 @@ public class KrogerAPIService {
 	}
 
 	public List<Store> storeLookup(String zipcode) {
-		String accessKey;
-		if (this.accessKey == null) {
-			accessKey = this.getClientAuthorization();
-			if (accessKey == null) {
-				return null;
-			}
-			this.accessKey = accessKey;
-		}
+		this.setClientAuthorization();
 		List<Store> stores;
 		try {
 			stores = this.requestLocations(zipcode);
@@ -157,14 +140,7 @@ public class KrogerAPIService {
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject availabilityCheck(int storeId, List<String> productIds) {
-		String accessKey;
-		if (this.accessKey == null) {
-			accessKey = this.getClientAuthorization();
-			if (accessKey == null) {
-				return null;
-			}
-			this.accessKey = accessKey;
-		}
+		this.setClientAuthorization();
 		
 		JSONObject responseData = new JSONObject();
 		for (String productId : productIds) {
@@ -259,7 +235,7 @@ public class KrogerAPIService {
 	}
 	
 
-	private String requestClientAuthorization() throws IOException {
+	private ClientAccess requestClientAuthorization() throws IOException {
 		this.encodedAuthString = this.base64EncodeSecrets();
 		String url = baseUrl + "connect/oauth2/token?grant_type=client_credentials" + "&scope=product.compact";
 
@@ -274,8 +250,8 @@ public class KrogerAPIService {
 			String key = "Bearer " + obj.get("access_token").toString();
 			System.out.println(key);
 			ClientAccess newAccess = new ClientAccess(key, expiration);
-			clientRepo.save(newAccess);
-			return key;
+			newAccess = clientRepo.save(newAccess);
+			return newAccess;
 		} else {
 			// Throw error code
 			return null;

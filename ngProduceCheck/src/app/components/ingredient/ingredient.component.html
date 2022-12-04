@@ -1,1 +1,11 @@
-<p>ingredient works!</p>
+<form>
+  <input
+    class="form-control"
+    type="text"
+    name="lookup"
+    placeholder="Product"
+    [(ngModel)]="lookup"
+  />
+  <hr />
+  <button class="btn btn-dark" (click)="searchIngredients('orange', 1, 62000082)">Search</button>
+</form>
