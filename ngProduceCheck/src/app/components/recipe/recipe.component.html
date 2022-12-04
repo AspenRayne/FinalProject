@@ -17,20 +17,11 @@
   </button>
 </table>
 
-  <meta charset="UTF-8">
-
-  Reaction
-<table>
-  <tr *ngFor="let r of recipe?.recipeReactions"><td>{{r.reaction.id}} {{r.reaction.emoji}} Heres a test reaction</td></tr>
-</table>
-  <p> </p>
-  &#128512;
-
   <div name="noComments" *ngIf="noCommentsYet">
       <h2>No comments for the recipe yet, be the first!</h2>
   </div>
 
-<div name="comment-table">
+<div name="comment-table"> Comments
   <table class="table-bordered" *ngFor="let comment of recipeComments">
     <tr>
       <td style="color: gray">
@@ -41,12 +32,14 @@
       </td>
     </tr>
      <tr *ngIf="comment.comments.length > 0"></tr>
-     <!-- <td><button *ngIf="checkUser(comment.user.id, currentUser.id)" class="btn btn-danger" (click)="removeComment(comment.id)">Delete</button>
-      <td><button *ngIf="!checkUser(comment.user.id, currentUser.id)" class="btn btn-dark">Reply</button>
-
-    </td>
-    </tr> -->
-  </table>
+     <td>
+      <button *ngIf="checkUser(comment.user.id, currentUser.id)" class="btn btn-danger" (click)="removeComment(comment.id)">Delete</button>
+      <input type="text" [(ngModel)]="newComment.comment">
+      <button *ngIf="!checkUser(comment.user.id, currentUser.id)" class="btn btn-dark" (click)="replyComment(comment.id,newComment)">Reply</button></td>
+      <td *ngIf="comment.replyComment"><em>{{comment.replyComment}}</em></td>
+  </table><br>
+  <input type="text" [(ngModel)]="newComment.comment">
+      <button (click)="addNewComment(newComment)">Comment On This Recipe</button>
 </div>
 
 <!-- <div name="notLoggedIn" *ngIf="!checkLogin()">

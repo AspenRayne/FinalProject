@@ -103,6 +103,26 @@ export class RecipeComponent implements OnInit {
       this.commentService.create(this.recipeId, comment).subscribe({
         next: (data) => {
           console.log('added new comment');
+          window.location.reload();
+
+        },
+        error: (err) => {
+          console.error(
+            'RecipeComponent.updateRecipe(): Error updating recipe'
+          );
+          console.error(err);
+        },
+      });
+    }
+  }
+
+  replyComment(commentId: number, comment: Comment) {
+    if (this.recipe) {
+      this.commentService.createReply(this.recipeId, commentId, comment).subscribe({
+        next: (data) => {
+          console.log('added new reply comment');
+          window.location.reload();
+
         },
         error: (err) => {
           console.error(
@@ -121,6 +141,7 @@ export class RecipeComponent implements OnInit {
           this.recipeComments = data;
           if (this.recipeComments.length === 0) {
             this.noCommentsYet = true;
+
           }
         },
         error: (err) => {

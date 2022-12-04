@@ -48,6 +48,15 @@ export class CommentService {
         return throwError(() => Error('CommentService.create(): error creating a new comment item'));
       }));
   }
+
+  createReply(recipeId: number, commentId: number, comment: Comment) {
+    return this.http.post<Comment>(this.baseUrl + '/' + recipeId + '/comments' + '/' + commentId, comment, this.getHttpOptions()).pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError(() => Error('CommentService.create(): error creating a new comment item'));
+      }));
+  }
+
   destroy(recipeId: number, commentId: number) {
     return this.http.delete<void>(this.baseUrl + '/' + recipeId + '/comments/' + commentId, this.getHttpOptions()).pipe(
       catchError((err: any) => {
