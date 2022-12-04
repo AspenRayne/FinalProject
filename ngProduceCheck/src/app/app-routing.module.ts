@@ -10,6 +10,7 @@ import { AboutComponent } from './components/about/about.component';
 import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
 import { UserComponent } from './components/user/user.component';
 import { DatePipe } from '@angular/common';
+import { RecipeSearchComponent } from './components/recipe-search/recipe-search.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'recipe', component: RecipeComponent},
+  { path: 'recipe-search', component: RecipeSearchComponent },
   { path: 'create', component: CreateRecipeComponent },
   { path: 'profile', component: UserComponent },
   { path: 'admin', component: UserComponent },

@@ -39,6 +39,7 @@ public class Comment {
 	@JoinColumn(name="recipe_id")
 	private Recipe recipe;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="in_reply_to")
 	private Comment replyComment;
