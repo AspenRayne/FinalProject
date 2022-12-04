@@ -63,17 +63,19 @@ export class RecipeSearchComponent implements OnInit {
     })
   }
 
-  testRecipe() {
-    this.router.navigateByUrl('/recipe/:id');
+  sendToRecipe(id: number) {
+    this.router.navigateByUrl('/recipe/' + id);
   }
   searchBeenClicked() {
     this.nothingFound = false;
     if (this.searchWord === '') {
       this.searchClicked = false;
       console.log('nothing entered');
+      this.nothingFound = true;
       return;
     }
     this.searchClicked = true;
+    this.searchForRecipe(this.searchWord);
   }
   checkLogin(): boolean {
     return this.auth.checkLogin();
