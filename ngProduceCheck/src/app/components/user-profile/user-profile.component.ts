@@ -9,15 +9,15 @@ import { UserService } from 'src/app/services/user.service';
 import { Comment } from 'src/app/models/comment';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-user-profile',
+  templateUrl: './user-profile.component.html',
+  styleUrls: ['./user-profile.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserProfileComponent implements OnInit {
 
   public loggedInUser: User | null = null;
   currentUser: User = new User();
-  somevar: number = 3;
+
   selectedRecipe: Recipe | null = null;
   recipe: Recipe | null = null;
   recipes: Recipe[] = [];
@@ -45,7 +45,28 @@ export class UserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    let routeId = this.route.snapshot.paramMap.get('id');
+    console.log(routeId);
+    if(routeId && !this.selectedUser){
+      let userId = Number.parseInt(routeId);
+      if(isNaN(userId)){
+        this.router.navigateByUrl('invalidId');
+      }else{
+        this.userService.show(userId).subscribe({
+          next: (user) => {
+            this.selectedUser= user;
+            console.log(this.selectedUser);
+          },
+          error: (fail) => {
+            console.error('UserService.ngOnInit: User not found')
+            this.router.navigateByUrl('userNotFound');
 
+          }
+        })
+      }
+    }
+
+    this.getAllUserRecipes();
     this.auth.getLoggedInUser().subscribe(
       {
         next: (data) => {
@@ -57,25 +78,7 @@ export class UserComponent implements OnInit {
 
         }
       });
-      console.log("before cond");
-
-      // if(this.user){
-        console.log("inside cond");
-
-        this.getUserRecipes();
-        console.log(this.recipes);
-
-      // }
-      this.showAll();
-      this.getAllUserRecipes();
   }
-  // sendProfile(id: number){
-  //   console.log('ID *********************************' + id);
-  //   console.log(this.selectedUser);
-
-  //   this.router.navigateByUrl('/profile/' + id);
-
-  // }
   setEditUser() {
     this.auth.getLoggedInUser().subscribe(
       {
@@ -268,8 +271,5 @@ export class UserComponent implements OnInit {
     this.nothingFound = false;
 
   }
-  test(): void {
-    console.log("test");
 
-  }
 }

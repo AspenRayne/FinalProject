@@ -22,12 +22,7 @@
 
     </div>
   </div>
-  <div class="col-md-4">
-    <label for="inputState" class="form-label">Find Other Users</label>
-    <select [(ngModel)]="selectedUser"  id="inputState" class="form-select">
-      <option *ngFor="let u of users" [ngValue]="u">{{u.username}}</option>
-    </select>
-  </div>
+
 <div class="container">
   <div class="row">
   <table class="col table table-striped table-hover">
@@ -50,7 +45,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let r of recipes | publishedRecipe">
-        <td (click)="chooseRecipe(r)">{{r.name}}</td>
+        <td> <a [routerLink]="['/recipe/', r.id]">{{r.name}}</a>
+
+        </td>
       </tr>
     </tbody>
   </table>
@@ -58,6 +55,7 @@
 </div>
 
 </div>
+
 <div name="selectedtable" *ngIf="selectedRec" style="height:fit-content">
   <img src="{{selectedRecipe?.imgUrl}}" alt="No image found">
   <table id="recipe-table" class="table table-bordered">
@@ -116,50 +114,12 @@
 <div class="col-12">
   <button *ngIf="!editUser && !selectedRec && !selectedUser"class="btn btn-success" (click)="setEditUser()">Edit Profile</button>
 </div>
-
-<div *ngIf="selectedUser" class="col-md-6">
-  <h1> Greetings {{user?.username}}! Welcome to {{selectedUser.username}}'s Profile Page</h1>
-  <div class="card">
-    <label for="aboutMe">About Me</label>
-    <div class="card-body">
-      {{selectedUser.aboutMe}}
-
+<div class="col text-end">
+  <div ngbDropdown placement="top-end" class="d-inline-block">
+    <button type="button" class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Find Other Users</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+      <button ngbDropdownItem *ngFor="let u of users" [routerLink]="['/profile/', u.id]">{{u.username}}</button>
     </div>
   </div>
-  <div class="card">
-    <label for="firstName">First Name</label>
-    <div class="card-body">
-      {{selectedUser.firstName}}
-
-    </div>
-  </div>
-  <div class="card">
-    <label for="lastName">Last Name</label>
-    <div class="card-body">
-      {{selectedUser.lastName}}
-
-    </div>
-  </div>
-  <table class="col table table-striped table-hover">
-    <thead class="table-dark">
-      <tr>
-        <th>My Published Recipes</th>
-        <th>Take A Look</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let r of allRec | publishedRecipe | selectedUserRecipes: selectedUser.id">
-        <!-- <td (click)="chooseRecipe(r)">{{r.name}}</td> -->
-        <td>{{r.name}}</td>
-        <td>
-          <button class="btn btn-primary">
-            <a class="btn btn-primary" [routerLink]="['/recipe/', '3']">View</a>
-          </button>
-        </td>
-
-
-      </tr>
-    </tbody>
-  </table>
-
 </div>
+
