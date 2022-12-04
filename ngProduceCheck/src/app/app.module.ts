@@ -17,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AboutComponent } from './components/about/about.component';
 import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
 import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
+import { SelectedUserRecipesPipe } from './pipes/selected-user-recipes.pipe';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
     UserComponent,
     AboutComponent,
     CreateRecipeComponent,
-    PublishedRecipePipe
+    PublishedRecipePipe,
+    SelectedUserRecipesPipe
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,7 @@ import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
     FormsModule,
     NgbModule
   ],
-  providers: [PublishedRecipePipe],
+  providers: [PublishedRecipePipe, SelectedUserRecipesPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
