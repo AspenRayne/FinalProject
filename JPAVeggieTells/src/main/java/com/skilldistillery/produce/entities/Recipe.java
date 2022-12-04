@@ -52,7 +52,7 @@ public class Recipe {
 	@ManyToMany(mappedBy = "recipes")
 	private List<User> users;
 
-	@JsonIgnoreProperties({"recipe"})
+	@JsonIgnoreProperties({"recipe", "user"})
 	@OneToMany(mappedBy = "recipe")
 	private List<RecipeReaction> recipeReactions;
 
@@ -63,7 +63,8 @@ public class Recipe {
 	@JsonIgnoreProperties({"recipe"})
 	@OneToMany(mappedBy="recipe")
 	private List<RecipeIngredient> recipeIngredients;
-
+	
+	
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
