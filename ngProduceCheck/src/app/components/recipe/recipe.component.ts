@@ -31,7 +31,7 @@ export class RecipeComponent implements OnInit {
   noCommentsYet: boolean = false;
   isCommentUserIdSame: boolean = false;
   newComment: Comment = new Comment;
-
+  emojiCode: string = '\uD83D\uDE00';
 
 //   ingredient: Ingredient = new Ingredient;
 //   recipeIngredient: RecipeIngredient[] = [];

@@ -1,5 +1,6 @@
 package com.skilldistillery.produce.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -8,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.skilldistillery.produce.entities.Ingredient;
+import com.skilldistillery.produce.entities.Reaction;
 import com.skilldistillery.produce.entities.Recipe;
 import com.skilldistillery.produce.entities.RecipeIngredient;
 import com.skilldistillery.produce.entities.RecipeIngredientId;
+import com.skilldistillery.produce.entities.RecipeReaction;
+import com.skilldistillery.produce.entities.RecipeReactionId;
 import com.skilldistillery.produce.entities.User;
 import com.skilldistillery.produce.repositories.IngredientRepository;
 import com.skilldistillery.produce.repositories.RecipeIngredientRepository;
+import com.skilldistillery.produce.repositories.RecipeReactionRepository;
 import com.skilldistillery.produce.repositories.RecipeRepository;
 import com.skilldistillery.produce.repositories.UserRepository;
 
@@ -34,6 +39,9 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Autowired
 	private IngredientService ingredientService;
+	
+	@Autowired 
+	private RecipeReactionRepository recipeReactionRepo;
 
 	@Override
 	public List<Recipe> index() {
@@ -152,6 +160,30 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public Recipe show(int id) {
 		return recipeRepo.findById(id);
+	}
+
+	@Override
+	public Recipe addReaction(String username, int recipeId, Reaction reaction) {
+		User user = userRepo.findByUsername(username);
+		Recipe recipe = recipeRepo.findByUser_UsernameAndId(username, recipeId);
+			List<RecipeReaction> recipeReactions = new ArrayList<>();
+		if (recipe == null) {
+			return null;
+		}
+		RecipeReaction recipeReaction = new RecipeReaction();
+		RecipeReactionId recipeReactionId = new RecipeReactionId(user.getId(), recipe.getId());
+		
+		recipeReaction.setRecipe(recipe);
+		recipeReaction.setUser(user);
+		recipeReaction.setId(recipeReactionId);
+		recipeReaction.setReaction(reaction);
+		recipeReactionRepo.saveAndFlush(recipeReaction);
+		recipeReactions.add(recipeReaction);
+		recipe.setRecipeReactions(recipeReactions);
+		recipeRepo.save(recipe);
+
+		return recipe;
+
 	}
 
 }

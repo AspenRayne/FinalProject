@@ -52,7 +52,7 @@ public class Recipe {
 	@ManyToMany(mappedBy = "recipes")
 	private List<User> users;
 
-	@JsonIgnore
+	@JsonIgnoreProperties({"recipe"})
 	@OneToMany(mappedBy = "recipe")
 	private List<RecipeReaction> recipeReactions;
 

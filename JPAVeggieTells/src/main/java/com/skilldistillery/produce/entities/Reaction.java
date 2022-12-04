@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Reaction {
 
@@ -18,6 +20,7 @@ public class Reaction {
 	private int id;
 	private char emoji;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="reaction")
 	private List<RecipeReaction> recipeReactions;
 	
