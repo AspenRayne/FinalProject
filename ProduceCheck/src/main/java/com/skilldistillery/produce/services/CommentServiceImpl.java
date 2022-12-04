@@ -1,6 +1,7 @@
 package com.skilldistillery.produce.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,29 @@ public class CommentServiceImpl implements CommentService {
 		commentRepo.saveAndFlush(comment);
 		return comment;
 	}
+	
+	@Override
+	public Comment createReply(int recipeId, String username, int commentId, Comment replyComment) {
+		Recipe recipe = recipeRepo.queryById(recipeId);
+		User user = userRepo.findByUsername(username);
+		Comment originalComment = commentRepo.findById(commentId);
+		if (originalComment == null) {
+			return null;
+		}
+		
+		if (recipe == null) {
+			return null;
+		}
+		replyComment.setCommentDate(LocalDateTime.now());
+		replyComment.setUser(user);
+		replyComment.setRecipe(recipe);
+		originalComment.addComment(replyComment);
+		System.out.println(originalComment.getComments());
+		commentRepo.save(originalComment);
+		commentRepo.saveAndFlush(replyComment);
+		return replyComment;
+	}
+
 
 	@Override
 	public boolean delete(int recipeId, int commentId, String username) {

@@ -74,12 +74,14 @@ You must be logged in to utilize this feature.
   <button (click)="selected=false">Back</button><button>Like</button>
   </table>
   Comments
-  <table id="recipe-table" class="table table-bordered">
+  <table class="table-bordered">
     <tr *ngFor="let comment of recipeComments">
       <td style="color: gray">{{comment.user.username}} @ {{comment.commentDate | date:'shortTime' }}</td>
      <td>{{comment.comment}}</td>
      <td><button *ngIf="checkUser(comment.user.id, currentUser.id)" class="btn btn-danger" (click)="removeComment(comment.id)">Delete</button>
-     </td>
+      <td><button *ngIf="!checkUser(comment.user.id, currentUser.id)" class="btn btn-dark">Reply</button>
+
+    </td>
     </tr>
   </table>
   <input type="text" [(ngModel)]="newComment.comment">

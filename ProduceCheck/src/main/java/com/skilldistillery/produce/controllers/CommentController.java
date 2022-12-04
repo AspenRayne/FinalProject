@@ -55,6 +55,25 @@ public class CommentController {
 		}
 		return comment;
 	}
+	@PostMapping("recipes/{id}/comments/{cid}")
+	public Comment createReply(@PathVariable int id, @RequestBody Comment comment, @PathVariable int cid, HttpServletRequest req,
+			HttpServletResponse res, Principal principal) {
+		try {
+			comment = commentService.createReply(id, principal.getName(), cid, comment);
+			if (comment == null) {
+				res.setStatus(404);
+			} else {
+				res.setStatus(201);
+				StringBuffer url = req.getRequestURL();
+				url.append("/").append(comment.getId());
+				res.setHeader("Location", url.toString());
+			}
+		} catch (Exception e) {
+			res.setStatus(400);
+			comment = null;
+		}
+		return comment;
+	}
 
 	@DeleteMapping("recipes/{id}/comments/{cid}")
 	public void delete(@PathVariable int id, @PathVariable int cid, HttpServletResponse res, Principal principal) {

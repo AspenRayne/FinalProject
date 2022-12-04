@@ -11,6 +11,8 @@ public interface CommentService {
 	Comment create(int recipeId, String username, Comment comment);
 	
 	boolean delete(int recipeId, int commentId, String username);
+
+	Comment createReply(int recipeId, String username, int commentId, Comment comment);
 	
 
 }
