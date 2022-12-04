@@ -1,5 +1,5 @@
 
-<div *ngIf="!editUser && !selectedRec"class="topProfPage" id="topProfPage">
+<div *ngIf="!editUser && !selectedRec && !selectedUser"class="topProfPage" id="topProfPage">
   <h1> Greetings {{user?.username}}! Welcome to your Profile Page</h1>
   <div class="card">
     <label for="aboutMe">About Me</label>
@@ -24,7 +24,7 @@
   </div>
   <div class="col-md-4">
     <label for="inputState" class="form-label">Find Other Users</label>
-    <select (change)="test()"  id="inputState" class="form-select">
+    <select [(ngModel)]="selectedUser"  id="inputState" class="form-select">
       <option *ngFor="let u of users" [ngValue]="u">{{u.username}}</option>
     </select>
   </div>
@@ -89,7 +89,7 @@
 </div>
 
 
-<form *ngIf="editUser" class="row g-3">
+<form *ngIf="editUser && !selectedUser" class="row g-3">
   <div class="col-md-6">
     <label for="firstName" class="form-label">First Name</label>
     <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="editUser.firstName">
@@ -111,16 +111,46 @@
   </div>
 </form>
 <div class="col-12">
-  <button *ngIf="!selectedRec" class="btn btn-warning" (click)="deleteUser(user!.id)">Deactive Account </button>
+  <button *ngIf="!selectedRec && !selectedUser" class="btn btn-warning" (click)="deleteUser(user!.id)">Deactive Account </button>
 </div>
 <div class="col-12">
-  <button *ngIf="!editUser && !selectedRec"class="btn btn-success" (click)="setEditUser()">Edit Profile</button>
+  <button *ngIf="!editUser && !selectedRec && !selectedUser"class="btn btn-success" (click)="setEditUser()">Edit Profile</button>
 </div>
 
 <div *ngIf="selectedUser" class="col-md-6">
-  <h1>jhjjhjhj</h1>
-  <table>
-  </table>
+  <h1> Greetings {{user?.username}}! Welcome to {{selectedUser.username}}'s Profile Page</h1>
+  <div class="card">
+    <label for="aboutMe">About Me</label>
+    <div class="card-body">
+      {{selectedUser.aboutMe}}
 
+    </div>
+  </div>
+  <div class="card">
+    <label for="firstName">First Name</label>
+    <div class="card-body">
+      {{selectedUser.firstName}}
+
+    </div>
+  </div>
+  <div class="card">
+    <label for="lastName">Last Name</label>
+    <div class="card-body">
+      {{selectedUser.lastName}}
+
+    </div>
+  </div>
+  <table class="col table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>My Published Recipes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of allRec | publishedRecipe | selectedUserRecipes: selectedUser.id">
+        <td (click)="chooseRecipe(r)">{{r.name}}</td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>

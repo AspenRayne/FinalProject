@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'recipe', component: RecipeComponent},
+  { path: 'recipe/:id', component: RecipeComponent},
   { path: 'recipe-search', component: RecipeSearchComponent },
   { path: 'create', component: CreateRecipeComponent },
   { path: 'profile', component: UserComponent },

@@ -19,6 +19,8 @@ import { CreateRecipeComponent } from './components/create-recipe/create-recipe.
 import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
 import { RecipeSearchComponent } from './components/recipe-search/recipe-search.component';
 import { IngredientComponent } from './components/ingredient/ingredient.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SelectedUserRecipesPipe } from './pipes/selected-user-recipes.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { IngredientComponent } from './components/ingredient/ingredient.componen
     PublishedRecipePipe,
     RecipeSearchComponent,
     IngredientComponent,
+    SelectedUserRecipesPipe
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ import { IngredientComponent } from './components/ingredient/ingredient.componen
     FormsModule,
     NgbModule
   ],
-  providers: [PublishedRecipePipe],
+  providers: [PublishedRecipePipe, SelectedUserRecipesPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

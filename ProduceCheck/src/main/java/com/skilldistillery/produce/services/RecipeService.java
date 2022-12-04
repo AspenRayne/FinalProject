@@ -7,6 +7,8 @@ import com.skilldistillery.produce.entities.Ingredient;
 import com.skilldistillery.produce.entities.Recipe;
 
 public interface RecipeService {
+	
+	public Recipe show(int id);
 
 	public List<Recipe> index();
 

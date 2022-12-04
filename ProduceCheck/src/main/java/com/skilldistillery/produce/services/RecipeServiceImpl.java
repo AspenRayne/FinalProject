@@ -149,4 +149,9 @@ public class RecipeServiceImpl implements RecipeService {
 
 	}
 
+	@Override
+	public Recipe show(int id) {
+		return recipeRepo.findById(id);
+	}
+
 }

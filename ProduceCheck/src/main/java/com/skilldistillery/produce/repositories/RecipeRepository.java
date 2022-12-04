@@ -10,6 +10,7 @@ import com.skilldistillery.produce.entities.Recipe;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 	
+	Recipe findById(int id);
 	Set<Recipe> findByUsers_Username(String username);
 	Set<Recipe> findByUser_Username(String username);
 	

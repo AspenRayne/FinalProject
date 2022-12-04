@@ -63,6 +63,9 @@ export class RecipeSearchComponent implements OnInit {
     })
   }
 
+  testRecipe() {
+    this.router.navigateByUrl('/recipe/:id');
+  }
   searchBeenClicked() {
     this.nothingFound = false;
     if (this.searchWord === '') {
@@ -75,15 +78,17 @@ export class RecipeSearchComponent implements OnInit {
   checkLogin(): boolean {
     return this.auth.checkLogin();
   }
+
+
   searchForRecipe(searchWord: string) {
-    this.searchBeenClicked();
     this.recipeService.search(searchWord).subscribe(
       {
       next: (data) => {
+
         this.recipes = data
         if (this.recipes.length === 0) {
-          this.nothingFound = true;
-        }
+            this.nothingFound = true;
+          }
         },
       error: (err) => {
         console.error("RecipeComponent.reload(): error loading Recipes");
@@ -93,15 +98,11 @@ export class RecipeSearchComponent implements OnInit {
     });
   }
 
-  // Recipe Work
   chooseRecipe(recipe: Recipe) {
     this.selectedRecipe = recipe;
     this.selected = true;
     this.getComments(this.selectedRecipe.id);
   }
-
-// Comment Work
-
   addNewComment(comment: Comment) {
     if (this.selectedRecipe) {
       this.commentService.create(this.selectedRecipe.id, comment).subscribe(
