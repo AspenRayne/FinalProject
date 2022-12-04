@@ -12,6 +12,32 @@
 
   <tr><th>Ingredients</th></tr>
   <tr *ngFor="let recIng of recipe?.recipeIngredients"><td>{{recIng.ingredient.name}}</td></tr>
+  </table>
+  STUFF
+
+
+  <div name="noComments" *ngIf="noCommentsYet">
+      <h2>No comments for the recipe yet, be the first!</h2>
+  </div>
+
+<div name="comment-table">
+  <table class="table-bordered" *ngFor="let comment of recipeComments">
+    <tr>
+      <td style="color: gray">
+          {{comment.user.username}} @ {{comment.commentDate | date:'shortTime' }}
+      </td>
+      <td>
+          {{comment.comment}}
+      </td>
+    </tr>
+     <tr *ngIf="comment.comments.length > 0"></tr>
+     <!-- <td><button *ngIf="checkUser(comment.user.id, currentUser.id)" class="btn btn-danger" (click)="removeComment(comment.id)">Delete</button>
+      <td><button *ngIf="!checkUser(comment.user.id, currentUser.id)" class="btn btn-dark">Reply</button>
+
+    </td>
+    </tr> -->
+  </table>
+</div>
 
 <!-- <div name="notLoggedIn" *ngIf="!checkLogin()">
 You must be logged in to utilize this feature.
@@ -109,7 +135,4 @@ You must be logged in to utilize this feature.
 </div>
 
 
-<div name="noComments" *ngIf="noCommentsYet">
-  <h2>No comments for the recipe yet, be the first!</h2>
-
-</div> -->
+-->
