@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.skilldistillery.produce.entities.Ingredient;
+import com.skilldistillery.produce.entities.Reaction;
 import com.skilldistillery.produce.entities.Recipe;
 
 public interface RecipeService {
@@ -28,4 +29,5 @@ public interface RecipeService {
 	
 	public Recipe addIngredient(String username, int recipeId, Ingredient ingredient);
 
+	public Recipe addReaction(String username, int recipeId, Reaction reaction);
 }

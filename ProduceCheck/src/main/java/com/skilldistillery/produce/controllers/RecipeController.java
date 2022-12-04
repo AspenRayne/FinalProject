@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.produce.entities.Ingredient;
+import com.skilldistillery.produce.entities.Reaction;
 import com.skilldistillery.produce.entities.Recipe;
 import com.skilldistillery.produce.services.RecipeService;
 
@@ -150,6 +151,20 @@ public class RecipeController {
 		}
 		return recipe;
 		
+	}
+	@PostMapping("recipes/{id}/react")
+	public Recipe reactToRecipe(@PathVariable int id, Reaction reaction, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		Recipe recipe = null;
+		try {
+			recipe = recipeService.addReaction(principal.getName(), id, reaction);
+			if (recipe == null) {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			res.setStatus(400);
+		}
+		return recipe;
+
 	}
 
 

@@ -13,8 +13,13 @@
   <tr><th>Ingredients</th></tr>
   <tr *ngFor="let recIng of recipe?.recipeIngredients"><td>{{recIng.ingredient.name}}</td></tr>
   </table>
-  STUFF
-
+  <meta charset="UTF-8">
+  Reaction
+<table>
+  <tr *ngFor="let r of recipe?.recipeReactions"><td>{{r.reaction.id}} {{r.reaction.emoji}} Heres a test reaction</td></tr>
+</table>
+  <p> </p>
+  &#128512;
 
   <div name="noComments" *ngIf="noCommentsYet">
       <h2>No comments for the recipe yet, be the first!</h2>
