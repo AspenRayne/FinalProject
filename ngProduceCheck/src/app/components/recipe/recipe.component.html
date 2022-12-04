@@ -1,4 +1,7 @@
-<div name="notLoggedIn" *ngIf="!checkLogin()">
+<p> recipe works! </p>
+
+
+<!-- <div name="notLoggedIn" *ngIf="!checkLogin()">
 You must be logged in to utilize this feature.
 <br>
 <button [routerLink]="['/login']">Log in</button> <button [routerLink]="['/register']">Register</button>
@@ -88,9 +91,13 @@ You must be logged in to utilize this feature.
   <button (click)="addNewComment(newComment)">Add Comment</button>
 </div>
 
+<div name="replyCommentDiv" *ngIf="replyToComment">
+<input type="text" [(ngModel)]=""
+
+</div>
 
 
 <div name="noComments" *ngIf="noCommentsYet">
   <h2>No comments for the recipe yet, be the first!</h2>
 
-</div>
+</div> -->

@@ -17,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AboutComponent } from './components/about/about.component';
 import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
 import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
+import { RecipeSearchComponent } from './components/recipe-search/recipe-search.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { PublishedRecipePipe } from './pipes/published-recipe.pipe';
     UserComponent,
     AboutComponent,
     CreateRecipeComponent,
-    PublishedRecipePipe
+    PublishedRecipePipe,
+    RecipeSearchComponent,
   ],
   imports: [
     BrowserModule,
