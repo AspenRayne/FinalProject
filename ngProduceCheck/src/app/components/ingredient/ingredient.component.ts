@@ -14,7 +14,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
   styleUrls: ['./ingredient.component.css'],
 })
 export class IngredientComponent implements OnInit {
-  recipe: Recipe;
+  recipe: Recipe | null = null;
   currentUser: User | null = null;
   lookup: string = '';
   currentPage: number = 1;
@@ -29,8 +29,21 @@ export class IngredientComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.recipe = new Recipe();
+    this.route.params.subscribe((params) => {
+      let recipeId = params['recipe'];
+      this.recipeService.show(recipeId).subscribe({
+        next: (data) => {
+          this.recipe = data;
+        },
+        error: (err) => {
+          console.error('ngOnInit() error retriving recipe');
+          console.error(err);
+        },
+      });
+    });
   }
+
+  getRecipe(recipe: Recipe) {}
 
   getCurrentUser() {
     this.auth.getLoggedInUser().subscribe({
@@ -48,8 +61,8 @@ export class IngredientComponent implements OnInit {
     return this.auth.checkLogin();
   }
 
-  getUserStores(): Store []{
-    if(this.currentUser === null){
+  getUserStores(): Store[] {
+    if (this.currentUser === null) {
       return [];
     }
     return this.currentUser.stores;
@@ -63,7 +76,7 @@ export class IngredientComponent implements OnInit {
     let locationId: number;
     if (this.selectedLocation === null) {
       return;
-    } else{
+    } else {
       locationId = this.selectedLocation.locationId;
     }
 
@@ -75,24 +88,27 @@ export class IngredientComponent implements OnInit {
         },
 
         error: (err) => {
-          console.error('IngredientComponent.searchIngredients(): error searching Ingredients');
+          console.error(
+            'IngredientComponent.searchIngredients(): error searching Ingredients'
+          );
           console.error(err);
         },
       });
   }
 
-  addIngredientToRecipe(ingredient: Ingredient){
-
-    this.recipeService.addIngredient(this.recipe.id, ingredient)
-    .subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (err) => {
-        console.error('IngredientComponent.searchIngredients(): error searching Ingredients');
-        console.error(err);
-      },
-    })
+  addIngredientToRecipe(ingredient: Ingredient) {
+    if (this.recipe) {
+      this.recipeService.addIngredient(this.recipe.id, ingredient).subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+        error: (err) => {
+          console.error(
+            'IngredientComponent.searchIngredients(): error searching Ingredients'
+          );
+          console.error(err);
+        },
+      });
+    }
   }
-
 }

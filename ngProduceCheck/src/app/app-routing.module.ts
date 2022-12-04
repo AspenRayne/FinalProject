@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'recipe-search', component: RecipeSearchComponent },
   { path: 'create', component: CreateRecipeComponent },
   { path: 'ingredient', component: IngredientComponent },
+  { path: 'ingredient/:recipe', component: IngredientComponent },
   { path: 'profile', component: UserComponent },
   { path: 'admin', component: UserComponent },
   { path: '**', component: NotFoundComponent},
