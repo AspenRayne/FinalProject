@@ -1,24 +1,102 @@
-<div *ngIf="selectedUser" class="col-md-6">
-  <h1> Greetings {{user?.username}}! Welcome to {{selectedUser.username}}'s Profile Page</h1>
+<div *ngIf="selectedUser">
+  <div class="container">
+    <div class="row justify-content-evenly">
+      <div class="col-4">
+        <img src="{{ selectedUser.profilePic }}" class="img-thumbnail" />
+        <hr />
+      </div>
+      <div class="col-4">
+        <h1>{{ selectedUser.username }}'s Profile</h1>
+      </div>
+      <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <li [ngbNavItem]="1">
+          <a ngbNavLink>About Me</a>
+          <ng-template ngbNavContent>
+            <p><strong>First Name:</strong> {{ selectedUser.firstName }}</p>
+            <p><strong>Last Name:</strong> {{ selectedUser.lastName }}</p>
+            <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+            <p>
+              <strong>Member Since:</strong>
+              {{ selectedUser.createdDate | date: "MMMM dd, yyyy" }}
+            </p>
+            <p>
+              <strong>Bio:</strong>
+              {{ selectedUser.aboutMe }}
+            </p>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink>Published Recipes</a>
+          <ng-template ngbNavContent>
+            <div *ngIf="allRec">
+              <div
+                *ngFor="
+                  let r of allRec
+                    | publishedRecipe
+                    | selectedUserRecipes: selectedUser.id
+                "
+              >
+                <div class="card mb-3" style="max-width: 540px">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img
+                        src="{{ r.imgUrl }}"
+                        class="img-fluid rounded-start"
+                      />
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ r.name }}</h5>
+                        <p class="card-text"></p>
+                        <p class="card-text">
+                          <small class="text-muted"
+                            >Created on:
+                            {{ r.creationDate | date: "MM/dd/yy" }}</small
+                          >
+                        </p>
+                        <p>
+                          <button
+                            class="btn btn-primary"
+                            [routerLink]="['/recipe/', r.id]"
+                          >
+                            View Recipe
+                          </button>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="selectedUser" class="col-md-6">
+  <h1>
+    Greetings {{ user?.username }}! Welcome to {{ selectedUser.username }}'s
+    Profile Page
+  </h1>
   <div class="card">
     <label for="aboutMe">About Me</label>
     <div class="card-body">
-      {{selectedUser.aboutMe}}
-
+      {{ selectedUser.aboutMe }}
     </div>
   </div>
   <div class="card">
     <label for="firstName">First Name</label>
     <div class="card-body">
-      {{selectedUser.firstName}}
-
+      {{ selectedUser.firstName }}
     </div>
   </div>
   <div class="card">
     <label for="lastName">Last Name</label>
     <div class="card-body">
-      {{selectedUser.lastName}}
-
+      {{ selectedUser.lastName }}
     </div>
   </div>
   <table class="col table table-striped table-hover">
@@ -29,18 +107,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let r of allRec | publishedRecipe | selectedUserRecipes: selectedUser.id">
-        <!-- <td (click)="chooseRecipe(r)">{{r.name}}</td> -->
-        <td>{{r.name}}</td>
+      <tr
+        *ngFor="
+          let r of allRec
+            | publishedRecipe
+            | selectedUserRecipes: selectedUser.id
+        "
+      >
+        <td>{{ r.name }}</td>
         <td>
           <button class="btn btn-primary">
-            <a class="btn btn-primary" [routerLink]="['/recipe/', r.id]">View</a>
+            <a class="btn btn-primary" [routerLink]="['/recipe/', r.id]"
+              >View</a
+            >
           </button>
         </td>
-
-
       </tr>
     </tbody>
   </table>
-
-</div>
+</div> -->

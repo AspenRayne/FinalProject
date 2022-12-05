@@ -12,6 +12,7 @@ export class RecipeService {
   private baseUrl = 'http://localhost:8088/api/recipes';
   private indexUrl = 'http://localhost:8088/api/allrecipes';
   private searchUrl = 'http://localhost:8088/api/recipes/search';
+  private unsaveUrl = 'http://localhost:8088/api/favoritedRecipes';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -113,6 +114,34 @@ export class RecipeService {
             () =>
               new Error(
                 'RecipeService.destroy(): error de-activating recipe: ' + err
+              )
+          );
+        })
+      );
+  }
+  saveRecipe(recipe: Recipe) {
+    return this.http
+      .post<Recipe>(`${this.baseUrl}/${recipe.id}`, null, this.getHttpOptions())
+      .pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(() =>
+            Error('RecipeService.saveRecipe(): error saving recipe')
+          );
+        })
+      );
+  }
+
+  unsaveRecipe(id: number) {
+    return this.http
+      .delete<void>(`${this.unsaveUrl}/${id}` , this.getHttpOptions())
+      .pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(
+            () =>
+              new Error(
+                'RecipeService.unsaveRecipe(): error unsaving recipe: ' + err
               )
           );
         })
