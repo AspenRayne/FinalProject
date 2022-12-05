@@ -53,10 +53,10 @@ public class IngredientController {
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("availabilityLookup/{storeId}")
-	public JSONObject availabilityLookup(@PathVariable int storeId,
+	public List<JSONObject> availabilityLookup(@PathVariable int storeId,
 			@RequestBody JSONObject data,
 			HttpServletResponse res) {
-		JSONObject stats = null;
+		List<JSONObject> stats = null;
 		// Unpack data request
 		try {
 			List<String> upcList = (ArrayList) data.get("data");

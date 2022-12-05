@@ -40,7 +40,7 @@ export class RecipeComponent implements OnInit {
   emojiCode: string = '\uD83D\uDE00';
   userCanEdit: boolean = false;
   selectedLocation: Store | null = null;
-  ingredientStatisticsMap: CustomIngredientStatistics | null = null;
+  ingredientStatisticsMap: Map<string, CustomIngredientStatistics> | null = null;
   totalPrice: number = 0;
   zipcode: string = '';
   locationOptions: Store [] | null = null;
@@ -216,8 +216,12 @@ export class RecipeComponent implements OnInit {
       .availabilityLookup(this.selectedLocation.locationId, upcList)
       .subscribe({
         next: (data) => {
-          // this.totalPrice = this.calculateTotalPrice(data);
-          // this.ingredientStatisticsMap = data;
+          this.totalPrice = this.calculateTotalPrice(data);
+          this.ingredientStatisticsMap = new Map<string, CustomIngredientStatistics>;
+          data.forEach((stat)=>{
+            this.ingredientStatisticsMap?.set(stat.upc, stat);
+          })
+          console.log(this.ingredientStatisticsMap);
         },
         error: (err) => {
           console.error(
@@ -227,13 +231,13 @@ export class RecipeComponent implements OnInit {
       });
   }
 
-  // calculateTotalPrice(map: CustomIngredientStatistics ): number{
-  //   let price = 0;
-  //   map.statMap.forEach((stat) =>{
-  //     price += stat.price;
-  //   })
-  //   return price;
-  // }
+  calculateTotalPrice(list: CustomIngredientStatistics []): number{
+    let price = 0;
+    list.forEach((stat) =>{
+      price += stat.price;
+    })
+    return price;
+  }
 
   selectStore(store: Store) {
     this.selectedLocation = store;

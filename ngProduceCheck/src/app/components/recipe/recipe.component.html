@@ -123,11 +123,38 @@
           <div class="card-body">
             <h5 class="card-title">{{ recIng.ingredient.name }}</h5>
             <p class="card-text">
-              {{ recIng.measurement }}
+              Measurement: {{ recIng.measurement }}
             </p>
             <p class="card-text">
               <small class="text-muted">{{ recIng.ingredient.upc }}</small>
             </p>
+
+            <div *ngIf="ingredientStatisticsMap && ingredientStatisticsMap.get(recIng.ingredient.upc)">
+              <div *ngIf="ingredientStatisticsMap.get(recIng.ingredient.upc)?.price != null">
+                <div>Price: {{ingredientStatisticsMap.get(recIng.ingredient.upc)?.price}}</div>
+              </div>
+              <div *ngIf="ingredientStatisticsMap.get(recIng.ingredient.upc)?.price == null">
+                <div>Price: N/A</div>
+              </div>
+              <div>
+                In Store: {{ingredientStatisticsMap.get(recIng.ingredient.upc)?.inStore}}
+              </div>
+              <div *ngIf="ingredientStatisticsMap.get(recIng.ingredient.upc)?.availability == null">
+                <div>
+                  Availability Level: N/A
+                </div>
+              </div>
+              <div *ngIf="ingredientStatisticsMap.get(recIng.ingredient.upc)?.availability">
+                <div>
+                  Availability Level: {{ingredientStatisticsMap.get(recIng.ingredient.upc)?.availability}}
+                </div>
+              </div>
+
+            </div>
+
+
+
+
             <!-- <p class="card-text">
               <button class="btn btn-primary" (click)="addIngredientToRecipe(recommended)">Add to {{recipe?.name}}</button>
             </p> -->

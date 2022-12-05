@@ -138,14 +138,13 @@ public class KrogerAPIService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public JSONObject availabilityCheck(int storeId, List<String> productIds) {
+	public List<JSONObject> availabilityCheck(int storeId, List<String> productIds) {
 		this.setClientAuthorization();
-		
-		JSONObject responseData = new JSONObject();
+		List<JSONObject> responseData = new ArrayList<>();
 		for (String productId : productIds) {
 			try {
 				JSONObject productStats = this.requestProductStats(storeId, productId);
-				responseData.put(productStats.get("upc"), productStats);
+				responseData.add(productStats);
 			} catch (IOException e) {
 				// TODO advanced error handling instead of breaking the loop
 				e.printStackTrace();
