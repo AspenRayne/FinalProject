@@ -22,6 +22,7 @@ import { IngredientComponent } from './components/ingredient/ingredient.componen
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectedUserRecipesPipe } from './pipes/selected-user-recipes.pipe';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     RecipeSearchComponent,
     IngredientComponent,
     SelectedUserRecipesPipe,
-    UserProfileComponent
+    UserProfileComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

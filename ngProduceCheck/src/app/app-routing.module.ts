@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
 import { RecipeSearchComponent } from './components/recipe-search/recipe-search.component';
 import { IngredientComponent } from './components/ingredient/ingredient.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'ingredient', component: IngredientComponent },
   { path: 'ingredient/:recipe', component: IngredientComponent },
   { path: 'profile', component: UserComponent },
+  { path: 'welcome', component: WelcomeComponent },
   { path: 'admin', component: UserComponent },
   { path: '**', component: NotFoundComponent},
 
