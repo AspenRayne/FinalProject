@@ -171,4 +171,16 @@ export class RecipeComponent implements OnInit {
       });
     }
   }
+
+  saveRecipe(recipe: Recipe){
+    this.recipeService.saveRecipe(recipe).subscribe({
+      next: () => {
+      },
+      error: (err) => {
+        console.error(
+          'RecipeComponent.saveRecipe(): error saving recipe' + err
+        );
+      }
+    })
+  }
 }
