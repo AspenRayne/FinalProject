@@ -1,6 +1,6 @@
 <img src="{{recipe?.imgUrl}}" alt="No image found">
 <table id="recipe-table" class="table table-bordered">
-  <tr><th>{{recipe!.name}} submitted by {{recipe!.user.username}}</th></tr>
+  <tr><th>{{recipe!.name}} submitted by <a [routerLink]="['/profile/', recipe?.user?.id]">{{recipe!.user.username}}</a></th></tr>
   <tr><td>Preparation Time: {{recipe!.prepTime}} minutes</td></tr>
   <tr><td>Cook Time: {{recipe!.cookTime}} minutes</td></tr>
 
