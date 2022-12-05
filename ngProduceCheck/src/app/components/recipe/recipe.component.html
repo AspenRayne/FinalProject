@@ -25,7 +25,9 @@
     </div>
   </div>
 
-  <h1>Ingredients</h1>
+  <h1>Ingredients <button *ngIf="userCanEdit" class="btn btn-primary btn-sm" [routerLink]="['/ingredient', recipe.id]">
+    Edit Ingredients
+  </button></h1>
   <ul *ngFor="let recIng of recipe?.recipeIngredients">
     <li>{{recIng.measurement}}  {{recIng.ingredient.name}}</li>
   </ul>
@@ -47,9 +49,7 @@
 
     <tr><th>Ingredients</th></tr>
     <tr *ngFor="let recIng of recipe?.recipeIngredients"><td>{{recIng.ingredient.name}}</td></tr> -->
-    <button *ngIf="userCanEdit" class="btn btn-primary" [routerLink]="['/ingredient', recipe?.id]">
-      Edit Ingredients
-    </button>
+
   <!-- </table> -->
 
     <div name="noComments" *ngIf="noCommentsYet">
