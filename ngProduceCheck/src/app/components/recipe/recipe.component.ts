@@ -219,6 +219,7 @@ export class RecipeComponent implements OnInit {
           this.totalPrice = this.calculateTotalPrice(data);
           this.ingredientStatisticsMap = new Map<string, CustomIngredientStatistics>;
           data.forEach((stat)=>{
+
             this.ingredientStatisticsMap?.set(stat.upc, stat);
           })
           console.log(this.ingredientStatisticsMap);
