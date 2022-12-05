@@ -1,17 +1,24 @@
-table {
-padding: 5%;
-height:50%;
-width:50%;
-align-content: center;
-border: 2px solid;
-border-collapse: collapse;
 
-}
 
-img {
-  height: 200px;
-  width: 200px;
+#recipeImage {
+  height: 400px;
+  width: 400px;
   max-width: 100%;
   max-height: 100%;
   display: block;
+}
+
+#editCard {
+  margin: 0 auto;
+  float: none;
+  margin-bottom: 10px;
+  margin-top: 100px;
+}
+
+h1{
+  font-family: 'Gill Sans';
+}
+
+#timeCard {
+  background-color: #FAF9F6;
 }

@@ -1,11 +1,20 @@
 <div class="container" *ngIf="recipe && !userEditRecipe">
-  <h1>{{ recipe.name }}</h1>
+  <h1>{{ recipe.name }}
+    <button
+    *ngIf="userCanEdit"
+    class="btn btn-primary btn-sm"
+    (click)="userEditRecipe = true"
+
+  >
+    Edit Recipe
+  </button>
+  </h1>
   <p>{{ recipe.description }}</p>
   <h6>
     Recipe by
-    <a [routerLink]="['/profile/', recipe.user.id]">{{
+    <strong><a [routerLink]="['/profile/', recipe.user.id]">{{
       recipe!.user.username
-    }}</a>
+    }}</a></strong>
     | published on {{ recipe.creationDate | date: "MMMM dd, yyyy" }}
   </h6>
   <div>
@@ -16,17 +25,12 @@
     >
       Save Recipe
     </button>
-    <button
-      *ngIf="userCanEdit"
-      class="btn btn-primary"
-      (click)="userEditRecipe = true"
-    >
-      Edit Recipe
-    </button>
-  </div>
-  <img src="{{ recipe.imgUrl }}" alt="No image found" />
 
-  <div class="card" style="width: 30rem">
+  </div>
+  <img id="recipeImage" src="{{ recipe.imgUrl }}" alt="No image found" />
+  <br>
+
+  <div class="card" style="width: 30rem" id="timeCard">
     <div class="card-body">
       <div class="row align-items-center">
         <div class="col">
@@ -44,6 +48,11 @@
       </div>
     </div>
   </div>
+  <br>
+
+  <h1>Directions</h1>
+  <p>{{ recipe.instructions }}</p>
+  <br>
 
   <h1>
     Ingredients
@@ -81,37 +90,65 @@
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <div *ngFor="let store of currentUser?.stores">
                 <button ngbDropdownItem (click)="selectStore(store)">
-                  {{ store.city }}
+                  {{
+                    store.company.name +
+                      " - " +
+                      store.street1 +
+                      " " +
+                      store.city +
+                      ", " +
+                      store.state
+                  }}
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <br>
       <form>
-        <input
-          class="form-control"
-          type="text"
-          name="zipcode"
-          placeholder="Zipcode"
-          [(ngModel)]="zipcode"
-        />
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            name="zipcode"
+            class="form-control"
+            placeholder="Zipcode"
+            [(ngModel)]="zipcode"
+            aria-describedby="button-addon2"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="button-addon2"
+            (click)="searchStoresByZipcode()"
+          >
+            Search
+          </button>
+        </div>
 
-        <button (click)="searchStoresByZipcode()">Search</button>
-
-        <ul *ngFor="let location of locationOptions">
-          <li>
-            <a (click)="saveStoreToUser(location)">{{
-              location.company.name
-            }}</a>
-          </li>
-        </ul>
+        <table class="table table-hover">
+          <tbody>
+            <tr *ngFor="let location of locationOptions">
+              <td (click)="saveStoreToUser(location)">
+                {{
+                  location.company.name +
+                    " - " +
+                    location.street1 +
+                    " " +
+                    location.city +
+                    ", " +
+                    location.state
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </form>
     </div>
   </div>
 
   <ul *ngFor="let recIng of recipe?.recipeIngredients">
-    <div class="card mb-3" style="max-width: 540px">
+    <div class="card mb-3" style="max-width: 540px" >
       <div class="row g-0">
         <div class="col-md-4">
           <img
@@ -122,38 +159,67 @@
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title">{{ recIng.ingredient.name }}</h5>
-            <p class="card-text">
-              Measurement: {{ recIng.measurement }}
-            </p>
+            <p class="card-text">Measurement: {{ recIng.measurement }}</p>
             <p class="card-text">
               <small class="text-muted">{{ recIng.ingredient.upc }}</small>
             </p>
 
-            <div *ngIf="ingredientStatisticsMap && ingredientStatisticsMap.get(recIng.ingredient.upc)">
-              <div *ngIf="ingredientStatisticsMap.get(recIng.ingredient.upc)?.price != null">
-                <div>Price: {{ingredientStatisticsMap.get(recIng.ingredient.upc)?.price}}</div>
+            <div
+              *ngIf="
+                ingredientStatisticsMap &&
+                ingredientStatisticsMap.get(recIng.ingredient.upc)
+              "
+            >
+              <div
+                *ngIf="
+                  ingredientStatisticsMap.get(recIng.ingredient.upc)?.price !=
+                  null
+                "
+              >
+                <div>
+                  Price:
+                  {{
+                    ingredientStatisticsMap.get(recIng.ingredient.upc)?.price
+                  }}
+                </div>
               </div>
-              <div *ngIf="ingredientStatisticsMap.get(recIng.ingredient.upc)?.price == null">
+              <div
+                *ngIf="
+                  ingredientStatisticsMap.get(recIng.ingredient.upc)?.price ==
+                  null
+                "
+              >
                 <div>Price: N/A</div>
               </div>
               <div>
-                In Store: {{ingredientStatisticsMap.get(recIng.ingredient.upc)?.inStore}}
+                In Store:
+                {{
+                  ingredientStatisticsMap.get(recIng.ingredient.upc)?.inStore
+                }}
               </div>
-              <div *ngIf="ingredientStatisticsMap.get(recIng.ingredient.upc)?.availability == null">
+              <div
+                *ngIf="
+                  ingredientStatisticsMap.get(recIng.ingredient.upc)
+                    ?.availability == null
+                "
+              >
+                <div>Availability Level: N/A</div>
+              </div>
+              <div
+                *ngIf="
+                  ingredientStatisticsMap.get(recIng.ingredient.upc)
+                    ?.availability
+                "
+              >
                 <div>
-                  Availability Level: N/A
+                  Availability Level:
+                  {{
+                    ingredientStatisticsMap.get(recIng.ingredient.upc)
+                      ?.availability
+                  }}
                 </div>
               </div>
-              <div *ngIf="ingredientStatisticsMap.get(recIng.ingredient.upc)?.availability">
-                <div>
-                  Availability Level: {{ingredientStatisticsMap.get(recIng.ingredient.upc)?.availability}}
-                </div>
-              </div>
-
             </div>
-
-
-
 
             <!-- <p class="card-text">
               <button class="btn btn-primary" (click)="addIngredientToRecipe(recommended)">Add to {{recipe?.name}}</button>
@@ -164,8 +230,8 @@
     </div>
   </ul>
 
-  <h1>Directions</h1>
-  <p>{{ recipe.instructions }}</p>
+  <hr>
+
 
   <div name="noComments" *ngIf="noCommentsYet">
     <h2>No comments for the recipe yet, be the first!</h2>
@@ -210,11 +276,10 @@
   </div>
 </div>
 
-
 <div *ngIf="userEditRecipe && recipe">
   <form>
-    <div class="container-fluid text-center">
-      <div class="card w-50">
+    <div class="container-fluid text-center" >
+      <div class="card w-50" id="editCard">
         <div class="card-body">
           <h5 class="card-title">Edit Recipe</h5>
           <input

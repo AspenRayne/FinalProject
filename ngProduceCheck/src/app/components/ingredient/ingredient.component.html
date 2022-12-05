@@ -1,5 +1,13 @@
 <div *ngIf="selectedLocation">
-  <h2>Searching {{ selectedLocation.company.name }}</h2>
+  <h2>Searching {{
+    selectedLocation.company.name +
+      " - " +
+      selectedLocation.street1 +
+      " " +
+      selectedLocation.city +
+      ", " +
+      selectedLocation.state
+  }}</h2>
 </div>
 <div *ngIf="!selectedLocation">
   <h2>Select Store from Saved or Search by Zip Code</h2>
@@ -18,29 +26,59 @@
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
             <div *ngFor="let store of currentUser?.stores">
               <button ngbDropdownItem (click)="selectStore(store)">
-                {{ store.city }}
+                {{
+                  store.company.name +
+                    " - " +
+                    store.street1 +
+                    " " +
+                    store.city +
+                    ", " +
+                    store.state
+                }}
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <br />
     <form>
-      <input
-        class="form-control"
-        type="text"
-        name="zipcode"
-        placeholder="Zipcode"
-        [(ngModel)]="zipcode"
-      />
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          name="zipcode"
+          class="form-control"
+          placeholder="Zipcode"
+          [(ngModel)]="zipcode"
+          aria-describedby="button-addon2"
+        />
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-addon2"
+          (click)="searchStoresByZipcode()"
+        >
+          Search
+        </button>
+      </div>
 
-      <button (click)="searchStoresByZipcode()">Search</button>
-
-      <ul *ngFor="let location of locationOptions">
-        <li>
-          <a (click)="saveStoreToUser(location)">{{ location.company.name }}</a>
-        </li>
-      </ul>
+      <table class="table table-hover">
+        <tbody>
+          <tr *ngFor="let location of locationOptions">
+            <td (click)="saveStoreToUser(location)">
+              {{
+                location.company.name +
+                  " - " +
+                  location.street1 +
+                  " " +
+                  location.city +
+                  ", " +
+                  location.state
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </form>
   </div>
 </div>
@@ -182,5 +220,3 @@
     </div>
   </div>
 </div>
-
-
