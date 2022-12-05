@@ -163,7 +163,26 @@
     <p>{{ comment.comment }}</p>
     <hr />
   </div>
+  <div class="input-group mb-3" *ngIf="recipe">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Comment on {{ recipe.user.username }}'s Recipe!"
+      aria-label="Users Comment"
+      aria-describedby="button-addon2"
+      [(ngModel)]="newComment.comment"
+    />
+    <button
+      class="btn btn-outline-secondary"
+      type="button"
+      id="button-addon2"
+      (click)="addNewComment(newComment)"
+    >
+      Add Comment
+    </button>
+  </div>
 </div>
+
 
 <div *ngIf="userEditRecipe && recipe">
   <form>
@@ -235,5 +254,4 @@
       </div>
     </div>
   </form>
-
 </div>
