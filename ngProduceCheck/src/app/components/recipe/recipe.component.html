@@ -1,20 +1,22 @@
 <div class="container" *ngIf="recipe && !userEditRecipe">
-  <h1>{{ recipe.name }}
+  <h1>
+    {{ recipe.name }}
     <button
-    *ngIf="userCanEdit"
-    class="btn btn-primary btn-sm"
-    (click)="userEditRecipe = true"
-
-  >
-    Edit Recipe
-  </button>
+      *ngIf="userCanEdit"
+      class="btn btn-primary btn-sm"
+      (click)="userEditRecipe = true"
+    >
+      Edit Recipe
+    </button>
   </h1>
   <p>{{ recipe.description }}</p>
   <h6>
     Recipe by
-    <strong><a [routerLink]="['/profile/', recipe.user.id]">{{
-      recipe!.user.username
-    }}</a></strong>
+    <strong
+      ><a [routerLink]="['/profile/', recipe.user.id]">{{
+        recipe!.user.username
+      }}</a></strong
+    >
     | published on {{ recipe.creationDate | date: "MMMM dd, yyyy" }}
   </h6>
   <div>
@@ -25,10 +27,9 @@
     >
       Save Recipe
     </button>
-
   </div>
   <img id="recipeImage" src="{{ recipe.imgUrl }}" alt="No image found" />
-  <br>
+  <br />
 
   <div class="card" style="width: 30rem" id="timeCard">
     <div class="card-body">
@@ -48,11 +49,11 @@
       </div>
     </div>
   </div>
-  <br>
+  <br />
 
   <h1>Directions</h1>
   <p>{{ recipe.instructions }}</p>
-  <br>
+  <br />
 
   <h1>
     Ingredients
@@ -105,7 +106,7 @@
           </div>
         </div>
       </div>
-      <br>
+      <br />
       <form>
         <div class="input-group mb-3">
           <input
@@ -148,7 +149,7 @@
   </div>
 
   <ul *ngFor="let recIng of recipe?.recipeIngredients">
-    <div class="card mb-3" style="max-width: 540px" >
+    <div class="card mb-3" style="max-width: 540px">
       <div class="row g-0">
         <div class="col-md-4">
           <img
@@ -230,8 +231,7 @@
     </div>
   </ul>
 
-  <hr>
-
+  <hr />
 
   <div name="noComments" *ngIf="noCommentsYet">
     <h2>No comments for the recipe yet, be the first!</h2>
@@ -278,7 +278,7 @@
 
 <div *ngIf="userEditRecipe && recipe">
   <form>
-    <div class="container-fluid text-center" >
+    <div class="container-fluid text-center">
       <div class="card w-50" id="editCard">
         <div class="card-body">
           <h5 class="card-title">Edit Recipe</h5>
@@ -334,6 +334,18 @@
               name="cookTime"
               placeholder="Cook Time"
               [(ngModel)]="recipe.cookTime"
+            />
+          </div>
+          <div class="form-check">
+            <label class="form-check-label" for="flexCheckDefault" style="margin-right: 720px">
+              Publish
+            </label>
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="published"
+              id="flexCheckDefault"
+              [(ngModel)]="recipe.published"
             />
           </div>
           <hr />
