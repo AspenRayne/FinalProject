@@ -73,10 +73,23 @@ export class RecipeService {
     );
   }
   update(recipe: Recipe) {
+    // USer HAS TOO MUCH DATA CANT BE SERIALIZED BY SERVER.
+    let reqData = {
+      "cookTime": recipe.cookTime,
+      "name": recipe.name,
+      "id": recipe.id,
+      "description": recipe.description,
+      "imgUrl": recipe.imgUrl,
+      "creationDate": recipe.creationDate,
+      "instructions": recipe.instructions,
+      "prepTime": recipe.prepTime,
+      "published": recipe.published,
+      // "user": recipe.user
+    };
     return this.http
       .put<Recipe>(
         this.baseUrl + '/' + recipe.id,
-        recipe,
+        reqData,
         this.getHttpOptions()
       )
       .pipe(

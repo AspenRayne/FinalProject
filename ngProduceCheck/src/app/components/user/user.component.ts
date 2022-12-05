@@ -7,6 +7,8 @@ import { CommentService } from 'src/app/services/comment.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { UserService } from 'src/app/services/user.service';
 import { Comment } from 'src/app/models/comment';
+import { IngredientComponent } from '../ingredient/ingredient.component';
+import { IngredientService } from 'src/app/services/ingredient.service';
 
 @Component({
   selector: 'app-user',
@@ -286,4 +288,5 @@ export class UserComponent implements OnInit {
       }
     })
   }
+
 }

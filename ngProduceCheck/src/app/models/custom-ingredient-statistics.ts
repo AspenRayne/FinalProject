@@ -1,4 +1,4 @@
-class IngredientStatistics {
+export class CustomIngredientStatistics {
   salePrice: number;
   price: number;
   inStore: boolean;
@@ -19,10 +19,10 @@ class IngredientStatistics {
     this.availability = availability;
   }
 }
-export class CustomIngredientStatistics {
-  statMap: Map<String, IngredientStatistics>;
+// export class CustomIngredientStatistics {
+//   statMap: Map<String, IngredientStatistics>;
 
-  constructor(statMap: Map<string, IngredientStatistics>) {
-    this.statMap = statMap;
-  }
-}
+//   constructor(statMap: Map<string, IngredientStatistics> = new Map) {
+//     this.statMap = statMap;
+//   }
+// }

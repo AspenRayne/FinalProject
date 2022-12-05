@@ -9,6 +9,9 @@ import { CommentService } from 'src/app/services/comment.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { User } from 'src/app/models/user';
 import { IngredientService } from 'src/app/services/ingredient.service';
+import { Store } from 'src/app/models/store';
+import { CustomIngredientStatistics } from 'src/app/models/custom-ingredient-statistics';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-recipe',
@@ -16,9 +19,12 @@ import { IngredientService } from 'src/app/services/ingredient.service';
   styleUrls: ['./recipe.component.css'],
 })
 export class RecipeComponent implements OnInit {
+
   constructor(
     private recipeService: RecipeService,
     private commentService: CommentService,
+    private ingredientService: IngredientService,
+    private storeService: StoreService,
     private auth: AuthService,
     private route: ActivatedRoute,
     private router: Router
@@ -30,9 +36,21 @@ export class RecipeComponent implements OnInit {
   recipeComments: Comment[] = [];
   noCommentsYet: boolean = false;
   isCommentUserIdSame: boolean = false;
-  newComment: Comment = new Comment;
+  newComment: Comment = new Comment();
   emojiCode: string = '\uD83D\uDE00';
   userCanEdit: boolean = false;
+  selectedLocation: Store | null = null;
+  ingredientStatisticsMap: CustomIngredientStatistics | null = null;
+  totalPrice: number = 0;
+  zipcode: string = '';
+  locationOptions: Store [] | null = null;
+  editRecipe: Recipe | null = null;
+
+  showLocationSearch: boolean = false;
+
+  userEditRecipe: boolean = false;
+
+
 
   //   ingredient: Ingredient = new Ingredient;
   //   recipeIngredient: RecipeIngredient[] = [];
@@ -94,6 +112,10 @@ export class RecipeComponent implements OnInit {
     return false;
   }
 
+  checkUserEditRecipe(){
+
+  }
+
   /*
    *  COMMENTS
    */
@@ -104,7 +126,6 @@ export class RecipeComponent implements OnInit {
         next: (data) => {
           console.log('added new comment');
           window.location.reload();
-
         },
         error: (err) => {
           console.error(
@@ -118,19 +139,20 @@ export class RecipeComponent implements OnInit {
 
   replyComment(commentId: number, comment: Comment) {
     if (this.recipe) {
-      this.commentService.createReply(this.recipeId, commentId, comment).subscribe({
-        next: (data) => {
-          console.log('added new reply comment');
-          window.location.reload();
-
-        },
-        error: (err) => {
-          console.error(
-            'RecipeComponent.updateRecipe(): Error updating recipe'
-          );
-          console.error(err);
-        },
-      });
+      this.commentService
+        .createReply(this.recipeId, commentId, comment)
+        .subscribe({
+          next: (data) => {
+            console.log('added new reply comment');
+            window.location.reload();
+          },
+          error: (err) => {
+            console.error(
+              'RecipeComponent.updateRecipe(): Error updating recipe'
+            );
+            console.error(err);
+          },
+        });
     }
   }
 
@@ -141,7 +163,6 @@ export class RecipeComponent implements OnInit {
           this.recipeComments = data;
           if (this.recipeComments.length === 0) {
             this.noCommentsYet = true;
-
           }
         },
         error: (err) => {
@@ -172,15 +193,100 @@ export class RecipeComponent implements OnInit {
     }
   }
 
-  saveRecipe(recipe: Recipe){
+  saveRecipe(recipe: Recipe) {
     this.recipeService.saveRecipe(recipe).subscribe({
-      next: () => {
-      },
+      next: (data) => {},
       error: (err) => {
         console.error(
           'RecipeComponent.saveRecipe(): error saving recipe' + err
         );
-      }
+      },
+    });
+  }
+
+  getAvailabilityAndPrice() {
+    if (!this.selectedLocation) {
+      return;
+    }
+    let upcList: string[] = [];
+    this.recipe?.recipeIngredients.forEach((element) => {
+      upcList.push(element.ingredient.upc);
+    });
+    this.ingredientService
+      .availabilityLookup(this.selectedLocation.locationId, upcList)
+      .subscribe({
+        next: (data) => {
+          // this.totalPrice = this.calculateTotalPrice(data);
+          // this.ingredientStatisticsMap = data;
+        },
+        error: (err) => {
+          console.error(
+            'RecipeComponent.saveRecipe(): error saving recipe' + err
+          );
+        },
+      });
+  }
+
+  // calculateTotalPrice(map: CustomIngredientStatistics ): number{
+  //   let price = 0;
+  //   map.statMap.forEach((stat) =>{
+  //     price += stat.price;
+  //   })
+  //   return price;
+  // }
+
+  selectStore(store: Store) {
+    this.selectedLocation = store;
+    this.showLocationSearch = false;
+    this.getAvailabilityAndPrice()
+  }
+
+  searchStoresByZipcode(){
+    this.storeService.getStoreLocations(this.zipcode).subscribe({
+      next: (data) => {
+        this.locationOptions = data;
+        console.log(data);
+      },
+      error: (err) => {
+        console.error(
+          'IngredientComponent.searchStoresByZipcode): error searching locations'
+        );
+        console.error(err);
+      },
     })
   }
+  saveStoreToUser(store: Store){
+    this.storeService.setFavoriteStore(store).subscribe({
+      next: (data) => {
+        this.selectedLocation = data;
+      },
+      error: (err) => {
+        console.error(
+          'IngredientComponent.saveStoreToUser(): error saving store to user'
+        );
+        console.error(err);
+      },
+    })
+  }
+
+  update(recipe: Recipe) {
+    this.recipeService.update(recipe).subscribe({
+      next: (data) => {
+        this.recipe = data;
+        this.userEditRecipe = false;
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.error(
+          'RecipeComponent.update(): error updating Recipe'
+        );
+        console.error(err);
+      },
+    })
+  }
+
+  updateRecipe(recipe: Recipe){
+    this.update(recipe)
+  }
+
 }

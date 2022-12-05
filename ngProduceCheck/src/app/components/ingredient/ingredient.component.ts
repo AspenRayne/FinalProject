@@ -92,7 +92,7 @@ export class IngredientComponent implements OnInit {
     if (resetPagination){
       this.currentPage = 1;
     }
-
+    console.log(locationId)
     this.ingredientService
       .searchIngredients(this.lookup, this.currentPage, locationId)
       .subscribe({

@@ -16,7 +16,7 @@
             Saved Stores
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <div *ngFor="let store of currentUser?.stores">
+            <div *ngFor="let store of currentUser?.stores">
               <button ngbDropdownItem (click)="selectStore(store)">
                 {{ store.city }}
               </button>
@@ -38,7 +38,7 @@
 
       <ul *ngFor="let location of locationOptions">
         <li>
-          <a (click)="saveStoreToUser(location)" >{{ location.company.name }}</a>
+          <a (click)="saveStoreToUser(location)">{{ location.company.name }}</a>
         </li>
       </ul>
     </form>
@@ -46,9 +46,9 @@
 </div>
 
 <div *ngIf="selectedLocation">
-<div class="container">
-  <div class="row justify-content-evenly">
-        <div class="col-8">
+  <div class="container">
+    <div class="row justify-content-evenly">
+      <div class="col-8">
         <form>
           <input
             class="form-control"
@@ -81,7 +81,12 @@
                       <small class="text-muted">{{ recommended.upc }}</small>
                     </p>
                     <p class="card-text">
-                      <button class="btn btn-primary" (click)="addIngredientToRecipe(recommended)">Add to {{recipe?.name}}</button>
+                      <button
+                        class="btn btn-primary"
+                        (click)="addIngredientToRecipe(recommended)"
+                      >
+                        Add to {{ recipe?.name }}
+                      </button>
                     </p>
                   </div>
                 </div>
@@ -104,7 +109,12 @@
                       <small class="text-muted">{{ api.upc }}</small>
                     </p>
                     <p class="card-text">
-                      <button class="btn btn-primary" (click)="addIngredientToRecipe(api)" >Add to {{recipe?.name}}</button>
+                      <button
+                        class="btn btn-primary"
+                        (click)="addIngredientToRecipe(api)"
+                      >
+                        Add to {{ recipe?.name }}
+                      </button>
                     </p>
                   </div>
                 </div>
@@ -115,7 +125,7 @@
       </div>
       <div class="col-4">
         <h1>Adding Ingredients to {{ recipe?.name }}</h1>
-        <div *ngFor="let item of recipe?.recipeIngredients" >
+        <div *ngFor="let item of recipe?.recipeIngredients">
           <div class="card mb-3" style="max-width: 540px">
             <div class="row g-0">
               <div class="col-md-4">
@@ -130,14 +140,23 @@
                   <p class="card-text">
                     <small class="text-muted">{{ item.ingredient.upc }}</small>
                   </p>
+
                   <p class="card-text">
-                    <button class="btn btn-danger" (click)="unsaveIngredient(item.ingredient)" >Remove</button>
+                    <button
+                      class="btn btn-danger"
+                      (click)="unsaveIngredient(item.ingredient)"
+                    >
+                      Remove
+                    </button>
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <button class="btn btn-success" [routerLink]="['/recipe/', recipe?.id]" >
+          Save Ingredients
+        </button>
       </div>
     </div>
   </div>
