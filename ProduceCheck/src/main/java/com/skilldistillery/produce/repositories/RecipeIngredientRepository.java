@@ -6,5 +6,7 @@ import com.skilldistillery.produce.entities.RecipeIngredient;
 import com.skilldistillery.produce.entities.RecipeIngredientId;
 
 public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredient, RecipeIngredientId>{
+	
+	RecipeIngredient findByRecipeIdAndIngredientId(int recipeId, int ingredientId);
 
 }

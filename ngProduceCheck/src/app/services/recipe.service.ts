@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, throwError, Observable } from 'rxjs';
 import { Ingredient } from '../models/ingredient';
 import { Recipe } from '../models/recipe';
+import { RecipeIngredient } from '../models/recipe-ingredient';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -75,15 +76,15 @@ export class RecipeService {
   update(recipe: Recipe) {
     // USer HAS TOO MUCH DATA CANT BE SERIALIZED BY SERVER.
     let reqData = {
-      "cookTime": recipe.cookTime,
-      "name": recipe.name,
-      "id": recipe.id,
-      "description": recipe.description,
-      "imgUrl": recipe.imgUrl,
-      "creationDate": recipe.creationDate,
-      "instructions": recipe.instructions,
-      "prepTime": recipe.prepTime,
-      "published": recipe.published,
+      cookTime: recipe.cookTime,
+      name: recipe.name,
+      id: recipe.id,
+      description: recipe.description,
+      imgUrl: recipe.imgUrl,
+      creationDate: recipe.creationDate,
+      instructions: recipe.instructions,
+      prepTime: recipe.prepTime,
+      published: recipe.published,
       // "user": recipe.user
     };
     return this.http
@@ -147,7 +148,7 @@ export class RecipeService {
 
   unsaveRecipe(id: number) {
     return this.http
-      .delete<void>(`${this.unsaveUrl}/${id}` , this.getHttpOptions())
+      .delete<void>(`${this.unsaveUrl}/${id}`, this.getHttpOptions())
       .pipe(
         catchError((err: any) => {
           console.log(err);
@@ -195,6 +196,31 @@ export class RecipeService {
             () =>
               new Error(
                 'RecipeService.unsaveIngredient():error unsaving ingredient: ' +
+                  err
+              )
+          );
+        })
+      );
+  }
+
+  addMeasurement(
+    recipe: Recipe,
+    ingredient: Ingredient,
+    recipeIngredient: RecipeIngredient
+  ): Observable<RecipeIngredient> {
+    return this.http
+      .put<RecipeIngredient>(
+        `${this.baseUrl}/${recipe.id}/${ingredient.id}`,
+        recipeIngredient,
+        this.getHttpOptions()
+      )
+      .pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(
+            () =>
+              new Error(
+                'RecipeService.addMeasurement():error saving measurement: ' +
                   err
               )
           );

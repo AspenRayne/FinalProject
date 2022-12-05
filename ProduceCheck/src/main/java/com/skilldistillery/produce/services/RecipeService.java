@@ -6,6 +6,7 @@ import java.util.Set;
 import com.skilldistillery.produce.entities.Ingredient;
 import com.skilldistillery.produce.entities.Reaction;
 import com.skilldistillery.produce.entities.Recipe;
+import com.skilldistillery.produce.entities.RecipeIngredient;
 
 public interface RecipeService {
 	
@@ -32,4 +33,6 @@ public interface RecipeService {
 	public Recipe unsaveIngredient(String username, int recipeId, int ingredientId);
 
 	public Recipe addReaction(String username, int recipeId, Reaction reaction);
+
+	RecipeIngredient addMeasurement(String username, int recipeId, int ingredientId, RecipeIngredient recipeIngredient);
 }

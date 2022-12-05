@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.skilldistillery.produce.entities.Ingredient;
 import com.skilldistillery.produce.entities.Reaction;
 import com.skilldistillery.produce.entities.Recipe;
+import com.skilldistillery.produce.entities.RecipeIngredient;
 import com.skilldistillery.produce.services.RecipeService;
 
 @RestController
@@ -57,10 +58,9 @@ public class RecipeController {
 		}
 		return recipe;
 	}
-	
+
 	@GetMapping("recipes/{id}")
-	public Recipe show(@PathVariable int id, HttpServletRequest req,
-			HttpServletResponse res, Principal principal) {
+	public Recipe show(@PathVariable int id, HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		Recipe recipe = new Recipe();
 		try {
 			recipe = recipeService.show(id);
@@ -116,7 +116,7 @@ public class RecipeController {
 		return recipe;
 
 	}
-	
+
 	@DeleteMapping("favoritedRecipes/{id}")
 	public void unsaveRecipe(@PathVariable int id, HttpServletResponse res, Principal principal) {
 		try {
@@ -128,16 +128,17 @@ public class RecipeController {
 		} catch (Exception e) {
 			res.setStatus(400);
 		}
-		
+
 	}
+
 	@GetMapping("recipes/search/{search}")
 	public List<Recipe> recipeSearch(@PathVariable String search) {
 		return recipeService.searchRecipe(search);
 	}
-	
+
 	@PutMapping("recipes/addIngredient/{id}")
-	public Recipe addIngredient(@PathVariable int id, @RequestBody Ingredient ingredient,
-			HttpServletResponse res, HttpServletRequest req, Principal principal) {
+	public Recipe addIngredient(@PathVariable int id, @RequestBody Ingredient ingredient, HttpServletResponse res,
+			HttpServletRequest req, Principal principal) {
 		Recipe recipe;
 		try {
 			recipe = recipeService.addIngredient(principal.getName(), id, ingredient);
@@ -150,10 +151,12 @@ public class RecipeController {
 			recipe = null;
 		}
 		return recipe;
-		
+
 	}
+
 	@PostMapping("recipes/{id}/react")
-	public Recipe reactToRecipe(@PathVariable int id, Reaction reaction, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+	public Recipe reactToRecipe(@PathVariable int id, Reaction reaction, HttpServletRequest req,
+			HttpServletResponse res, Principal principal) {
 		Recipe recipe = null;
 		try {
 			recipe = recipeService.addReaction(principal.getName(), id, reaction);
@@ -166,18 +169,30 @@ public class RecipeController {
 		return recipe;
 
 	}
-	
+
 	@DeleteMapping("recipes/removeIngredient/{id}/{ingredientId}")
-	public Recipe unsaveIngredient(@PathVariable int id, @PathVariable int ingredientId,
-			HttpServletResponse res, HttpServletRequest req, Principal principal) {
-			Recipe recipe = recipeService.unsaveIngredient(principal.getName(), id, ingredientId);
-			if (recipe == null) {
-				res.setStatus(404);
-			}
-			return recipe;
-		
-		
+	public Recipe unsaveIngredient(@PathVariable int id, @PathVariable int ingredientId, HttpServletResponse res,
+			HttpServletRequest req, Principal principal) {
+		Recipe recipe = recipeService.unsaveIngredient(principal.getName(), id, ingredientId);
+		if (recipe == null) {
+			res.setStatus(404);
+		}
+		return recipe;
+
 	}
 
+	@PutMapping("recipes/{recipeId}/{ingredientId}")
+	public RecipeIngredient saveMesasurement(@PathVariable int recipeId, @PathVariable int ingredientId,
+			HttpServletRequest req, HttpServletResponse res, Principal principal,
+			@RequestBody RecipeIngredient recipeIngredient) {
+		
+		if(recipeIngredient == null) {
+			res.setStatus(404);
+		}
+		
+		recipeService.addMeasurement(principal.getName(), recipeId, ingredientId, recipeIngredient);
+		
+		return recipeIngredient;
+	}
 
 }

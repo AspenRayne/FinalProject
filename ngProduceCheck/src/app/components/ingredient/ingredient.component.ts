@@ -22,10 +22,12 @@ export class IngredientComponent implements OnInit {
   currentPage: number = 1;
   totalItemsReturned: number = 0;
   selectedLocation: Store | null = null;
-  locationOptions: Store [] | null = null;
-  zipcode: string = "";
+  locationOptions: Store[] | null = null;
+  zipcode: string = '';
   apiIngredients: Ingredient[] | null = null;
   recommendedIngredients: Ingredient[] | null = null;
+
+  measurement: string = '';
 
   constructor(
     private recipeService: RecipeService,
@@ -42,7 +44,7 @@ export class IngredientComponent implements OnInit {
       this.recipeService.show(recipeId).subscribe({
         next: (data) => {
           this.recipe = data;
-          this.getCurrentUser()
+          this.getCurrentUser();
         },
         error: (err) => {
           console.error('ngOnInit() error retriving recipe');
@@ -81,7 +83,6 @@ export class IngredientComponent implements OnInit {
     this.selectedLocation = store;
   }
 
-
   searchIngredients(resetPagination: boolean) {
     let locationId: number;
     if (this.selectedLocation === null) {
@@ -89,10 +90,10 @@ export class IngredientComponent implements OnInit {
     } else {
       locationId = this.selectedLocation.locationId;
     }
-    if (resetPagination){
+    if (resetPagination) {
       this.currentPage = 1;
     }
-    console.log(locationId)
+    console.log(locationId);
     this.ingredientService
       .searchIngredients(this.lookup, this.currentPage, locationId)
       .subscribe({
@@ -100,7 +101,7 @@ export class IngredientComponent implements OnInit {
           console.log(data);
           this.apiIngredients = data.apiData;
           this.recommendedIngredients = data.recommendedIngredients;
-          this.currentPage = data.pagination.start + data.pagination.limit -1;
+          this.currentPage = data.pagination.start + data.pagination.limit - 1;
           this.totalItemsReturned = data.pagination.total;
           console.log(this.recommendedIngredients);
         },
@@ -132,23 +133,24 @@ export class IngredientComponent implements OnInit {
   }
   unsaveIngredient(ingredient: Ingredient) {
     if (this.recipe) {
-      this.recipeService.unsaveIngredient(this.recipe.id, ingredient.id).subscribe({
-        next: (data) => {
-          console.log(data);
-          this.recipe = data;
-        },
-        error: (err) => {
-          console.error(
-            'IngredientComponent.searchIngredients(): error searching Ingredients'
-          );
-          console.error(err);
-        },
-      });
+      this.recipeService
+        .unsaveIngredient(this.recipe.id, ingredient.id)
+        .subscribe({
+          next: (data) => {
+            console.log(data);
+            this.recipe = data;
+          },
+          error: (err) => {
+            console.error(
+              'IngredientComponent.searchIngredients(): error searching Ingredients'
+            );
+            console.error(err);
+          },
+        });
     }
   }
 
-
-  searchStoresByZipcode(){
+  searchStoresByZipcode() {
     this.storeService.getStoreLocations(this.zipcode).subscribe({
       next: (data) => {
         this.locationOptions = data;
@@ -160,9 +162,9 @@ export class IngredientComponent implements OnInit {
         );
         console.error(err);
       },
-    })
+    });
   }
-  saveStoreToUser(store: Store){
+  saveStoreToUser(store: Store) {
     this.storeService.setFavoriteStore(store).subscribe({
       next: (data) => {
         this.selectedLocation = data;
@@ -173,6 +175,25 @@ export class IngredientComponent implements OnInit {
         );
         console.error(err);
       },
-    })
+    });
+  }
+
+  addMeasurementToRecipeIngredient(recipeIngredient: RecipeIngredient) {
+    if(this.recipe)
+    this.recipeService
+      .addMeasurement(
+        this.recipe,
+        recipeIngredient.ingredient,
+        recipeIngredient
+      )
+      .subscribe({
+        next: (data) => {},
+        error: (err) => {
+          console.error(
+            'IngredientComponent.saveStoreToUser(): error saving store to user'
+          );
+          console.error(err);
+        },
+      });
   }
 }

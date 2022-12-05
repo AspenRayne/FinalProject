@@ -144,7 +144,9 @@ public class RecipeServiceImpl implements RecipeService {
 
 		RecipeIngredient recipeIngredient = new RecipeIngredient();
 		RecipeIngredientId recipeIngredientId = new RecipeIngredientId(recipe.getId(), storedIngredient.getId());
-
+		
+		recipeIngredient.setMeasurement(recipeIngredient.getMeasurement());
+		
 		recipeIngredient.setId(recipeIngredientId);
 		recipeIngredient.setRecipe(recipe);
 		recipeIngredient.setIngredient(storedIngredient);
@@ -208,8 +210,14 @@ public class RecipeServiceImpl implements RecipeService {
 		return null;
 	}
 				
+	@Override	
+	public RecipeIngredient addMeasurement(String username, int recipeId, int ingredientId, RecipeIngredient recipeIngredient) {
+		RecipeIngredient managed = recipeIngredientRepo.findByRecipeIdAndIngredientId(recipeId, ingredientId);
+		managed.setMeasurement(recipeIngredient.getMeasurement());
+		 return recipeIngredientRepo.save(managed);
 		
-
+		
+	}
 				
 
 }

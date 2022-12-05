@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { CustomIngredientResponse } from '../models/custom-ingredient-response';
 import { CustomIngredientStatistics } from '../models/custom-ingredient-statistics';
+import { Ingredient } from '../models/ingredient';
+import { Recipe } from '../models/recipe';
+import { RecipeIngredient } from '../models/recipe-ingredient';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -72,4 +75,6 @@ export class IngredientService {
         })
       );
   }
+
+
 }

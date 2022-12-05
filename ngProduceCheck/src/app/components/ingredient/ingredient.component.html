@@ -80,6 +80,7 @@
                     <p class="card-text">
                       <small class="text-muted">{{ recommended.upc }}</small>
                     </p>
+
                     <p class="card-text">
                       <button
                         class="btn btn-primary"
@@ -140,6 +141,18 @@
                   <p class="card-text">
                     <small class="text-muted">{{ item.ingredient.upc }}</small>
                   </p>
+                  <form>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="measurement"
+                      placeholder="Measurement"
+                      [(ngModel)]="item.measurement"
+                    />
+                    <button (click)="addMeasurementToRecipeIngredient(item)">
+
+                    </button>
+                  </form>
 
                   <p class="card-text">
                     <button
@@ -154,7 +167,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-success" [routerLink]="['/recipe/', recipe?.id]" >
+        <button class="btn btn-success" [routerLink]="['/recipe/', recipe?.id]">
           Save Ingredients
         </button>
       </div>
