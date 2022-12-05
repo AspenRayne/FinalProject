@@ -131,7 +131,8 @@ export class UserComponent implements OnInit {
     this.userService.destroy(id).subscribe(
       {
         next: () => {
-          // this.reload();
+          this.router.navigateByUrl('/home');
+          this.auth.logout();
         },
         error: (err) => {
           console.error('UserComponent.deleteUser(): Error de-activating User');
