@@ -16,7 +16,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { WelcomeComponent } from './components/welcome/welcome.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'home'},
+  { path: '', pathMatch: 'full', redirectTo: 'welcome'},
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'about', component: AboutComponent },
