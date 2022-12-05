@@ -1,9 +1,40 @@
 
-<div class="container">
-  <h1>{{recipe?.name}}</h1>
-  <p>{{recipe?.description}}</p>
-  <img src="{{recipe?.imgUrl}}" alt="No image found">
-  <table id="recipe-table" class="table table-bordered">
+<div class="container" *ngIf="recipe">
+  <h1>{{recipe.name}}</h1>
+  <p>{{recipe.description}}</p>
+  <h6>Recipe by <a [routerLink]="['/profile/', recipe.user.id]">{{recipe!.user.username}}</a> | published on {{recipe.creationDate | date: "MMMM dd, yyyy"}}</h6>
+  <button class="btn btn-primary">Save Recipe</button>
+  <img src="{{recipe.imgUrl}}" alt="No image found">
+
+  <div class="card" style="width: 30rem;">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col">
+          <p> <strong> Prep Time:</strong></p>
+          {{recipe.prepTime}}
+        </div>
+        <div class="col">
+          <p> <strong> Cook Time:</strong></p>
+          {{recipe.cookTime}}
+        </div>
+        <div class="col">
+          <p> <strong> Total Time:</strong></p>
+          {{recipe.prepTime + recipe.cookTime}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h1>Ingredients</h1>
+  <ul *ngFor="let recIng of recipe?.recipeIngredients">
+    <li>{{recIng.measurement}}  {{recIng.ingredient.name}}</li>
+  </ul>
+
+  <h1>Directions</h1>
+  <p>{{recipe.instructions}}</p>
+
+
+  <!-- <table id="recipe-table" class="table table-bordered">
     <tr><th>{{recipe!.name}} submitted by <a [routerLink]="['/profile/', recipe?.user?.id]">{{recipe!.user.username}}</a></th></tr>
     <tr><td>Preparation Time: {{recipe!.prepTime}} minutes</td></tr>
     <tr><td>Cook Time: {{recipe!.cookTime}} minutes</td></tr>
@@ -15,17 +46,25 @@
     <tr><td>{{recipe!.instructions}}</td></tr>
 
     <tr><th>Ingredients</th></tr>
-    <tr *ngFor="let recIng of recipe?.recipeIngredients"><td>{{recIng.ingredient.name}}</td></tr>
+    <tr *ngFor="let recIng of recipe?.recipeIngredients"><td>{{recIng.ingredient.name}}</td></tr> -->
     <button *ngIf="userCanEdit" class="btn btn-primary" [routerLink]="['/ingredient', recipe?.id]">
       Edit Ingredients
     </button>
-  </table>
+  <!-- </table> -->
 
     <div name="noComments" *ngIf="noCommentsYet">
         <h2>No comments for the recipe yet, be the first!</h2>
     </div>
 
-  <div name="comment-table"> Comments
+   <h1>Comments ({{recipeComments.length}})</h1>
+   <hr>
+   <div *ngFor="let comment of recipeComments">
+     <button *ngIf="checkUser(comment.user.id, currentUser.id)" type="button" class="btn btn-danger btn-sm" style="float:right;" (click)="removeComment(comment.id)">Delete</button>
+    <h4> <strong>{{comment.user.username}}</strong> <h6>  {{comment.commentDate | date: "MM/dd/yyyy h:mm a"}}</h6></h4>
+    <p>{{comment.comment}}</p>
+    <hr>
+   </div>
+  <!-- <div name="comment-table"> Comments
     <table class="table-bordered" *ngFor="let comment of recipeComments">
       <tr>
         <td style="color: gray">
@@ -41,11 +80,16 @@
         <input type="text" [(ngModel)]="newComment.comment">
         <button *ngIf="!checkUser(comment.user.id, currentUser.id)" class="btn btn-dark" (click)="replyComment(comment.id,newComment)">Reply</button></td>
         <td *ngIf="comment.replyComment"><em>{{comment.replyComment}}</em></td>
-    </table><br>
-    <input type="text" [(ngModel)]="newComment.comment">
-        <button (click)="addNewComment(newComment)">Comment On This Recipe</button>
+    </table><br> -->
+    <!-- <input type="text" [(ngModel)]="newComment.comment">
+        <button (click)="addNewComment(newComment)">Comment On This Recipe</button> -->
+
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Comment on {{recipe.user.username}} Recipe!" aria-label="Users Comment" aria-describedby="button-addon2" [(ngModel)]="newComment.comment">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="addNewComment(newComment)">Add Comment</button>
+        </div>
   </div>
-</div>
+<!-- </div> -->
 
 <!-- <div name="notLoggedIn" *ngIf="!checkLogin()">
 You must be logged in to utilize this feature.
