@@ -31,7 +31,7 @@
           </ng-template>
         </li>
         <li [ngbNavItem]="2">
-          <a ngbNavLink>Published Recipes</a>
+          <a ngbNavLink>My Published Recipes</a>
           <ng-template ngbNavContent>
             <div *ngIf="recipes">
               <div *ngFor="let r of recipes | publishedRecipe">
