@@ -35,7 +35,6 @@
           <ng-template ngbNavContent>
             <div *ngIf="recipes">
               <div *ngFor="let r of recipes | publishedRecipe">
-                <!-- <a [routerLink]="['/recipe/', r.id]">{{ r.name }}</a> -->
 
                 <div class="card mb-3" style="max-width: 540px">
                   <div class="row g-0">
@@ -72,7 +71,7 @@
           </ng-template>
         </li>
         <li [ngbNavItem]="3">
-          <a ngbNavLink>Recipe Book</a>
+          <a ngbNavLink>My Created Recipes</a>
           <ng-template ngbNavContent>
             <div>
               <div *ngFor="let r of recipes">
@@ -116,6 +115,48 @@
           </ng-template>
         </li>
         <li [ngbNavItem]="4">
+          <a ngbNavLink>Saved Recipes</a>
+          <ng-template ngbNavContent>
+            <div *ngFor="let savedRecipe of user.recipes">
+              <div class="card mb-3" style="max-width: 540px">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img
+                      src="{{ savedRecipe.imgUrl }}"
+                      class="img-fluid rounded-start"
+                    />
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ savedRecipe.name }}</h5>
+                      <p class="card-text">
+                        <small class="text-muted"
+                          >Created on:
+                          {{ savedRecipe.creationDate | date: "MM/dd/yy" }}</small
+                        >
+                      </p>
+                      <p>
+                        <button
+                          class="btn btn-primary"
+                          [routerLink]="['/recipe/', savedRecipe.id]"
+                        >
+                          View Recipe
+                        </button>
+                        <button
+                          class="btn btn-danger"
+                          (click)="unsaveRecipe(savedRecipe)"
+                        >
+                          Unsave Recipe
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="5">
           <a ngbNavLink>Profile Settings</a>
           <ng-template ngbNavContent>
             <div>

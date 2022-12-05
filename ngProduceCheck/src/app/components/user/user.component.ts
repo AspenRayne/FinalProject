@@ -272,4 +272,17 @@ export class UserComponent implements OnInit {
     console.log("test");
 
   }
+
+  unsaveRecipe(recipe: Recipe){
+    this.recipeService.unsaveRecipe(recipe.id).subscribe({
+      next: (data) => {
+        window.location.reload();
+      },
+      error: (err) => {
+        console.error(
+          'UserComponent.unsaveRecipe(): error unsaving recipe' + err
+        );
+      }
+    })
+  }
 }

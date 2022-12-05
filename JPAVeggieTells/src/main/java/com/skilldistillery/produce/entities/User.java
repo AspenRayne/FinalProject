@@ -56,7 +56,7 @@ public class User {
 	@Column(name = "last_name")
 	private String lastName;
 
-	@JsonIgnore
+	@JsonIgnoreProperties({"user"})
 	@ManyToMany
 	@JoinTable(name = "favorite_recipe", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
 	private List<Recipe> recipes;
