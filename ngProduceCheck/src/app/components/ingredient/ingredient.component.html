@@ -142,16 +142,24 @@
                     <small class="text-muted">{{ item.ingredient.upc }}</small>
                   </p>
                   <form>
-                    <input
-                      class="form-control"
-                      type="text"
-                      name="measurement"
-                      placeholder="Measurement"
-                      [(ngModel)]="item.measurement"
-                    />
-                    <button (click)="addMeasurementToRecipeIngredient(item)">
-
-                    </button>
+                    <div class="input-group mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="measurement"
+                        placeholder="Measurement"
+                        aria-describedby="button-addon2"
+                        [(ngModel)]="item.measurement"
+                      />
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="button-addon2"
+                        (click)="addMeasurementToRecipeIngredient(item)"
+                      >
+                        Add
+                      </button>
+                    </div>
                   </form>
 
                   <p class="card-text">
