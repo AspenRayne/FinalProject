@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Ingredient } from '../models/ingredient';
 import { Recipe } from '../models/recipe';
 import { RecipeIngredient } from '../models/recipe-ingredient';
@@ -10,10 +11,15 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RecipeService {
-  private baseUrl = 'http://localhost:8088/api/recipes';
-  private indexUrl = 'http://localhost:8088/api/allrecipes';
-  private searchUrl = 'http://localhost:8088/api/recipes/search';
-  private unsaveUrl = 'http://localhost:8088/api/favoritedRecipes';
+  // private baseUrl = 'http://localhost:8088/api/recipes';
+  // private indexUrl = 'http://localhost:8088/api/allrecipes';
+  // private searchUrl = 'http://localhost:8088/api/recipes/search';
+  // private unsaveUrl = 'http://localhost:8088/api/favoritedRecipes';
+
+  private baseUrl = environment.baseUrl + 'api/recipes';
+  private indexUrl = environment.baseUrl + 'api/allrecipes';
+  private searchUrl = environment.baseUrl + 'api/recipes/search';
+  private unsaveUrl = environment.baseUrl + 'api/favoritedRecipes';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 

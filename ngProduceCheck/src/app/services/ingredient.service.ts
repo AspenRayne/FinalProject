@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { CustomIngredientResponse } from '../models/custom-ingredient-response';
 import { CustomIngredientStatistics } from '../models/custom-ingredient-statistics';
 import { Ingredient } from '../models/ingredient';
@@ -12,8 +13,10 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class IngredientService {
-  private lookupUrl = 'http://localhost:8088/api/ingredientsLookup';
-  private availabilityUrl = 'http://localhost:8088/api/availabilityLookup';
+  // private lookupUrl = 'http://localhost:8088/api/ingredientsLookup';
+  // private availabilityUrl = 'http://localhost:8088/api/availabilityLookup';
+  private lookupUrl = environment.baseUrl + 'api/ingredientsLookup';
+  private availabilityUrl = environment.baseUrl + 'api/availabilityLookup';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 

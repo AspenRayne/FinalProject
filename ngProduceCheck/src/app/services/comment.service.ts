@@ -11,8 +11,8 @@ import { Comment } from '../models/comment';
 })
 export class CommentService {
 
-  private baseUrl = 'http://localhost:8088/api/recipes';
-  private url = environment.baseUrl;
+  // private baseUrl = 'http://localhost:8088/api/recipes';
+  private url = environment.baseUrl + 'api/recipes';
 
   constructor(
     private http: HttpClient,
@@ -30,7 +30,7 @@ export class CommentService {
     return options;
   }
   show(recipeId: number): Observable<Comment[]>{
-    return this.http.get<Comment[]>(this.baseUrl + '/' + recipeId + '/comments', this.getHttpOptions()).pipe(
+    return this.http.get<Comment[]>(this.url + '/' + recipeId + '/comments', this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(
@@ -42,7 +42,7 @@ export class CommentService {
   }
 
   create(recipeId: number, comment: Comment) {
-    return this.http.post<Comment>(this.baseUrl + '/' + recipeId + '/comments' , comment, this.getHttpOptions()).pipe(
+    return this.http.post<Comment>(this.url + '/' + recipeId + '/comments' , comment, this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(() => Error('CommentService.create(): error creating a new comment item'));
@@ -50,7 +50,7 @@ export class CommentService {
   }
 
   createReply(recipeId: number, commentId: number, comment: Comment) {
-    return this.http.post<Comment>(this.baseUrl + '/' + recipeId + '/comments' + '/' + commentId, comment, this.getHttpOptions()).pipe(
+    return this.http.post<Comment>(this.url + '/' + recipeId + '/comments' + '/' + commentId, comment, this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(() => Error('CommentService.create(): error creating a new comment item'));
@@ -58,7 +58,7 @@ export class CommentService {
   }
 
   destroy(recipeId: number, commentId: number) {
-    return this.http.delete<void>(this.baseUrl + '/' + recipeId + '/comments/' + commentId, this.getHttpOptions()).pipe(
+    return this.http.delete<void>(this.url + '/' + recipeId + '/comments/' + commentId, this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(
