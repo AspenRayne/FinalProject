@@ -27,57 +27,69 @@
 </div>
 
 
+<form>
+    <div class="container fluid" name="notLoggedIn" *ngIf="!checkLogin()">
+    <div class="container-fluid text-center">
+      <div class="card w-50">
+        <div class="card-body">
+          <h5 class="card-title">Error</h5>
+          Please login or create an account to access the Recipe app
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 
 
-<body>
+<body *ngIf="checkLogin()">
   <div class="card-deck">
       <div class="card">
-          <img class="card-img-top card-image-sizing" src="/assets/images/bakedmac.jpeg" alt="Card image cap">
+          <img class="card-img-top card-image-sizing" src="{{displayRecipe1.imgUrl}}" alt="Card image cap" [routerLink]="['/recipe/', displayRecipe1.id]">
           <div class="card-block">
-              <h4 class="card-title">Baked Mac and Cheese</h4>
-              <p class="card-text">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores ducimus impedit possimus maiores earum iure voluptatem necessitatibus, maxime, veritatis eveniet dignissimos quia. A, quaerat obcaecati blanditiis et laboriosam nobis eum?
-              </p>
-
+              <h4 class="card-title">{{displayRecipe1.name}}</h4>
+              <p class="card-text"><strong>Recipe created by <a [routerLink]="['/profile/', displayRecipe1.user.id]">{{displayRecipe1.user.username}}</a>
+              </strong></p>
+              <p></p>
+              <p class="card-text">{{displayRecipe1.description}}</p>
               <p class="card-text">
                   <small class="text-muted">
-                      Last updated 3 mins ago
+                      Recipe created on on {{displayRecipe1.creationDate | date: "MMMM dd, yyyy"  }}
                   </small>
               </p>
           </div>
       </div>
 
       <div class="card">
-          <img class="card-img-top card-image-sizing" src="/assets/images/mushroomcurry.jpeg">
-          <div class="card-block">
-              <h4 class="card-title">Curried Mushroom</h4>
-              <p class="card-text">
-                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque voluptatum atque harum iure qui corporis esse hic deleniti dignissimos amet sint assumenda sapiente, fugiat eius nisi est dolor. Perferendis, repudiandae.
-              </p>
+        <img class="card-img-top card-image-sizing" src="{{displayRecipe2.imgUrl}}" alt="Card image cap" [routerLink]="['/recipe/', displayRecipe2.id]">
+        <div class="card-block">
+            <h4 class="card-title">{{displayRecipe2.name}}</h4>
+            <p class="card-text"><strong>Recipe created by <a [routerLink]="['/profile/', displayRecipe2.user.id]">{{displayRecipe2.user.username}}</a></strong></p>
+            <p></p>
+            <p class="card-text">{{displayRecipe2.description}}</p>
+            <p class="card-text">
+                <small class="text-muted">
+                    Recipe created on on {{displayRecipe2.creationDate | date: "MMMM dd, yyyy"  }}
+                </small>
+            </p>
+        </div>
+    </div>
 
-              <p class="card-text">
-                  <small class="text-muted">
-                      Last updated 3 mins ago
-                  </small>
-              </p>
-          </div>
+
+    <div class="card">
+      <img class="card-img-top card-image-sizing" src="{{displayRecipe3.imgUrl}}" alt="Card image cap" [routerLink]="['/recipe/', displayRecipe3.id]">
+      <div class="card-block">
+          <h4 class="card-title">{{displayRecipe3.name}}</h4>
+          <p class="card-text"><strong>Recipe created by <a [routerLink]="['/profile/', displayRecipe3.user.id]">{{displayRecipe3.user.username}}</a></strong></p>
+          <p></p>
+          <p class="card-text">{{displayRecipe3.description}}</p>
+          <p class="card-text">
+              <small class="text-muted">
+                  Recipe created on on {{displayRecipe3.creationDate | date: "MMMM dd, yyyy"  }}
+              </small>
+          </p>
       </div>
+  </div>
 
-      <div class="card">
-          <img class="card-img-top card-image-sizing" src="/assets/images/friedchicken.png">
-          <div class="card-block">
-              <h4 class="card-title">Fried Chicken</h4>
-              <p class="card-text">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto deleniti aliquam natus assumenda, quia esse harum quam reiciendis animi sed ipsam itaque expedita quae, doloremque laudantium? Doloribus omnis incidunt natus?
-              </p>
-
-              <p class="card-text">
-                  <small class="text-muted">
-                      Last updated 3 mins ago
-                  </small>
-              </p>
-          </div>
-      </div>
   </div>
 
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
