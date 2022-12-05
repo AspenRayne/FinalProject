@@ -155,7 +155,24 @@
         <li [ngbNavItem]="5">
           <a ngbNavLink>Profile Settings</a>
           <ng-template ngbNavContent>
+            <p><strong>First Name:</strong> <input type="text" placeholder="{{user.firstName}}" [(ngModel)]="user.firstName"> </p>
+            <p><strong>Last Name:</strong>  <input type="text" placeholder="{{user.lastName}}" [(ngModel)]="user.lastName"></p>
+            <p><strong>Email:</strong>      <input type="text" placeholder="{{user.email}}" [(ngModel)]="user.email"></p>
+            <p><strong>Bio:</strong>      <input type="text" placeholder="{{user.aboutMe}}" [(ngModel)]="user.aboutMe"></p>
+
+            <p>
+              <strong>Member Since:</strong>
+              {{ user.createdDate | date: "MMMM dd, yyyy" }}
+            </p>
             <div>
+              <div class="col-12">
+                <button
+                  *ngIf="!editUser && !selectedRec && !selectedUser"
+                  class="btn btn-success"
+                  (click)="updateUser(user)"
+                >
+                  Update Profile
+                </button>
               <div class="col-12">
                 <button
                   *ngIf="!selectedRec && !selectedUser"
@@ -165,14 +182,6 @@
                   Deactive Account
                 </button>
               </div>
-              <div class="col-12">
-                <button
-                  *ngIf="!editUser && !selectedRec && !selectedUser"
-                  class="btn btn-success"
-                  (click)="setEditUser()"
-                >
-                  Edit Profile
-                </button>
               </div>
             </div>
           </ng-template>
