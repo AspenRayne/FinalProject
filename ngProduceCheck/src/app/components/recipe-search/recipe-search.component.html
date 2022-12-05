@@ -45,7 +45,7 @@
           <tbody *ngFor="let r of recipes" >
               <tr (click)="sendToRecipe(r.id)">
                 <td>{{r.name}}</td>
-                <td>{{r.user.username}}</td>
+                <td><a [routerLink]="['/profile/', r.user.id]">{{r.user.username}}</a></td>
                 <td>{{r.prepTime}}</td>
                 <td>{{r.cookTime}}</td>
               </tr>
