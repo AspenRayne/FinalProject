@@ -35,7 +35,6 @@
           <ng-template ngbNavContent>
             <div *ngIf="recipes">
               <div *ngFor="let r of recipes | publishedRecipe">
-
                 <div class="card mb-3" style="max-width: 540px">
                   <div class="row g-0">
                     <div class="col-md-4">
@@ -100,17 +99,11 @@
                           >
                             View Recipe
                           </button>
-                          <button
-                          class="btn btn-success"
-                          [routerLink]="['/recipe/', r.id]">
-                            Edit Recipe
-                          </button>
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </ng-template>
@@ -133,7 +126,9 @@
                       <p class="card-text">
                         <small class="text-muted"
                           >Created on:
-                          {{ savedRecipe.creationDate | date: "MM/dd/yy" }}</small
+                          {{
+                            savedRecipe.creationDate | date: "MM/dd/yy"
+                          }}</small
                         >
                       </p>
                       <p>
@@ -182,7 +177,6 @@
             </div>
           </ng-template>
         </li>
-
       </ul>
 
       <div [ngbNavOutlet]="nav" class="mt-2"></div>
@@ -368,24 +362,26 @@
     Edit Profile
   </button>
 </div> -->
-<div class="col text-end">
-  <div ngbDropdown placement="top-end" class="d-inline-block">
-    <button
-      type="button"
-      class="btn btn-outline-primary"
-      id="dropdownBasic2"
-      ngbDropdownToggle
-    >
-      Find Other Users
-    </button>
-    <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+  <div class="col text-end">
+    <div ngbDropdown placement="top-end" class="d-inline-block">
       <button
-        ngbDropdownItem
-        *ngFor="let u of users"
-        [routerLink]="['/profile/', u.id]"
+        type="button"
+        class="btn btn-outline-primary"
+        id="dropdownBasic2"
+        ngbDropdownToggle
       >
-        {{ u.username }}
+        Find Other Users
       </button>
-    <!-- </div> -->
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button
+          ngbDropdownItem
+          *ngFor="let u of users"
+          [routerLink]="['/profile/', u.id]"
+        >
+          {{ u.username }}
+        </button>
+        <!-- </div> -->
+      </div>
+    </div>
   </div>
 </div>
