@@ -66,6 +66,8 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public Recipe update(String username, int recipeId, Recipe recipe) {
 		Recipe managed = recipeRepo.findByUser_UsernameAndId(username, recipeId);
+		System.out.println(managed);
+		System.out.println(recipe);
 		managed.setName(recipe.getName());
 		managed.setDescription(recipe.getDescription());
 		managed.setImgUrl(recipe.getImgUrl());

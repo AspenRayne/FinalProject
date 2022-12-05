@@ -50,11 +50,11 @@ export class IngredientService {
 
   availabilityLookup(
     storeId: number,
-    upcNumbers: []
-  ): Observable<CustomIngredientStatistics> {
+    upcNumbers: string []
+  ): Observable<Map<string,CustomIngredientStatistics>> {
     let data = { data: upcNumbers };
     return this.http
-      .post<CustomIngredientStatistics>(
+      .post<Map<string,CustomIngredientStatistics>>(
         `${this.availabilityUrl}/${storeId}`,
         data,
         this.getHttpOptions()

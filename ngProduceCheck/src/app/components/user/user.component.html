@@ -71,7 +71,7 @@
           </ng-template>
         </li>
         <li [ngbNavItem]="3">
-          <a ngbNavLink>My Created Recipes</a>
+          <a ngbNavLink>All My Created Recipes</a>
           <ng-template ngbNavContent>
             <div>
               <div *ngFor="let r of recipes">
@@ -101,7 +101,8 @@
                             View Recipe
                           </button>
                           <button
-                          class="btn btn-success">
+                          class="btn btn-success"
+                          [routerLink]="['/recipe/', r.id]">
                             Edit Recipe
                           </button>
                         </p>
