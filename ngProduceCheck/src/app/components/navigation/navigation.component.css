@@ -1,15 +1,21 @@
 .nav-item {
   list-style: none;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-right: 10px;
 
 }
 
 .btn {
   margin-right: 5px;
+  background-color: #DBB04AfF;
+  border-color: #DBB04AfF;
 }
 
 .img-navbar {
   width: 20px;
   height: 30px;
+}
+
+#icon {
+  width: 50px;
+  height: 50px;
 }

@@ -1,35 +1,165 @@
-
-
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content=
-      "width=device-width, initial-scale=1,shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-
-  <link rel="stylesheet" href=
-"https://use.fontawesome.com/releases/v5.4.1/css/all.css"
-          integrity=
-"sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
-           crossorigin="anonymous">
-
-
-</head>
-<div class="top-picture">
-  <div class="top-picture-bg">
+<div class="container-xxl">
+  <div>
     <h1>
-      Welcome<br>to<br>the<br>Recipe Book!<br> Create a user account today!
+      <img src="assets/images/icon.png" id="icon" />
+      Recipe Book
     </h1>
   </div>
-</div>
+  <div class="container-xxl">
+    <div class="row">
+      <div class="col-sm-7 col-md-8">
+        <div class="card mb-3">
+          <img
+            src="https://img.delicious.com.au/PC97_DnC/del/2017/09/istock-519476108-52784-1.jpg"
+            class="card-img-top"
+          />
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text"></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 offset-sm-2 col-md-4 offset-md-0">
+        <form>
+          <div class="container-fluid text-center">
+            <div class="card w-200" id="login">
+              <div class="card-body">
+                <h5 class="card-title">Login</h5>
+                <input
+                  class="form-control"
+                  type="username"
+                  name="username"
+                  placeholder="Username"
+                  [(ngModel)]="loginUser.username"
+                />
+                <input
+                  class="form-control"
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  [(ngModel)]="loginUser.password"
+                />
+                <hr />
+                <div class="text-center">
+                  <button class="btn btn-primary" (click)="login(loginUser)">
+                    Log In
+                  </button>
+                  <button class="btn btn-primary" [routerLink]="['/register']">
+                    Register
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
+  <div class="container">
+    <h2>Share Your Favorite Recipes</h2>
+    <div class="row align-items-start">
+      <div class="col">
+        <div class="card" style="width: 18rem">
+          <img
+            src="https://images.immediate.co.uk/production/volatile/sites/30/2013/05/Jerk-chicken-pilaf-0e4a42e.jpg"
+            class="card-img-top"
+            alt="..."
+          />
+          <div class="card-body">
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="width: 18rem">
+          <img
+            src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gluten-free-dinner-ideas-1581698461.jpg?crop=1.00xw:0.670xh;0,0.120xh&resize=640:*"
+            class="card-img-top"
+            alt="..."
+          />
+          <div class="card-body">
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="width: 18rem">
+          <img
+            src="https://www.acouplecooks.com/wp-content/uploads/2021/03/Shrimp-Stir-Fry-076-735x919.jpg"
+            class="card-img-top"
+            alt="..."
+          />
+          <div class="card-body">
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="banner">
+    <img
+      src="https://bali.queenstandoor.com/blog/wp-content/uploads/2019/03/cropped-shamniana-banner-1.jpg"
+      id="banner"
+    />
+
+    <div class="card">
+      <div class="card-body">
+        <h2 class="firsttxt">Create Recipes With Ease</h2>
+        <hr />
+        <h5 class="secondtxt">
+          Thanks to Kroger API, users are able to find ingredients with ease.
+          This also allows users to see if certain ingredients are available at
+          their local Krogers!
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-xxl"></div>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1,shrink-to-fit=no"
+  />
+
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+    integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+    crossorigin="anonymous"
+  />
+</head>
 <body>
- <div class="card-deck">
+  <!-- <div class="top-picture">
+    <div class="top-picture-bg">
+      <h1>
+        Welcome<br>to<br>the<br>Recipe Book!<br> Create a user account today!
+      </h1>
+    </div>
+  </div> -->
+  <!-- <div class="card-deck">
   <div class="card" style="background-color: lightgray">
       <img class="card-img-top card-image-sizing" src="assets/images/welcomeImg1.png" alt="Card image cap">
       <div class="card-block">
@@ -70,10 +200,10 @@
 
 </div>
 
-</div>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous">
-  </script>
+</div> -->
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
 </body>
-
